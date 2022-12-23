@@ -21,6 +21,21 @@ Enable the token authentication for `prosody`.
 apt-get install jitsi-meet-tokens
 ```
 
+### Deno
+
+Install `deno`
+
+```bash
+apt-get install unzip
+
+cd /tmp
+wget -T 30 -O deno.zip https://github.com/denoland/deno/releases/latest/download/deno-x86_64-unknown-linux-gnu.zip
+unzip deno.zip
+cp /tmp/deno /usr/local/bin/
+
+deno --version
+```
+
 ### Adapter
 
 Clone the repo.
