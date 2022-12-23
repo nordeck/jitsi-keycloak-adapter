@@ -1,0 +1,14 @@
+[Unit]
+Description=OIDC Adapter
+After=network-online.target
+
+[Service]
+User=adapter
+Group=adapter
+WorkingDirectory=/home/adapter/app
+ExecStart=bash /home/adapter/app/adapter.sh
+Restart=always
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target
