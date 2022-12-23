@@ -8,3 +8,8 @@ Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
 - Allows `guest` user if needed
 - Not based on `the external JWT` which will be deprecated in the near future.
 - Not based on `tokenAuthUrl`
+
+## Similar projects
+
+- [jitsi-keycloak](https://github.com/D3473R/jitsi-keycloak)
+- [Jitsi-SAML2JWT](https://github.com/Renater/Jitsi-SAML2JWT)
