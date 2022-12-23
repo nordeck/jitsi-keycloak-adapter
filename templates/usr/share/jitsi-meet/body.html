@@ -1,0 +1,28 @@
+<script>
+let hostButtonCounter = 0;
+
+function oidcRedirect() {
+  const path = encodeURIComponent(window.location.pathname);
+  const search = encodeURIComponent(window.location.search.substring(1));
+  const hash = encodeURIComponent(window.location.hash.substring(1));
+
+  window.location = `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
+}
+
+function interceptHostButton() {
+  try {
+    const hostButton = document.getElementById("modal-dialog-ok-button");
+    if (!hostButton) throw("button is not created yet");
+
+    hostButton.onclick = oidcRedirect
+  } catch(e) {
+    hostButtonCounter += 1;
+
+    if (hostButtonCounter < 20) {
+      setTimeout(function() {interceptHostButton();}, 1000);
+    }
+  }
+}
+
+interceptHostButton();
+</script>
