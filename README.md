@@ -66,7 +66,36 @@ systemctl status oidc-adapter.service
 
 ### Nginx
 
-Customize the `nginx` configuration.
+Customize the `nginx` configuration. You may check
+[/etc/jitsi/sites-available/sample.conf](.//templates/etc/nginx/sites-available/sample.conf)
+
+Add the followings as the first `location` blocks
+
+```conf
+    # /oidc/redirect
+    location = /oidc/redirect {
+        proxy_pass http://127.0.0.1:9000;
+        proxy_http_version 1.1;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $http_host;
+    }
+
+    # /oidc/tokenize
+    location = /oidc/tokenize {
+        proxy_pass http://127.0.0.1:9000;
+        proxy_http_version 1.1;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $http_host;
+    }
+
+    # /oidc/auth
+    location = /oidc/auth {
+        proxy_pass http://127.0.0.1:9000;
+        proxy_http_version 1.1;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $http_host;
+    }
+```
 
 ## Similar projects
 
