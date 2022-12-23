@@ -62,6 +62,11 @@ systemctl start oidc-adapter.service
 systemctl status oidc-adapter.service
 ```
 
+### Nginx
+
+Customize the `nginx` configuration.
+
+
 ## Similar projects
 
 - [jitsi-keycloak](https://github.com/D3473R/jitsi-keycloak)
