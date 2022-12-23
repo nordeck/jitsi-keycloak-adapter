@@ -9,6 +9,8 @@ Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
 - Not based on `the external JWT` which will be deprecated in the near future.
 - Not based on `tokenAuthUrl`
 
+Check [flows](./docs/flows.txt) if you are interested in how it works.
+
 ## Setup
 
 ### Token authentication
@@ -50,8 +52,8 @@ chown adapter: /home/adapter/app -R
 cp templates/etc/systemd/system/oidc-adapter.service /etc/systemd/system/
 ```
 
-Update the settings according to your environment.
-Edit [/home/adapter/app/config.ts](./config.ts)
+Update the settings according to your environment. Edit
+[/home/adapter/app/config.ts](./config.ts)
 
 Start the service
 
@@ -65,7 +67,6 @@ systemctl status oidc-adapter.service
 ### Nginx
 
 Customize the `nginx` configuration.
-
 
 ## Similar projects
 
