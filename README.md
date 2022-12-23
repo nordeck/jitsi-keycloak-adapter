@@ -149,6 +149,16 @@ VirtualHost "guest.domain.loc"
 
 ```bash
 ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
+```
+
+Comment `token_verification` in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`
+
+```lua
+    --"token_verification";
+```
+
+
+```bash
 systemctl restart prosody.service
 ```
 
