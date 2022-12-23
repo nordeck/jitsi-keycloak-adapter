@@ -147,14 +147,14 @@ VirtualHost "guest.domain.loc"
     c2s_require_encryption = false
 ```
 
+```bash
+ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
+```
+
 Set `anonymousdomain` in `config.js`
 
 ```bash
 echo "config.hosts.anonymousdomain = 'guest.domain.loc';" >> /etc/jitsi/meet/*-config.js
-```
-
-```bash
-ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
 ```
 
 ## Similar projects
