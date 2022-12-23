@@ -149,6 +149,7 @@ VirtualHost "guest.domain.loc"
 
 ```bash
 ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
+systemctl restart prosody.service
 ```
 
 Set `anonymousdomain` in `config.js`
