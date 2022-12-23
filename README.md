@@ -31,6 +31,7 @@ Copy the static files:
 
 ```bash
 cd jitsi-keycloak-adapter
+cp /usr/share/jitsi-meet/{body.html,body.html.$(date +'%H%M%S').bck}
 cp templates/usr/share/jitsi-meet/body.html /usr/share/jitsi-meet/
 cp templates/usr/share/jitsi-meet/static/oidc-* /usr/share/jitsi-meet/static/
 ```
