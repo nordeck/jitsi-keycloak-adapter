@@ -13,7 +13,7 @@ Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
 
 ### Token authentication
 
-Enable the token authentication for `prosody`:
+Enable the token authentication for `prosody`.
 
 ```bash
 apt-get install jitsi-meet-tokens
@@ -21,13 +21,13 @@ apt-get install jitsi-meet-tokens
 
 ### Adapter
 
-Clone the repo:
+Clone the repo.
 
 ```bash
 git clone ssh://git@github.com:22/nordeck/jitsi-keycloak-adapter.git
 ```
 
-Copy the static files:
+Copy the static files.
 
 ```bash
 cd jitsi-keycloak-adapter
@@ -35,6 +35,23 @@ cp /usr/share/jitsi-meet/{body.html,body.html.$(date +'%H%M%S').bck}
 cp templates/usr/share/jitsi-meet/body.html /usr/share/jitsi-meet/
 cp templates/usr/share/jitsi-meet/static/oidc-* /usr/share/jitsi-meet/static/
 ```
+
+Setup adapter service.
+
+```bash
+adduser adapter --system --group --disabled-password --gecos ''
+
+mkdir -p /home/adapter/app
+cp config.ts /home/adapter/app/
+cp adapter.sh /home/adapter/app/
+cp adapter.ts /home/adapter/app/
+chown adapter: /home/adapter/app -R
+
+cp templates/etc/systemd/system/oidc-adapter.service /etc/systemd/system/
+```
+
+Update the settings according to your environment.
+Edit [/home/adapter/app/config.ts](./config.ts)
 
 ## Similar projects
 
