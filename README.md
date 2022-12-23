@@ -154,7 +154,7 @@ ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
 Comment `token_verification` in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`
 
 ```lua
-    --"token_verification";
+--"token_verification";
 ```
 
 Restart the `prosody` service
@@ -172,6 +172,7 @@ hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.enabled true
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.type XMPP
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.login-url $DOMAIN
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.authentication-lifetime "10 seconds"
+hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.conference.enable-auto-owner false
 
 systemctl restart jicofo.service
 ```
