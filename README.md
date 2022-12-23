@@ -53,6 +53,15 @@ cp templates/etc/systemd/system/oidc-adapter.service /etc/systemd/system/
 Update the settings according to your environment.
 Edit [/home/adapter/app/config.ts](./config.ts)
 
+Start the service
+
+```bash
+systemctl daemon-reload
+systemctl enable oidc-adapter.service
+systemctl start oidc-adapter.service
+systemctl status oidc-adapter.service
+```
+
 ## Similar projects
 
 - [jitsi-keycloak](https://github.com/D3473R/jitsi-keycloak)
