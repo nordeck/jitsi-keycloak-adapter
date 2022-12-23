@@ -1,22 +1,20 @@
 import { serve } from "https://deno.land/std/http/server.ts";
 import { Status } from "https://deno.land/std/http/http_status.ts";
 import { create, getNumericDate } from "https://deno.land/x/djwt/mod.ts";
-
-const HOSTNAME = "0.0.0.0";
-const PORT = 9000;
-const PRE = "/oidc";
-
-const KEYCLOAK_HOST = "https://ucs-sso-ng.mydomain.corp";
-const KEYCLOAK_REALM = "jitsi";
-const KEYCLOAK_CLIENT_ID = "meet";
-
-const JWT_ALG = "HS256";
-const JWT_HASH = "SHA-256";
-const JWT_APP_ID = "myappid";
-const JWT_APP_SECRET = "myappsecret";
-const JWT_EXP_SECOND = 3600;
-
-const DEBUG = true;
+import {
+  DEBUG,
+  HOSTNAME,
+  JWT_ALG,
+  JWT_APP_ID,
+  JWT_APP_SECRET,
+  JWT_EXP_SECOND,
+  JWT_HASH,
+  KEYCLOAK_CLIENT_ID,
+  KEYCLOAK_HOST,
+  KEYCLOAK_REALM,
+  PORT,
+  PRE,
+} from "./config.ts";
 
 // ----------------------------------------------------------------------------
 function methodNotAllowed(): Response {
