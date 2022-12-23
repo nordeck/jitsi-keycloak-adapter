@@ -13,7 +13,7 @@ Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
 
 ### Token authentication
 
-Enable the token authentication for `prosody`
+Enable the token authentication for `prosody`:
 
 ```bash
 apt-get install jitsi-meet-tokens
@@ -21,10 +21,18 @@ apt-get install jitsi-meet-tokens
 
 ### Adapter
 
-Clone the repo
+Clone the repo:
 
 ```bash
 git clone ssh://git@github.com:22/nordeck/jitsi-keycloak-adapter.git
+```
+
+Copy the static files:
+
+```bash
+cd jitsi-keycloak-adapter
+cp templates/usr/share/jitsi-meet/body.html /usr/share/jitsi-meet/
+cp templates/usr/share/jitsi-meet/static/oidc-* /usr/share/jitsi-meet/static/
 ```
 
 ## Similar projects
