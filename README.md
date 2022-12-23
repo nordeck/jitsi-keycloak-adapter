@@ -157,6 +157,7 @@ Comment `token_verification` in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`
     --"token_verification";
 ```
 
+Restart the `prosody` service
 
 ```bash
 systemctl restart prosody.service
