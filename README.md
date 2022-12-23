@@ -69,7 +69,7 @@ systemctl status oidc-adapter.service
 Customize the `nginx` configuration. You may check
 [/etc/jitsi/sites-available/example.conf](.//templates/etc/nginx/sites-available/example.conf)
 
-Add the followings as the first `location` blocks
+Add the following lines as the first `location` blocks
 
 ```conf
     # /oidc/redirect
@@ -95,6 +95,27 @@ Add the followings as the first `location` blocks
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Host $http_host;
     }
+```
+
+Change the `location @root_path` block as below
+
+```conf
+    location @root_path {
+        if ($arg_oidc) {
+            rewrite ^/(.*)$ / break;
+        }
+        if ($arg_jwt) {
+            rewrite ^/(.*)$ / break;
+        }
+
+        rewrite ^/(.*)$ /static/oidc-redirect.html;
+    }
+```
+
+Restart the `nginx` service
+
+```bash
+systemctl restart nginx
 ```
 
 ## Similar projects
