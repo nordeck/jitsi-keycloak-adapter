@@ -134,6 +134,23 @@ Restart the `nginx` service
 systemctl restart nginx
 ```
 
+## Guest users
+
+If you want to allow guest users to join the meeting after it's created by a
+moderator then add the guest domain for `prosody`
+
+_/etc/prosody/conf.avail/guest.cfg.lua_
+
+```lua
+VirtualHost "guest.domain.loc"
+    authentication = "anonymous"
+    c2s_require_encryption = false
+```
+
+```bash
+ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
+```
+
 ## Similar projects
 
 - [jitsi-keycloak](https://github.com/D3473R/jitsi-keycloak)
