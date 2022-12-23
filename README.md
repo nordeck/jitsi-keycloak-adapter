@@ -19,6 +19,14 @@ Enable the token authentication for `prosody`
 apt-get install jitsi-meet-tokens
 ```
 
+### Adapter
+
+Clone the repo
+
+```bash
+git clone ssh://git@github.com:22/nordeck/jitsi-keycloak-adapter.git
+```
+
 ## Similar projects
 
 - [jitsi-keycloak](https://github.com/D3473R/jitsi-keycloak)
