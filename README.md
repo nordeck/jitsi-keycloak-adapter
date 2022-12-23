@@ -149,13 +149,15 @@ systemctl restart nginx
 If you want to allow guest users to join the meeting after it's created by a
 moderator then add the guest domain for `prosody`
 
-_/etc/prosody/conf.avail/guest.cfg.lua_
+Create _/etc/prosody/conf.avail/guest.cfg.lua_ file with the following contents.
 
 ```lua
 VirtualHost "guest.domain.loc"
     authentication = "anonymous"
     c2s_require_encryption = false
 ```
+
+Create a symbolic link for this config file.
 
 ```bash
 ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
