@@ -100,6 +100,7 @@ Add the following lines as the first `location` blocks
 Change the `location @root_path` block as below
 
 ```conf
+    # oidc: customized @root_path
     location @root_path {
         if ($arg_oidc) {
             rewrite ^/(.*)$ / break;
