@@ -67,7 +67,7 @@ systemctl status oidc-adapter.service
 ### Nginx
 
 Customize the `nginx` configuration. You may check
-[/etc/jitsi/sites-available/sample.conf](.//templates/etc/nginx/sites-available/sample.conf)
+[/etc/jitsi/sites-available/example.conf](.//templates/etc/nginx/sites-available/example.conf)
 
 Add the followings as the first `location` blocks
 
