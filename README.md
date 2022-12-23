@@ -152,6 +152,19 @@ ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
 systemctl restart prosody.service
 ```
 
+Enable `external XMPP authentication` for `jicofo`
+
+```bash
+DOMAIN=$(hocon -f /etc/jitsi/jicofo/jicofo.conf get jicofo.xmpp.client.xmpp-domain)
+
+hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.enabled true
+hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.type XMPP
+hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.login-url $DOMAIN
+hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.authentication-lifetime "10 seconds"
+
+systemctl restart jicofo.service
+```
+
 Set `anonymousdomain` in `config.js`
 
 ```bash
