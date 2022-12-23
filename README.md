@@ -123,3 +123,7 @@ systemctl restart nginx
 
 - [jitsi-keycloak](https://github.com/D3473R/jitsi-keycloak)
 - [Jitsi-SAML2JWT](https://github.com/Renater/Jitsi-SAML2JWT)
+
+## Sponsors
+
+[![Nordeck](docs/images/nordeck.png)](https://nordeck.net/)
