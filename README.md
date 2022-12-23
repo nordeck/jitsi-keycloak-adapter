@@ -2,7 +2,17 @@
 
 Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
 
-## Features
+- [1. Features](#1-features)
+- [2. Setup](#2-setup)
+  - [2.1 Token authentication](#21-token-authentication)
+  - [2.2 Deno](#22-deno)
+  - [2.3 Adapter](#23-adapter)
+  - [2.4 Nginx](#24-nginx)
+- [3. Guest users](#3-guest-users)
+- [4. Similar projects](#4-similar-projects)
+- [5. Sponsors](#5-sponsors)
+
+## 1. Features
 
 - SSO support for `Jitsi`
 - Allows `guest` user if needed
@@ -11,9 +21,9 @@ Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
 
 Check [flows](./docs/flows.txt) if you are interested in how it works.
 
-## Setup
+## 2. Setup
 
-### Token authentication
+### 2.1 Token authentication
 
 Enable the token authentication for `prosody`.
 
@@ -21,7 +31,7 @@ Enable the token authentication for `prosody`.
 apt-get install jitsi-meet-tokens
 ```
 
-### Deno
+### 2.2 Deno
 
 Install `deno`
 
@@ -36,7 +46,7 @@ cp /tmp/deno /usr/local/bin/
 deno --version
 ```
 
-### Adapter
+### 2.3 Adapter
 
 Clone the repo.
 
@@ -79,7 +89,7 @@ systemctl start oidc-adapter.service
 systemctl status oidc-adapter.service
 ```
 
-### Nginx
+### 2.4 Nginx
 
 Customize the `nginx` configuration. You may check
 [/etc/jitsi/sites-available/example.conf](.//templates/etc/nginx/sites-available/example.conf)
@@ -134,7 +144,7 @@ Restart the `nginx` service
 systemctl restart nginx
 ```
 
-## Guest users
+## 3. Guest users
 
 If you want to allow guest users to join the meeting after it's created by a
 moderator then add the guest domain for `prosody`
@@ -183,11 +193,11 @@ Set `anonymousdomain` in `config.js`
 echo "config.hosts.anonymousdomain = 'guest.domain.loc';" >> /etc/jitsi/meet/*-config.js
 ```
 
-## Similar projects
+## 4. Similar projects
 
 - [jitsi-keycloak](https://github.com/D3473R/jitsi-keycloak)
 - [Jitsi-SAML2JWT](https://github.com/Renater/Jitsi-SAML2JWT)
 
-## Sponsors
+## 5. Sponsors
 
 [![Nordeck](docs/images/nordeck.png)](https://nordeck.net/)
