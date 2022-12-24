@@ -40,7 +40,7 @@ browser               nginx            redirect.html         adapter.html       
 
 
 browser               nginx            redirect.html         adapter.html       nordeck adapter         keycloak               jitsi
-───┬───               ──┬──              ────┬───              ───┬───              ───┬───             ────┬───               ──┬──
+───┬───               ──┬──            ──────┬──────         ─────┬──────       ───────┬───────         ────┬───               ──┬──
    │                    │                    │                    │                    │                    │                    │
    │                    │                    │                                         │                    │                    │
    │    join request    │      internal      │            auth check request           │        start       │                    │
