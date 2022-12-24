@@ -32,7 +32,7 @@ function interceptLoginRequest() {
       // if this is a login screen, redirect to OIDC login page
       oidcRedirect();
     } else if (labelKey === "dialog.IamHost") {
-      // if this is an IamHost screen, redrect to OIDC login page when clicked
+      // if this is an IamHost screen, redirect to OIDC login page when clicked
       _button.onclick = oidcRedirect
     }
   } catch(e) {
