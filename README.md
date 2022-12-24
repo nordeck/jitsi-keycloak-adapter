@@ -63,7 +63,7 @@ cp templates/usr/share/jitsi-meet/body.html /usr/share/jitsi-meet/
 cp templates/usr/share/jitsi-meet/static/oidc-* /usr/share/jitsi-meet/static/
 ```
 
-Setup adapter service.
+Setup the adapter service.
 
 ```bash
 adduser adapter --system --group --disabled-password --gecos ''
