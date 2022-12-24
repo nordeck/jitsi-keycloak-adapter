@@ -1,28 +1,48 @@
 <script>
-let hostButtonCounter = 0;
+let failedAttempt = 0;
 
 function oidcRedirect() {
+  const qs = new URLSearchParams(window.location.search.substring(1));
+  qs.delete('oidc');
+
   const path = encodeURIComponent(window.location.pathname);
-  const search = encodeURIComponent(window.location.search.substring(1));
+  const search = encodeURIComponent(qs.toString());
   const hash = encodeURIComponent(window.location.hash.substring(1));
 
   window.location = `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
 }
 
-function interceptHostButton() {
+function interceptLoginRequest() {
   try {
-    const hostButton = document.getElementById("modal-dialog-ok-button");
-    if (!hostButton) throw("button is not created yet");
+    // if conference is already started, dont wait for an auth request
+    if (APP.conference.isJoined()) return;
 
-    hostButton.onclick = oidcRedirect
+    // check if login or IamHost button is created in DOM
+    const _button = document.getElementById("modal-dialog-ok-button");
+    if (!_button) throw("button is not created yet");
+
+    let labelKey;
+    try {
+      labelKey = Object.values(_button)[0].return.memoizedProps.labelKey;
+    } catch {
+      // do nothing
+    }
+
+    if (labelKey === "dialog.login") {
+      // if this is a login screen, redirect to OIDC login page
+      oidcRedirect();
+    } else if (labelKey === "dialog.IamHost") {
+      // if this is an IamHost screen, redrect to OIDC login page when clicked
+      _button.onclick = oidcRedirect
+    }
   } catch(e) {
-    hostButtonCounter += 1;
+    failedAttempt += 1;
 
-    if (hostButtonCounter < 20) {
-      setTimeout(function() {interceptHostButton();}, 1000);
+    if (failedAttempt < 180) {
+      setTimeout(function() {interceptLoginRequest();}, 1000);
     }
   }
 }
 
-interceptHostButton();
+interceptLoginRequest();
 </script>
