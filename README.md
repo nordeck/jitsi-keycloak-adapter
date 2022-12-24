@@ -163,7 +163,10 @@ Create a symbolic link for this config file.
 ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
 ```
 
-Comment `token_verification` in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`
+Comment `token_verification` in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`.
+This does not disable token validation, it disables `room` and `sub` checking
+which is acceptable in this use-case as there is no one defining the room in
+this scenario.
 
 ```lua
 --"token_verification";
