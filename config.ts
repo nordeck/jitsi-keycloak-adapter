@@ -14,4 +14,4 @@ export const JWT_EXP_SECOND = 3600;
 export const HOSTNAME = "0.0.0.0";
 export const PORT = 9000;
 export const PRE = "/oidc";
-export const DEBUG = true;
+export const DEBUG = false;
