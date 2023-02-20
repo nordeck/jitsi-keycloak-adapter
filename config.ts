@@ -1,7 +1,7 @@
 // keycloak
 export const KEYCLOAK_HOST = "https://ucs-sso-ng.mydomain.corp";
-export const KEYCLOAK_REALM = "jitsi";
-export const KEYCLOAK_CLIENT_ID = "meet";
+export const KEYCLOAK_REALM = "ucs";
+export const KEYCLOAK_CLIENT_ID = "jitsi";
 
 // jwt
 export const JWT_ALG = "HS256";
