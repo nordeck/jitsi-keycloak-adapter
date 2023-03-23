@@ -14,7 +14,6 @@ import {
   KEYCLOAK_ORIGIN,
   KEYCLOAK_REALM,
   PORT,
-  PRE,
 } from "./config.ts";
 
 // ----------------------------------------------------------------------------
@@ -206,11 +205,11 @@ async function handler(req: Request): Promise<Response> {
 
   if (req.method !== "GET") return methodNotAllowed();
 
-  if (path === `${PRE}/redirect`) {
+  if (path === "/oidc/redirect") {
     return redirect(req);
-  } else if (path === `${PRE}/tokenize`) {
+  } else if (path === "/oidc/tokenize") {
     return await tokenize(req);
-  } else if (path === `${PRE}/auth`) {
+  } else if (path === "/oidc/auth") {
     return await auth(req);
   } else {
     return notFound();
