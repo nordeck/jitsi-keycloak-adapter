@@ -35,6 +35,8 @@ function methodNotAllowed(): Response {
 }
 
 // ----------------------------------------------------------------------------
+// Get the Keycloak token using a shot-term access code
+// ----------------------------------------------------------------------------
 async function getKeycloakToken(
   host: string,
   code: string,
@@ -77,6 +79,8 @@ async function getKeycloakToken(
 }
 
 // ----------------------------------------------------------------------------
+// Get the user info by using Keycloak token
+// ----------------------------------------------------------------------------
 async function getKeycloakUserInfo(
   keycloakToken: string,
 ): Promise<Record<string, unknown>> {
@@ -99,6 +103,8 @@ async function getKeycloakUserInfo(
   return await keycloakUserInfo;
 }
 
+// ----------------------------------------------------------------------------
+// Generate the Jitsi token
 // ----------------------------------------------------------------------------
 async function generateToken(
   keycloakUserInfo: Record<string, unknown>,
@@ -137,6 +143,8 @@ async function generateToken(
   return await create(header, payload, cryptoKey);
 }
 
+// ----------------------------------------------------------------------------
+// Send the Jitsi token if auth is OK
 // ----------------------------------------------------------------------------
 async function tokenize(req: Request): Promise<Response> {
   const host = req.headers.get("host");
