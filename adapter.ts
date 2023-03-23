@@ -170,9 +170,12 @@ async function tokenize(req: Request): Promise<Response> {
 }
 
 // ----------------------------------------------------------------------------
-// Redirect to Keycloak for authentication check
+// Redirect to Keycloak auth service to get a short-term authorization code.
+//
+// If successful, Keycloak will redirect the request to oidc-adapter.html
+// (redirect_uri) with a short-term authorization code.
 // ----------------------------------------------------------------------------
-function keycloakAuth(req: Request, prompt: string): Response {
+function oidcRedirectForCode(req: Request, prompt: string): Response {
   const host = req.headers.get("host");
   const url = new URL(req.url);
   const qs = new URLSearchParams(url.search);
@@ -191,31 +194,31 @@ function keycloakAuth(req: Request, prompt: string): Response {
     `&prompt=${prompt}&redirect_uri=https://${host}/static/oidc-adapter.html` +
     `?${encodeURIComponent(bundle)}`;
 
-  if (DEBUG) console.log(`keycloakAuth prompt: ${prompt}`);
-  if (DEBUG) console.log(`keycloakAuth host: ${host}`);
-  if (DEBUG) console.log(`keycloakAuth path: ${path}`);
-  if (DEBUG) console.log(`keycloakAuth search: ${search}`);
-  if (DEBUG) console.log(`keycloakAuth hash: ${hash}`);
-  if (DEBUG) console.log(`keycloakAuth bundle: ${bundle}`);
-  if (DEBUG) console.log(`keycloakAuth target: ${target}`);
+  if (DEBUG) console.log(`oidcRedirectForCode prompt: ${prompt}`);
+  if (DEBUG) console.log(`oidcRedirectForCode host: ${host}`);
+  if (DEBUG) console.log(`oidcRedirectForCode path: ${path}`);
+  if (DEBUG) console.log(`oidcRedirectForCode search: ${search}`);
+  if (DEBUG) console.log(`oidcRedirectForCode hash: ${hash}`);
+  if (DEBUG) console.log(`oidcRedirectForCode bundle: ${bundle}`);
+  if (DEBUG) console.log(`oidcRedirectForCode target: ${target}`);
 
-  return Response.redirect(target, 302);
+  return Response.redirect(target, Status.Found);
 }
 
 // ----------------------------------------------------------------------------
-// Redirect to Keycloak for authentication check
+// Redirect to Keycloak auth service to get a short-term authorization code.
 // Don't ask for a credential if auth fails
 // ----------------------------------------------------------------------------
 function redirect(req: Request): Response {
-  return keycloakAuth(req, "none");
+  return oidcRedirectForCode(req, "none");
 }
 
 // ----------------------------------------------------------------------------
-// Redirect to Keycloak for authentication check
+// Redirect to Keycloak auth service to get a short-term authorization code.
 // Ask for a credential if auth fails
 // ----------------------------------------------------------------------------
 function auth(req: Request): Response {
-  return keycloakAuth(req, "login");
+  return oidcRedirectForCode(req, "login");
 }
 
 // ----------------------------------------------------------------------------
