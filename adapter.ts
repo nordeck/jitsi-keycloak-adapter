@@ -10,7 +10,7 @@ import {
   JWT_EXP_SECOND,
   JWT_HASH,
   KEYCLOAK_CLIENT_ID,
-  KEYCLOAK_HOST,
+  KEYCLOAK_ORIGIN,
   KEYCLOAK_REALM,
   PORT,
   PRE,
@@ -38,7 +38,7 @@ async function getKeycloakToken(
   search: string,
   hash: string,
 ): Promise<string> {
-  const url = `${KEYCLOAK_HOST}/realms/${KEYCLOAK_REALM}` +
+  const url = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
     `/protocol/openid-connect/token`;
   const bundle = `path=${encodeURIComponent(path)}` +
     `&search=${encodeURIComponent(search)}` +
@@ -76,7 +76,7 @@ async function getKeycloakToken(
 async function getKeycloakUserInfo(
   keycloakToken: string,
 ): Promise<Record<string, unknown>> {
-  const url = `${KEYCLOAK_HOST}/realms/${KEYCLOAK_REALM}` +
+  const url = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
     `/protocol/openid-connect/userinfo`;
   const res = await fetch(url, {
     headers: {
@@ -171,7 +171,7 @@ function keycloakAuth(req: Request, prompt: string): Response {
   const bundle = `path=${encodeURIComponent(path)}` +
     `&search=${encodeURIComponent(search)}` +
     `&hash=${encodeURIComponent(hash)}`;
-  const target = `${KEYCLOAK_HOST}/realms/${KEYCLOAK_REALM}` +
+  const target = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
     `/protocol/openid-connect/auth?client_id=${KEYCLOAK_CLIENT_ID}` +
     `&response_mode=query&response_type=code&scope=openid&prompt=${prompt}` +
     `&redirect_uri=https://${host}/static/oidc-adapter.html` +
