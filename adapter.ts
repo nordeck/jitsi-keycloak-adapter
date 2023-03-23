@@ -17,12 +17,16 @@ import {
 } from "./config.ts";
 
 // ----------------------------------------------------------------------------
+// HTTP response for MethodNotAllowed
+// ----------------------------------------------------------------------------
 function methodNotAllowed(): Response {
   return new Response("Method Not Allowed", {
     status: Status.MethodNotAllowed,
   });
 }
 
+// ----------------------------------------------------------------------------
+// HTTP response for NotFound
 // ----------------------------------------------------------------------------
 function notFound(): Response {
   return new Response("Not Found", {
@@ -158,6 +162,8 @@ async function tokenize(req: Request): Promise<Response> {
 }
 
 // ----------------------------------------------------------------------------
+// Redirect to Keycloak for authentication check
+// ----------------------------------------------------------------------------
 function keycloakAuth(req: Request, prompt: string): Response {
   const host = req.headers.get("host");
   const url = new URL(req.url);
@@ -189,15 +195,23 @@ function keycloakAuth(req: Request, prompt: string): Response {
 }
 
 // ----------------------------------------------------------------------------
+// Redirect to Keycloak for authentication check
+// Don't ask for a credential if auth fails
+// ----------------------------------------------------------------------------
 function redirect(req: Request): Response {
   return keycloakAuth(req, "none");
 }
 
 // ----------------------------------------------------------------------------
+// Redirect to Keycloak for authentication check
+// Ask for a credential if auth fails
+// ----------------------------------------------------------------------------
 function auth(req: Request): Response {
   return keycloakAuth(req, "login");
 }
 
+// ----------------------------------------------------------------------------
+// handler
 // ----------------------------------------------------------------------------
 async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url);
@@ -216,6 +230,8 @@ async function handler(req: Request): Promise<Response> {
   }
 }
 
+// ----------------------------------------------------------------------------
+// main
 // ----------------------------------------------------------------------------
 function main() {
   serve(handler, {
