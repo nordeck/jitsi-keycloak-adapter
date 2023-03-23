@@ -35,6 +35,15 @@ function methodNotAllowed(): Response {
 }
 
 // ----------------------------------------------------------------------------
+// HTTP response for Unauthorized
+// ----------------------------------------------------------------------------
+function unauthorized(): Response {
+  return new Response(null, {
+    status: Status.Unauthorized,
+  });
+}
+
+// ----------------------------------------------------------------------------
 // Generate JWT (Jitsi token)
 // ----------------------------------------------------------------------------
 async function generateJWT(
@@ -80,9 +89,13 @@ async function generateJWT(
 }
 
 // ----------------------------------------------------------------------------
-// Get the Keycloak token using a shot-term access code
+// Get the access token from Keycloak by using the short-term auth code
+//
+// redirect_uri should be the same with URI which is set while getting the
+// short-term authorization code but actually there is no redirection at this
+// stage. This is for security check only.
 // ----------------------------------------------------------------------------
-async function getKeycloakToken(
+async function getToken(
   host: string,
   code: string,
   path: string,
@@ -102,50 +115,57 @@ async function getKeycloakToken(
   data.append("redirect_uri", redirectURI);
   data.append("code", code);
 
-  if (DEBUG) console.log(`getKeycloakToken data:`);
+  if (DEBUG) console.log(`getToken data:`);
   if (DEBUG) console.log(data);
 
-  const res = await fetch(url, {
-    headers: {
-      "Accept": "application/json",
-    },
-    method: "POST",
-    body: data,
-  });
-  const json = await res.json();
-  const keycloakToken = json.access_token;
+  try {
+    const res = await fetch(url, {
+      headers: {
+        "Accept": "application/json",
+      },
+      method: "POST",
+      body: data,
+    });
+    const json = await res.json();
+    const token = json.access_token;
 
-  if (DEBUG) console.log(`getKeycloakToken json:`);
-  if (DEBUG) console.log(json);
+    if (DEBUG) console.log(`getToken json:`);
+    if (DEBUG) console.log(json);
 
-  if (!keycloakToken) throw ("cannot get Keycloak token");
+    if (!token) throw ("cannot get Keycloak token");
 
-  return keycloakToken;
+    return token;
+  } catch {
+    return undefined;
+  }
 }
 
 // ----------------------------------------------------------------------------
-// Get the user info by using Keycloak token
+// Get the user info from Keycloak by using the access token
 // ----------------------------------------------------------------------------
-async function getKeycloakUserInfo(
-  keycloakToken: string,
-): Promise<Record<string, unknown>> {
-  const url = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
-    `/protocol/openid-connect/userinfo`;
-  const res = await fetch(url, {
-    headers: {
-      "Accept": "application/json",
-      "Authorization": `Bearer ${keycloakToken}`,
-    },
-    method: "POST",
-  });
-  const keycloakUserInfo = await res.json();
+async function getUserInfo(token: string): Promise<Record<string, unknown>> {
+  try {
+    const url = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
+      `/protocol/openid-connect/userinfo`;
+    const res = await fetch(url, {
+      headers: {
+        "Accept": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      method: "POST",
+    });
+    const userInfo = await res.json();
 
-  if (DEBUG) console.log(`getKeycloakUserInfo keycloakUserInfo:`);
-  if (DEBUG) console.log(keycloakUserInfo);
+    if (DEBUG) console.log(`getUserInfo userInfo:`);
+    if (DEBUG) console.log(userInfo);
 
-  if (!keycloakUserInfo.sub) throw ("cannot get user info");
+    // sub is the mandotary field for successful request
+    if (!userInfo.sub) throw ("no user info");
 
-  return await keycloakUserInfo;
+    return await userInfo;
+  } catch {
+    return undefined;
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -161,10 +181,19 @@ async function tokenize(req: Request): Promise<Response> {
   const hash = qs.get("hash");
 
   if (DEBUG) console.log(`tokenize code: ${code}`);
-  if (!code) throw ("no authorization code");
 
-  const token = await getKeycloakToken(host, code, path, search, hash);
-  const userInfo = await getKeycloakUserInfo(token);
+  // only the currently logged in user has a short-term auth code
+  if (!code) return unauthorized();
+
+  // get the access token from Keycloak if the short-term auth code is valid
+  const token = await getToken(host, code, path, search, hash);
+  if (!token) return unauthorized();
+
+  // get the user info from Keycloak by using the access token
+  const userInfo = await getUserInfo(token);
+  if (!userInfo) return unauthorized();
+
+  // generate JWT
   const jwt = await generateJWT(userInfo);
 
   if (DEBUG) console.log(`tokenize token: ${jwt}`);
