@@ -17,20 +17,20 @@ import {
 } from "./config.ts";
 
 // ----------------------------------------------------------------------------
-// HTTP response for MethodNotAllowed
+// HTTP response for NotFound
 // ----------------------------------------------------------------------------
-function methodNotAllowed(): Response {
-  return new Response("Method Not Allowed", {
-    status: Status.MethodNotAllowed,
+function notFound(): Response {
+  return new Response(null, {
+    status: Status.NotFound,
   });
 }
 
 // ----------------------------------------------------------------------------
-// HTTP response for NotFound
+// HTTP response for MethodNotAllowed
 // ----------------------------------------------------------------------------
-function notFound(): Response {
-  return new Response("Not Found", {
-    status: Status.NotFound,
+function methodNotAllowed(): Response {
+  return new Response(null, {
+    status: Status.MethodNotAllowed,
   });
 }
 
