@@ -163,13 +163,13 @@ async function tokenize(req: Request): Promise<Response> {
   if (DEBUG) console.log(`tokenize code: ${code}`);
   if (!code) throw ("no authorization code");
 
-  const keycloakToken = await getKeycloakToken(host, code, path, search, hash);
-  const keycloakUserInfo = await getKeycloakUserInfo(keycloakToken);
-  const jitsiToken = await generateJWT(keycloakUserInfo);
+  const token = await getKeycloakToken(host, code, path, search, hash);
+  const userInfo = await getKeycloakUserInfo(token);
+  const jwt = await generateJWT(userInfo);
 
-  if (DEBUG) console.log(`tokenize token: ${jitsiToken}`);
+  if (DEBUG) console.log(`tokenize token: ${jwt}`);
 
-  return new Response(JSON.stringify(jitsiToken), {
+  return new Response(JSON.stringify(jwt), {
     status: Status.OK,
   });
 }
