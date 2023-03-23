@@ -10,6 +10,7 @@ import {
   JWT_EXP_SECOND,
   JWT_HASH,
   KEYCLOAK_CLIENT_ID,
+  KEYCLOAK_MODE,
   KEYCLOAK_ORIGIN,
   KEYCLOAK_REALM,
   PORT,
@@ -173,8 +174,8 @@ function keycloakAuth(req: Request, prompt: string): Response {
     `&hash=${encodeURIComponent(hash)}`;
   const target = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
     `/protocol/openid-connect/auth?client_id=${KEYCLOAK_CLIENT_ID}` +
-    `&response_mode=query&response_type=code&scope=openid&prompt=${prompt}` +
-    `&redirect_uri=https://${host}/static/oidc-adapter.html` +
+    `&response_mode=${KEYCLOAK_MODE}&response_type=code&scope=openid` +
+    `&prompt=${prompt}&redirect_uri=https://${host}/static/oidc-adapter.html` +
     `?${encodeURIComponent(bundle)}`;
 
   if (DEBUG) console.log(`keycloakAuth prompt: ${prompt}`);

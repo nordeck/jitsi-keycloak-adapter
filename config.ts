@@ -2,6 +2,7 @@
 export const KEYCLOAK_ORIGIN = "https://ucs-sso-ng.mydomain.corp";
 export const KEYCLOAK_REALM = "ucs";
 export const KEYCLOAK_CLIENT_ID = "jitsi";
+export const KEYCLOAK_MODE = "query";
 
 // jwt
 export const JWT_ALG = "HS256";
