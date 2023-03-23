@@ -35,6 +35,51 @@ function methodNotAllowed(): Response {
 }
 
 // ----------------------------------------------------------------------------
+// Generate JWT (Jitsi token)
+// ----------------------------------------------------------------------------
+async function generateJWT(
+  userInfo: Record<string, unknown>,
+): Promise<string> {
+  try {
+    const encoder = new TextEncoder();
+    const keyData = encoder.encode(JWT_APP_SECRET);
+    const cryptoKey = await crypto.subtle.importKey(
+      "raw",
+      keyData,
+      {
+        name: "HMAC",
+        hash: JWT_HASH,
+      },
+      true,
+      ["sign", "verify"],
+    );
+
+    const header = { alg: JWT_ALG, typ: "JWT" };
+    const payload = {
+      aud: JWT_APP_ID,
+      iss: JWT_APP_ID,
+      sub: "*",
+      room: "*",
+      iat: getNumericDate(0),
+      nbf: getNumericDate(0),
+      exp: getNumericDate(JWT_EXP_SECOND),
+      context: {
+        user: {
+          id: userInfo.sub,
+          name: userInfo.preferred_username || "",
+          email: userInfo.email || "",
+          lobby_bypass: true,
+        },
+      },
+    };
+
+    return await create(header, payload, cryptoKey);
+  } catch {
+    return undefined;
+  }
+}
+
+// ----------------------------------------------------------------------------
 // Get the Keycloak token using a shot-term access code
 // ----------------------------------------------------------------------------
 async function getKeycloakToken(
@@ -104,46 +149,6 @@ async function getKeycloakUserInfo(
 }
 
 // ----------------------------------------------------------------------------
-// Generate the Jitsi token
-// ----------------------------------------------------------------------------
-async function generateToken(
-  keycloakUserInfo: Record<string, unknown>,
-): Promise<string> {
-  const encoder = new TextEncoder();
-  const keyData = encoder.encode(JWT_APP_SECRET);
-  const cryptoKey = await crypto.subtle.importKey(
-    "raw",
-    keyData,
-    {
-      name: "HMAC",
-      hash: JWT_HASH,
-    },
-    true,
-    ["sign", "verify"],
-  );
-
-  const header = { alg: JWT_ALG, typ: "JWT" };
-  const payload = {
-    aud: JWT_APP_ID,
-    iss: JWT_APP_ID,
-    sub: "*",
-    room: "*",
-    iat: getNumericDate(0),
-    nbf: getNumericDate(0),
-    exp: getNumericDate(JWT_EXP_SECOND),
-    context: {
-      user: {
-        id: keycloakUserInfo.sub,
-        name: keycloakUserInfo.preferred_username || "",
-        email: keycloakUserInfo.email || "",
-      },
-    },
-  };
-
-  return await create(header, payload, cryptoKey);
-}
-
-// ----------------------------------------------------------------------------
 // Send the Jitsi token if auth is OK
 // ----------------------------------------------------------------------------
 async function tokenize(req: Request): Promise<Response> {
@@ -160,7 +165,7 @@ async function tokenize(req: Request): Promise<Response> {
 
   const keycloakToken = await getKeycloakToken(host, code, path, search, hash);
   const keycloakUserInfo = await getKeycloakUserInfo(keycloakToken);
-  const jitsiToken = await generateToken(keycloakUserInfo);
+  const jitsiToken = await generateJWT(keycloakUserInfo);
 
   if (DEBUG) console.log(`tokenize token: ${jitsiToken}`);
 
