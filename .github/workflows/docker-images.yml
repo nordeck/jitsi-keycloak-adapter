@@ -21,7 +21,7 @@ jobs:
       id: meta
       with:
         images: |
-          nordeck/jitsi-keycloak-adapter
+          ghcr.io/nordeck/jitsi-keycloak-adapter
         tags: |
           type=sha
 
