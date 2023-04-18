@@ -7,27 +7,37 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  DOCKER_IMAGE: ghcr.io/nordeck/jitsi-keycloak-adapter
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Metadata
+      uses: docker/metadata-action@v4
+      id: meta
+      with:
+        images: |
+          nordeck/jitsi-keycloak-adapter
+        tags: |
+          type=schedule,pattern={{date 'YYYYMMDD'}}
 
     - name: Build jitsi-keycloak-adapter
       run: |
         docker build ./ -t jitsi-keycloak-adapter
 
-    - name: Login to registry
+    - name: Login
       uses: docker/login-action@v2
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Push jitsi-keycloak-adapter
-      run: |
-        docker tag jitsi-keycloak-adapter:latest ${{ env.DOCKER_IMAGE }}:latest
-        docker push ${{ env.DOCKER_IMAGE }}:latest
+    - name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        tags: ${{ steps.meta.outputs.tags }}
