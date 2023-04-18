@@ -23,7 +23,7 @@ jobs:
         images: |
           nordeck/jitsi-keycloak-adapter
         tags: |
-          type=schedule,pattern={{date 'YYYYMMDD'}}
+          type=sha
 
     - name: Build jitsi-keycloak-adapter
       run: |
@@ -40,4 +40,5 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
+        push: true
         tags: ${{ steps.meta.outputs.tags }}
