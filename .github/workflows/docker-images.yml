@@ -25,10 +25,6 @@ jobs:
         tags: |
           type=sha
 
-    - name: Build jitsi-keycloak-adapter
-      run: |
-        docker build ./ -t jitsi-keycloak-adapter
-
     - name: Login
       uses: docker/login-action@v2
       with:
