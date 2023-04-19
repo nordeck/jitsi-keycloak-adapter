@@ -17,6 +17,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Custom metadata
+      run: |
+        echo "BUILD_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+
     - name: Metadata
       uses: docker/metadata-action@v4
       id: meta
@@ -25,7 +29,7 @@ jobs:
           ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
           type=raw,value=latest
-          type=raw,value=latest2
+          type=raw,value=${{ env.BUILD_DATE }}
           type=sha
 
     - name: Login
