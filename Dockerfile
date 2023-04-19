@@ -34,6 +34,6 @@ CMD \
     cp $TMP_CONFIG /app/; \
 \
     [ "$(echo $ALLOW_UNSECURE_CERT | tr '[:upper:]' '[:lower:]')" = true ] && \
-        IGNORE_CERT="--unsafely-ignore-certificate-errors"; \
+        IGNORE_CERT_ERRORS="--unsafely-ignore-certificate-errors"; \
 \
-    deno run --allow-net $IGNORE_CERT /app/adapter.ts
+    deno run --allow-net $IGNORE_CERT_ERRORS /app/adapter.ts
