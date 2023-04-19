@@ -24,8 +24,9 @@ jobs:
         images: |
           ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
-          type=schedule,pattern={{date 'YYYYMMDD'}}
           type=raw,value=latest
+          type=raw,value=latest2
+          type=sha
 
     - name: Login
       uses: docker/login-action@v2
