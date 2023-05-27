@@ -10,6 +10,13 @@ function oidcRedirect() {
   const hash = encodeURIComponent(window.location.hash.substring(1));
 
   window.location = `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
+
+  try {
+    // remove react from DOM to prevent UI distortion
+    document.all.react.remove();
+  } catch {
+    // do nothing
+  }
 }
 
 function interceptLoginRequest() {
