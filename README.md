@@ -187,7 +187,7 @@ DOMAIN=$(hocon -f /etc/jitsi/jicofo/jicofo.conf get jicofo.xmpp.client.xmpp-doma
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.enabled true
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.type XMPP
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.login-url $DOMAIN
-hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.authentication-lifetime "10 seconds"
+hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.enable-auto-login false
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.conference.enable-auto-owner false
 
 systemctl restart jicofo.service
