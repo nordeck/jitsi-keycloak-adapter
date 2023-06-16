@@ -33,7 +33,7 @@ Enable the token authentication for `prosody`.
 apt-get install jitsi-meet-tokens
 ```
 
-Set the parameters for the JWT authentication in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`.
+Check related parameters in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`.
 
 ```lua
 VirtualHost "<YOUR-DOMAIN>"
@@ -42,7 +42,8 @@ VirtualHost "<YOUR-DOMAIN>"
     app_secret="<YOUR_APP_SECRET>"
 ```
 
-Check that the JWT authentication is working. Generate a token here https://jitok.emrah.com/ and pass it to the application.
+Test the JWT authentication with a valid token. You may generate the token on
+[Jitok](https://jitok.emrah.com/) and pass it to the application
 
 ```bash
 https://jitsi.mydomain.tld/myroom?jwt=<PASTE_TOKEN_HERE>
@@ -163,12 +164,18 @@ systemctl restart nginx
 
 ### 2.5 Keycloak
 
-Create the client inside the realm. Set the client id. Set the parameter `Valid redirect URIs` and `Web origins` to match your URLs.
+Create the client inside the realm.
 
-For Keycloak <v20.x set the parameter `Access type` to `public`.
+- Set `client id`
+- Add `Jitsi` URL into `Valid redirect URIs`
+- Add `Jitsi` URL into `Web origins`
+
+For Keycloak `<v20.x`, set `Access type` to `public`:
+
 ![Screenshot Keycloak pre-20](docs/images/Keycloak-pre20.png)
 
-For Keycloak >=v20.x disable the parameter `Client authentication`.
+For Keycloak `>=v20.x`, disable `Client authentication`.
+
 ![Screenshot Keycloak 20](docs/images/Keycloak-20.png)
 
 ## 3. Guest users
