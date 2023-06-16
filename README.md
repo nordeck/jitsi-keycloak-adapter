@@ -8,6 +8,7 @@ Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
   - [2.2 Deno](#22-deno)
   - [2.3 Adapter](#23-adapter)
   - [2.4 Nginx](#24-nginx)
+  - [2.5 Keycloak](#25-keycloak)
 - [3. Guest users](#3-guest-users)
 - [4. Similar projects](#4-similar-projects)
 - [5. Sponsors](#5-sponsors)
@@ -30,6 +31,21 @@ Enable the token authentication for `prosody`.
 
 ```bash
 apt-get install jitsi-meet-tokens
+```
+
+Set the parameters for the JWT authentication in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`.
+
+```lua
+VirtualHost "<YOUR-DOMAIN>"
+    authentication = "token";
+    app_id="<YOUR_APP_ID>"
+    app_secret="<YOUR_APP_SECRET>"
+```
+
+Check that the JWT authentication is working. Generate a token here https://jitok.emrah.com/ and pass it to the application.
+
+```bash
+https://jitsi.mydomain.tld/myroom?jwt=<PASTE_TOKEN_HERE>
 ```
 
 ### 2.2 Deno
@@ -145,6 +161,16 @@ Restart the `nginx` service
 systemctl restart nginx
 ```
 
+### 2.5 Keycloak
+
+Create the client inside the realm. Set the client id. Set the parameter `Valid redirect URIs` and `Web origins` to match your URLs.
+
+For Keycloak <v20.x set the parameter `Access type` to `public`.
+![Screenshot Keycloak pre-20](docs/images/Keycloak-pre20.png)
+
+For Keycloak >=v20.x disable the parameter `Client authentication`.
+![Screenshot Keycloak 20](docs/images/Keycloak-20.png)
+
 ## 3. Guest users
 
 If you want to allow guest users to join the meeting after it's created by a
@@ -168,6 +194,7 @@ Set `allow_empty_token` in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`.
 
 ```lua
 VirtualHost "<YOUR-DOMAIN>"
+    authentication = "token";
     app_id="<YOUR_APP_ID>"
     app_secret="<YOUR_APP_SECRET>"
     allow_empty_token=true
