@@ -112,8 +112,12 @@ systemctl status oidc-adapter.service
 
 ## 4. Nginx
 
-Customize the `nginx` configuration. You may check
+Customize the `nginx` configuration for `Jitsi` domain. This file is
+`/etc/nginx/sites-available/YOUR_DOMAIN.conf` for a typical Jitsi setup.
+
+You may check
 [/etc/jitsi/sites-available/example.conf](../templates/etc/nginx/sites-available/example.conf)
+as an example.
 
 Add the following lines as the first `location` blocks
 
