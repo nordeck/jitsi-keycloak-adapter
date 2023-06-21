@@ -28,7 +28,7 @@ Dockerized `Jitsi` setup.
 
 ## 3. Keycloak configuration
 
-Create the client inside the realm.
+Create `client` inside `realm`.
 
 - Set `client id`
 - Add `Jitsi` URL into `Valid redirect URIs`
