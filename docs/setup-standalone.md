@@ -15,6 +15,9 @@ Tested on `Debian 11 Bullseye`. Use `root` account while running the commands.
   - [3.3 Adapter service](#33-adapter-service)
 - [4. Nginx](#4-nginx)
 - [5. Guest users](#5-guest-users)
+  - [5.1 prosody](#51-prosody)
+  - [5.2 jicofo](#52-jicofo)
+  - [5.3 jitsi-meet](#53-jitsi-meet)
 
 ## 1. Token authentication
 
@@ -186,9 +189,12 @@ systemctl restart nginx
 ## 5. Guest users
 
 If you want to allow guest users to join the meeting after it's created by a
-moderator then add the guest domain for `prosody`
+moderator then apply the followings.
 
-Create _/etc/prosody/conf.avail/guest.cfg.lua_ file with the following contents.
+### 5.1 prosody
+
+Add the guest domain for `prosody`. Create
+_/etc/prosody/conf.avail/guest.cfg.lua_ file with the following contents.
 
 ```lua
 VirtualHost "guest.domain.loc"
@@ -218,6 +224,8 @@ Restart the `prosody` service
 systemctl restart prosody.service
 ```
 
+### 5.2 jicofo
+
 Enable `external XMPP authentication` for `jicofo`
 
 ```bash
@@ -231,6 +239,8 @@ hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.conference.enable-auto-owner f
 
 systemctl restart jicofo.service
 ```
+
+### 5.3 jitsi-meet
 
 Set `anonymousdomain` in `config.js`
 
