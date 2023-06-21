@@ -6,14 +6,21 @@ server.
 Tested on `Debian 11 Bullseye`. Use `root` account while running the commands.
 
 - [1. Token authentication](#1-token-authentication)
+  - [1.1 jitsi-meet-tokens package](#11-jitsi-meet-tokens-package)
+  - [1.2 Testing](#12-testing)
 - [2. Deno](#2-deno)
 - [3. Keycloak adapter](#3-keycloak-adapter)
+  - [3.1 Cloning the repository](#31-cloning-the-repository)
+  - [3.2 Static files](#32-static-files)
+  - [3.3 Adapter service](#33-adapter-service)
 - [4. Nginx](#4-nginx)
 - [5. Guest users](#5-guest-users)
 
 ## 1. Token authentication
 
 Enable the token authentication for `prosody`.
+
+### 1.1 jitsi-meet-tokens package
 
 ```bash
 apt-get install jitsi-meet-tokens
@@ -28,6 +35,8 @@ VirtualHost "<YOUR-DOMAIN>"
     app_id="<YOUR_APP_ID>"
     app_secret="<YOUR_APP_SECRET>"
 ```
+
+### 1.2 Testing
 
 Test the JWT authentication with a valid token. You may generate the token on
 [Jitok](https://jitok.emrah.com/). The meeting link should be like the
@@ -54,13 +63,17 @@ deno --version
 
 ## 3. Keycloak adapter
 
-Clone the repo.
+### 3.1 Cloning the repository
+
+Clone the repository.
 
 ```bash
 apt-get install git
 
 git clone https://github.com/nordeck/jitsi-keycloak-adapter.git
 ```
+
+### 3.2 Static files
 
 Copy the static files.
 
@@ -70,6 +83,8 @@ cp /usr/share/jitsi-meet/{body.html,body.html.$(date +'%H%M%S').bck}
 cp templates/usr/share/jitsi-meet/body.html /usr/share/jitsi-meet/
 cp templates/usr/share/jitsi-meet/static/oidc-* /usr/share/jitsi-meet/static/
 ```
+
+### 3.3 Adapter service
 
 Setup the adapter service.
 
