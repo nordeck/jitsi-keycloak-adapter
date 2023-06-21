@@ -3,7 +3,7 @@
 The setup guide to install `Jitsi Keycloak Adapter` on a standalone Jitsi
 server.
 
-Tested on `Debian 11 Buulseye`.
+Tested on `Debian 11 Bullseye`.
 
 - [1. Token authentication](#1-token-authentication)
 - [2. Deno](#2-deno)
@@ -74,7 +74,8 @@ cp templates/usr/share/jitsi-meet/static/oidc-* /usr/share/jitsi-meet/static/
 Setup the adapter service.
 
 ```bash
-adduser adapter --system --group --disabled-password --gecos ''
+adduser adapter --system --group --disabled-password --shell /bin/bash \
+  --home /home/adapter
 
 mkdir -p /home/adapter/app
 cp config.ts /home/adapter/app/
