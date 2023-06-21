@@ -4,4 +4,4 @@ The setup guide to integrate `Jitsi Keycloak Adapter` with a Dockerized Jitsi
 setup.
 
 
-This guide is ot ready yet.
+This guide is not ready yet.
