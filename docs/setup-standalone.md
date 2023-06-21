@@ -20,7 +20,7 @@ apt-get install jitsi-meet-tokens
 ```
 
 Check related parameters in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`.
-There should be already set by `apt-get` command.
+They should be already set by `apt-get` command.
 
 ```lua
 VirtualHost "<YOUR-DOMAIN>"
@@ -30,7 +30,7 @@ VirtualHost "<YOUR-DOMAIN>"
 ```
 
 Test the JWT authentication with a valid token. You may generate the token on
-[Jitok](https://jitok.emrah.com/) and pass it to the application like the
+[Jitok](https://jitok.emrah.com/). The meeting link should be like the
 following:
 
 ```bash
@@ -87,7 +87,7 @@ cp templates/etc/systemd/system/oidc-adapter.service /etc/systemd/system/
 ```
 
 Update the settings according to your environment. Edit
-[/home/adapter/app/config.ts](./config.ts)
+[/home/adapter/app/config.ts](../config.ts)
 
 Start the service
 
@@ -101,7 +101,7 @@ systemctl status oidc-adapter.service
 ## 4. Nginx
 
 Customize the `nginx` configuration. You may check
-[/etc/jitsi/sites-available/example.conf](./templates/etc/nginx/sites-available/example.conf)
+[/etc/jitsi/sites-available/example.conf](../templates/etc/nginx/sites-available/example.conf)
 
 Add the following lines as the first `location` blocks
 
