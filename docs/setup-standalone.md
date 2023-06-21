@@ -59,7 +59,7 @@ Clone the repo.
 ```bash
 apt-get install git
 
-git clone ssh://git@github.com:22/nordeck/jitsi-keycloak-adapter.git
+git clone https://github.com/nordeck/jitsi-keycloak-adapter.git
 ```
 
 Copy the static files.
