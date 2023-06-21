@@ -15,8 +15,8 @@ Tested on `Debian 11 Bullseye`. Use `root` account while running the commands.
   - [3.3 Adapter service](#33-adapter-service)
     - [3.3.1 Adapter user](#331-adapter-user)
     - [3.3.2 Adapter application](#332-adapter-application)
-    - [3.3.3 config.ts](#333-configts)
-    - [3.3.4 adapter.sh](#334-adaptersh)
+    - [3.3.3 Adapter settings](#333-adapter-settings)
+    - [3.3.4 Production notes](#334-production-notes)
     - [3.3.5 Systemd unit](#335-systemd-unit)
 - [4. Nginx](#4-nginx)
 - [5. Guest users](#5-guest-users)
@@ -112,12 +112,12 @@ cp adapter.ts /home/adapter/app/
 chown adapter: /home/adapter/app -R
 ```
 
-#### 3.3.3 config.ts
+#### 3.3.3 Adapter settings
 
 Update the adapter settings according to your environment. Edit
 [/home/adapter/app/config.ts](../config.ts)
 
-#### 3.3.4 adapter.sh
+#### 3.3.4 Production notes
 
 Disable the `testing` line and enable the `prod` line in
 [/home/adapter/app/adapter.sh](../adapter.sh) if `keycloak` has a trusted
