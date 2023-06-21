@@ -89,15 +89,6 @@ cp templates/etc/systemd/system/oidc-adapter.service /etc/systemd/system/
 Update the settings according to your environment. Edit
 [/home/adapter/app/config.ts](../config.ts)
 
-Start the service
-
-```bash
-systemctl daemon-reload
-systemctl enable oidc-adapter.service
-systemctl start oidc-adapter.service
-systemctl status oidc-adapter.service
-```
-
 Disable the `testing` line and enable the `prod` line in
 [/home/adapter/app/adapter.sh](../adapter.sh) if `keycloak` has a trusted
 certificate. It should be for the production environment.
@@ -108,6 +99,15 @@ certificate. It should be for the production environment.
 
 # prod
 deno run --allow-net $BASEDIR/adapter.ts
+```
+
+Start the service
+
+```bash
+systemctl daemon-reload
+systemctl enable oidc-adapter.service
+systemctl start oidc-adapter.service
+systemctl status oidc-adapter.service
 ```
 
 ## 4. Nginx
