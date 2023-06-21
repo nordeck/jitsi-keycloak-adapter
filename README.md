@@ -20,10 +20,11 @@ Check [flows](./docs/flows.txt) if you are interested in how it works.
 
 ## 2. Setup
 
-Check [standalone setup](./docs/setup-standalone.md) guide to install on a
-standalone server.
+Check [standalone setup](./docs/setup-standalone.md) guide to install it on a
+standalone `Jitsi` server.
 
-Check [Docker setup](./docs/setup-docker.md) guide for a Dockerized setup.
+Check [Docker setup](./docs/setup-docker.md) guide to integrate it with a
+Dockerized `Jitsi` setup.
 
 ## 3. Keycloak configuration
 
