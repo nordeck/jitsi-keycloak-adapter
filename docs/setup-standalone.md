@@ -99,8 +99,7 @@ Setup the adapter service.
 #### 3.3.1 Adapter user
 
 ```bash
-adduser adapter --system --group --disabled-password --shell /bin/bash \
-  --home /home/adapter
+adduser adapter --system --group --disabled-password --shell /bin/bash --home /home/adapter
 ```
 
 #### 3.3.2 Adapter application
