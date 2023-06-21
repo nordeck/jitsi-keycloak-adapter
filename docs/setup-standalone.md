@@ -98,6 +98,18 @@ systemctl start oidc-adapter.service
 systemctl status oidc-adapter.service
 ```
 
+Disable the `testing` line and enable the `prod` line in
+[/home/adapter/app/adapter.sh](../adapter.sh) if `keycloak` has a trusted
+certificate. It should be for the production environment.
+
+```bash
+# testing: allow self-signed certificate for Keycloak
+#deno run --allow-net --unsafely-ignore-certificate-errors $BASEDIR/adapter.ts
+
+# prod
+deno run --allow-net $BASEDIR/adapter.ts
+```
+
 ## 4. Nginx
 
 Customize the `nginx` configuration. You may check
