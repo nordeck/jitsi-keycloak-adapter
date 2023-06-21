@@ -13,6 +13,11 @@ Tested on `Debian 11 Bullseye`. Use `root` account while running the commands.
   - [3.1 Cloning the repository](#31-cloning-the-repository)
   - [3.2 Static files](#32-static-files)
   - [3.3 Adapter service](#33-adapter-service)
+    - [3.3.1 Adapter user](#331-adapter-user)
+    - [3.3.2 Adapter application](#332-adapter-application)
+    - [3.3.3 config.ts](#333-config-ts)
+    - [3.3.4 adapter.sh](#334-adapter-sh)
+    - [3.3.5 Systemd unit](#335-systemd-unit)
 - [4. Nginx](#4-nginx)
 - [5. Guest users](#5-guest-users)
   - [5.1 prosody](#51-prosody)
@@ -91,21 +96,29 @@ cp templates/usr/share/jitsi-meet/static/oidc-* /usr/share/jitsi-meet/static/
 
 Setup the adapter service.
 
+#### 3.3.1 Adapter user
+
 ```bash
 adduser adapter --system --group --disabled-password --shell /bin/bash \
   --home /home/adapter
+```
 
+#### 3.3.2 Adapter application
+
+```bash
 mkdir -p /home/adapter/app
 cp config.ts /home/adapter/app/
 cp adapter.sh /home/adapter/app/
 cp adapter.ts /home/adapter/app/
 chown adapter: /home/adapter/app -R
-
-cp templates/etc/systemd/system/oidc-adapter.service /etc/systemd/system/
 ```
 
-Update the settings according to your environment. Edit
+#### 3.3.3 config.ts
+
+Update the adapter settings according to your environment. Edit
 [/home/adapter/app/config.ts](../config.ts)
+
+#### 3.3.4 adapter.sh
 
 Disable the `testing` line and enable the `prod` line in
 [/home/adapter/app/adapter.sh](../adapter.sh) if `keycloak` has a trusted
@@ -119,9 +132,11 @@ certificate. It should be for the production environment.
 deno run --allow-net $BASEDIR/adapter.ts
 ```
 
-Start the service
+#### 3.3.5 Systemd unit
 
 ```bash
+cp templates/etc/systemd/system/oidc-adapter.service /etc/systemd/system/
+
 systemctl daemon-reload
 systemctl enable oidc-adapter.service
 systemctl start oidc-adapter.service
