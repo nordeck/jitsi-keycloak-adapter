@@ -19,8 +19,8 @@ Enable the token authentication for `prosody`.
 apt-get install jitsi-meet-tokens
 ```
 
-Check related parameters in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`.
-They should be already set by `apt-get` command.
+Check related parameters in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`. They
+should be already set by `apt-get` command.
 
 ```lua
 VirtualHost "<YOUR-DOMAIN>"
