@@ -34,9 +34,11 @@ Create the client inside the realm.
 - Add `Jitsi` URL into `Web origins`
 - Set `Access type`
   - For Keycloak versions `< 20.x`, set `Access type` to `public`:
+
     ![Screenshot Keycloak pre-20](docs/images/keycloak-pre-20.png)
 
   - For Keycloak versions `>= 20.x`, disable `Client authentication`.
+
     ![Screenshot Keycloak 20](docs/images/keycloak-20.png)
 
 ## 4. Similar projects
