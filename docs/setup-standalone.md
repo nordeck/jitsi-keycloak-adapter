@@ -121,22 +121,28 @@ Update the adapter settings according to your environment. Edit
 
   Keycloak address
 
-- `KEYCLOAK_REALM`\
+- `KEYCLOAK_REALM`
+
   Keycloak realm
 
-- `KEYCLOAK_CLIENT_ID`\
+- `KEYCLOAK_CLIENT_ID`
+
   Keycloak client ID
 
-- `JWT_APP_ID`\
+- `JWT_APP_ID`
+
   The token `app_id`. It must be the same with Prosody `app_id`.
 
-- `JWT_APP_SECRET`\
+- `JWT_APP_SECRET`
+
   The token `app_secret`. It must be the same with Prosody `app_secret`.
 
-- `JWT_EXP_SECOND`\
+- `JWT_EXP_SECOND`
+
   The token expire time
 
-- `HOSTNAME`\
+- `HOSTNAME`
+
   The IP address for the adapter service. Don't update its default value since
   it is on the same server with `Nginx`.
 
