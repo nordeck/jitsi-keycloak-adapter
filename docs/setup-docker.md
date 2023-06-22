@@ -19,6 +19,7 @@ docker run -d \
   -e KEYCLOAK_CLIENT_ID=myclientid \
   -e JWT_APP_ID=myappid \
   -e JWT_APP_SECRET=myappsecret \
+  -e ALLOW_UNSECURE_CERT=true \
   ghcr.io/nordeck/jitsi-keycloak-adapter
 ```
 
