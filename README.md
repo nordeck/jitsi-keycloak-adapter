@@ -10,9 +10,11 @@ Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
 
 ## 1. Features
 
-- SSO support for `Jitsi` via `OIDC`
-- Supports config params in URL (_such as_ `#config.prejoinConfig.enabled=true`)
-- Allows `guest` user and `wait for host` screen if needed
+- SSO for `Jitsi` through `Keycloak`. Allows `Jitsi` to run as an `OIDC`
+  consumer.
+- Allows to use config params in URL (_such as_
+  `#config.prejoinConfig.enabled=true`)
+- Allows `guest` users and `wait for host` screen if needed
 - Not based on `the external JWT` which will be deprecated in the near future.
 - Not based on `tokenAuthUrl`
 
