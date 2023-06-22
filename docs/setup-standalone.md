@@ -270,7 +270,7 @@ systemctl restart prosody.service
 
 ### 5.2 jicofo
 
-Enable `external XMPP authentication` for `jicofo`
+Enable `XMPP` authentication for `jicofo`
 
 ```bash
 DOMAIN=$(hocon -f /etc/jitsi/jicofo/jicofo.conf get jicofo.xmpp.client.xmpp-domain)
