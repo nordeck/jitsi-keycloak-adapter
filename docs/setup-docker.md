@@ -8,9 +8,21 @@ environment. See
 [Jitsi-Meet Handbook](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker/)
 for further details.
 
-Tested with `stable-8719` images.
+Tested with Jitsi `stable-8719` images.
 
-## 1. Token authentication
+## 1. Keycloak Adapter
+
+```bash
+docker run -d \
+  -e KEYCLOAK_ORIGIN=https://ucs-sso-ng.mykeycloak.tld \
+  -e KEYCLOAK_REALM=myrealm \
+  -e KEYCLOAK_CLIENT_ID=myclientid \
+  -e JWT_APP_ID=myappid \
+  -e JWT_APP_SECRET=myappsecret \
+  ghcr.io/nordeck/jitsi-keycloak-adapter
+```
+
+## 2. Token authentication
 
 Enable the token authentication. Set the following environment variables:
 
