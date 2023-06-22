@@ -25,7 +25,8 @@ docker run -d \
 
 ## 2. Token authentication
 
-Enable the token authentication. Set the following environment variables:
+Set the following environment variables to enable the token authentication for
+`Jitsi`:
 
 - Enable authentication
 
@@ -39,6 +40,31 @@ Enable the token authentication. Set the following environment variables:
 
   `JWT_APP_ID=myappid`
 
-- Application secret known only to your token generator and `keycloak-adapter`
+- Application secret known only to `keycloak-adapter`
 
   `JWT_APP_SECRET=myappsecret`
+
+## 3. Guest users
+
+Set the following environment variables to allow guest users to join the meeting
+after it's created by a moderator:
+
+- Enable guest access
+
+  `ENABLE_GUESTS=1`
+
+- Disable auto login
+
+  `ENABLE_AUTO_LOGIN=0`
+
+- Allow anonymous users with no JWT
+
+  `JWT_ALLOW_EMPTY=1`
+
+- Select the authentication type for `jicofo`
+
+  `AUTH_TYPE=internal`
+
+- Select the authentication type for `prosody`
+
+  `AUTH_TYPE=jwt`
