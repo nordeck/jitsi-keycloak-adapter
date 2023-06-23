@@ -1,11 +1,5 @@
 # Standalone setup
 
-The setup guide to install `Jitsi Keycloak Adapter` on a standalone Jitsi
-server.
-
-Tested on `Debian 11 Bullseye` with `Jitsi v2.0.8719`. Use `root` account while
-running the commands.
-
 - [1. Token authentication](#1-token-authentication)
   - [1.1 jitsi-meet-tokens package](#11-jitsi-meet-tokens-package)
   - [1.2 Testing](#12-testing)
@@ -24,6 +18,12 @@ running the commands.
   - [5.1 prosody](#51-prosody)
   - [5.2 jicofo](#52-jicofo)
   - [5.3 jitsi-meet](#53-jitsi-meet)
+
+The setup guide to install `Jitsi Keycloak Adapter` on a standalone Jitsi
+server.
+
+Tested on `Debian 11 Bullseye` with `Jitsi v2.0.8719`. Use `root` account while
+running the commands.
 
 ## 1. Token authentication
 
