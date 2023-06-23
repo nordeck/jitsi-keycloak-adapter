@@ -97,8 +97,8 @@ Copy or mount the following files to `jitsi-web` container:
 
 ## 6. Custom meet.conf
 
-Some customizations are needed for `Nginx`'s site configuration. Therefore mount
-the following custom `meet.conf` file to `jitsi-web` container to overwrite the
-default one:
+Some customizations are needed for `Nginx`'s site configuration in `jitsi-web`
+container. Therefore mount the following custom `meet.conf` file to `jitsi-web`
+container to overwrite the default one:
 
 - [/defaults/meet.conf](../templates/jitsi-web-container/defaults/meet.conf)
