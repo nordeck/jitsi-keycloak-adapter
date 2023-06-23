@@ -87,10 +87,18 @@ after it's created by a moderator:
 
   `AUTH_TYPE=jwt`
 
-## Static files
+## 5. Static files
 
-Add or mount the following files to `jitsi-web` container:
+Copy or mount the following files to `jitsi-web` container:
 
 - [/usr/share/jitsi-meet/body.html](../templates/usr/share/jitsi-meet/body.html)
 - [/usr/share/jitsi-meet/static/oidc-adapter.html](../templates/usr/share/jitsi-meet/static/oidc-adapter.html)
 - [/usr/share/jitsi-meet/static/oidc-redirect.html](../templates/usr/share/jitsi-meet/static/oidc-redirect.html)
+
+## 6. Custom meet.conf
+
+Some customizations are needed for `Nginx`'s site configuration. Therefore copy
+or mount the following custom `meet.conf` file to `jitsi-web` container to
+overwrite the default one:
+
+- [/defaults/meet.conf](../templates/jitsi-web-container/defaults/meet.conf)
