@@ -86,3 +86,11 @@ after it's created by a moderator:
 - Select the authentication type for `prosody`
 
   `AUTH_TYPE=jwt`
+
+## Static files
+
+Add or mount the following files to `jitsi-web` container:
+
+- [/usr/share/jitsi-meet/body.html](../templates/usr/share/jitsi-meet/body.html)
+- [/usr/share/jitsi-meet/static/oidc-adapter.html](../templates/usr/share/jitsi-meet/static/oidc-adapter.html)
+- [/usr/share/jitsi-meet/static/oidc-redirect.html](../templates/usr/share/jitsi-meet/static/oidc-redirect.html)
