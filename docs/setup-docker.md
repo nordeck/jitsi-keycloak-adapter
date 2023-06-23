@@ -14,6 +14,7 @@ Tested with Jitsi `stable-8719` images.
 
 ```bash
 docker run -d \
+  -p "9000:9000/TCP" \
   -e KEYCLOAK_ORIGIN=https://ucs-sso-ng.mykeycloak.tld \
   -e KEYCLOAK_REALM=myrealm \
   -e KEYCLOAK_CLIENT_ID=myclientid \
