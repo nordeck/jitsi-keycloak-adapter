@@ -1,12 +1,12 @@
 # Jitsi Keycloak Adapter
 
-Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
-
 - [1. Features](#1-features)
 - [2. Setup](#2-setup)
 - [3. Keycloak configuration](#3-keycloak-configuration)
 - [4. Similar projects](#4-similar-projects)
 - [5. Sponsors](#5-sponsors)
+
+Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
 
 ## 1. Features
 
