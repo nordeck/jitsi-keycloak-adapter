@@ -36,9 +36,9 @@ this value should be `false` (_it is `false` by default_).
 ## 2. Adapter internal URL
 
 Set the adapter internal URL for `jitsi-web` container by using the environment
-variable `ADAPTER_INTERNAL_URL`. _e.g._
+variable `ADAPTER_INTERNAL_URL`.
 
-`ADAPTER_INTERNAL_URL=http://172.18.18.1:9000`
+_e.g._ `ADAPTER_INTERNAL_URL=http://172.18.18.1:9000`
 
 ## 3. Token authentication
 
