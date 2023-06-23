@@ -31,7 +31,13 @@ Set `ALLOW_UNSECURE_CERT` as `true` if `Keycloak` has not a trusted certificate.
 For the production environment, `Keycloak` should have a trusted certificate and
 this value should be `false` (_it is `false` by default_).
 
-## 2. Token authentication
+## 2. Adapter internal URL
+
+Set the adapter internal URL for `jitsi-web` container. _e.g._
+
+`ADAPTER_INTERNAL_URL=http://172.18.18.1:9000`
+
+## 3. Token authentication
 
 Set the following environment variables to enable the token authentication for
 `Jitsi`:
@@ -53,7 +59,7 @@ Set the following environment variables to enable the token authentication for
 
   `JWT_APP_SECRET=myappsecret`
 
-## 3. Guest users
+## 4. Guest users
 
 Set the following environment variables to allow guest users to join the meeting
 after it's created by a moderator:
