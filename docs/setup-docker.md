@@ -1,5 +1,13 @@
 # Dockerized setup
 
+- [1. Keycloak Adapter](#1-keycloak-adapter)
+- [2. Jitsi](#2-jitsi)
+  - [2.1 Adapter internal URL](#21-adapter-internal-url)
+  - [2.2 Token authentication](#22-token-authentication)
+  - [2.3 Guest users](#23-guest-users)
+  - [2.4 Static files](#24-static-files)
+  - [2.5 Custom meet.conf](#25-custom-meetconf)
+
 The setup guide to integrate `Jitsi Keycloak Adapter` with a Dockerized Jitsi
 setup.
 
@@ -33,14 +41,16 @@ Set `ALLOW_UNSECURE_CERT` as `true` if `Keycloak` has not a trusted certificate.
 For the production environment, `Keycloak` should have a trusted certificate and
 this value should be `false` (_it is `false` by default_).
 
-## 2. Adapter internal URL
+## 2. Jitsi
+
+### 2.1 Adapter internal URL
 
 Set the adapter internal URL for `jitsi-web` container by using the environment
 variable `ADAPTER_INTERNAL_URL`.
 
 _e.g._ `ADAPTER_INTERNAL_URL=http://172.18.18.1:9000`
 
-## 3. Token authentication
+### 2.2 Token authentication
 
 Set the following environment variables to enable the token authentication for
 `Jitsi`:
@@ -62,7 +72,7 @@ Set the following environment variables to enable the token authentication for
 
   `JWT_APP_SECRET=myappsecret`
 
-## 4. Guest users
+### 2.3 Guest users
 
 Set the following environment variables if you want to allow guest users to join
 the meeting after it's created by a moderator:
@@ -87,7 +97,7 @@ the meeting after it's created by a moderator:
 
   `AUTH_TYPE=jwt`
 
-## 5. Static files
+### 2.4 Static files
 
 Copy or mount the following files to `jitsi-web` container:
 
@@ -95,7 +105,7 @@ Copy or mount the following files to `jitsi-web` container:
 - [/usr/share/jitsi-meet/static/oidc-adapter.html](../templates/usr/share/jitsi-meet/static/oidc-adapter.html)
 - [/usr/share/jitsi-meet/static/oidc-redirect.html](../templates/usr/share/jitsi-meet/static/oidc-redirect.html)
 
-## 6. Custom meet.conf
+### 2.5 Custom meet.conf
 
 Some customizations are needed for `Nginx`'s site configuration in `jitsi-web`
 container. Therefore mount the following custom `meet.conf` file to `jitsi-web`
