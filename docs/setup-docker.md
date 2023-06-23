@@ -64,8 +64,8 @@ Set the following environment variables to enable the token authentication for
 
 ## 4. Guest users
 
-Set the following environment variables to allow guest users to join the meeting
-after it's created by a moderator:
+Set the following environment variables if you want to allow guest users to join
+the meeting after it's created by a moderator:
 
 - Enable guest access
 
