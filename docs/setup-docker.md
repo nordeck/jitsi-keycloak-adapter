@@ -47,7 +47,7 @@ Set the following environment variables to enable the token authentication for
 
   `JWT_APP_ID=myappid`
 
-- Application secret known only to your token generator (_such as_
+- Application secret known only to your token generators (_such as_
   `keycloak-adapter`)
 
   `JWT_APP_SECRET=myappsecret`
