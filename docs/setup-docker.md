@@ -28,7 +28,7 @@ and `jitsi`.
 
 Set `ALLOW_UNSECURE_CERT` as `true` if `Keycloak` has not a trusted certificate.
 For the production environment, `Keycloak` should have a trusted certificate and
-this value should be `false`.(_it is `false` by default_)
+this value should be `false` (_it is `false` by default_).
 
 ## 2. Token authentication
 
