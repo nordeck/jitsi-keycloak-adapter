@@ -12,13 +12,6 @@ Tested with Jitsi `stable-8719` images.
 
 ## 1. Keycloak Adapter
 
-`JWT_APP_ID` and `JWT_APP_SECRET` must be the same for both `keycloak-adapter`
-and `jitsi`.
-
-Set `ALLOW_UNSECURE_CERT` as `true` if `Keycloak` has not a trusted certificate.
-For the production environment, `Keycloak` should have a trusted certificate and
-this value should be `false`.
-
 ```bash
 docker run -d \
   -e KEYCLOAK_ORIGIN=https://ucs-sso-ng.mykeycloak.tld \
@@ -29,6 +22,13 @@ docker run -d \
   -e ALLOW_UNSECURE_CERT=true \
   ghcr.io/nordeck/jitsi-keycloak-adapter
 ```
+
+`JWT_APP_ID` and `JWT_APP_SECRET` must be the same for both `keycloak-adapter`
+and `jitsi`.
+
+Set `ALLOW_UNSECURE_CERT` as `true` if `Keycloak` has not a trusted certificate.
+For the production environment, `Keycloak` should have a trusted certificate and
+this value should be `false`.
 
 ## 2. Token authentication
 
