@@ -5,12 +5,19 @@ setup.
 
 This guide assumes that you have already a working `Jitsi` on a Docker
 environment. See
-[Jitsi-Meet Handbook](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker/)
+[Jitsi Meet Handbook](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker/)
 for further details.
 
 Tested with Jitsi `stable-8719` images.
 
 ## 1. Keycloak Adapter
+
+`JWT_APP_ID` and `JWT_APP_SECRET` must be the same for both `keycloak-adapter`
+and `jitsi`.
+
+Set `ALLOW_UNSECURE_CERT` as `true` if `Keycloak` has not a trusted certificate.
+For the production environment, `Keycloak` should have a trusted certificate and
+this value should be `false`.
 
 ```bash
 docker run -d \
@@ -40,7 +47,8 @@ Set the following environment variables to enable the token authentication for
 
   `JWT_APP_ID=myappid`
 
-- Application secret known only to `keycloak-adapter`
+- Application secret known only to your token generator (_such as_
+  `keycloak-adapter`)
 
   `JWT_APP_SECRET=myappsecret`
 
