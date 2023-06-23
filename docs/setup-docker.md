@@ -24,6 +24,8 @@ docker run -d \
   ghcr.io/nordeck/jitsi-keycloak-adapter
 ```
 
+`KEYCLOAK_ORIGIN` must be resolvable and accessible for the container.
+
 `JWT_APP_ID` and `JWT_APP_SECRET` must be the same for both `keycloak-adapter`
 and `jitsi`.
 
@@ -33,7 +35,8 @@ this value should be `false` (_it is `false` by default_).
 
 ## 2. Adapter internal URL
 
-Set the adapter internal URL for `jitsi-web` container. _e.g._
+Set the adapter internal URL for `jitsi-web` container by using the environment
+variable `ADAPTER_INTERNAL_URL`. _e.g._
 
 `ADAPTER_INTERNAL_URL=http://172.18.18.1:9000`
 
