@@ -46,7 +46,8 @@ this value should be `false` (_it is `false` by default_).
 ### 2.1 Adapter internal URL
 
 Set `keycloak-adapter` internal URL for `jitsi-web` container by using the
-environment variable `ADAPTER_INTERNAL_URL`.
+environment variable `ADAPTER_INTERNAL_URL`. `jitsi-web` will use it as an
+upstream in its own internal `nginx`.
 
 _e.g._ `ADAPTER_INTERNAL_URL=http://172.18.18.1:9000`
 
