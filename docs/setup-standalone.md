@@ -242,7 +242,7 @@ _/etc/prosody/conf.avail/guest.cfg.lua_ file with the following contents.
 
 ```lua
 VirtualHost "guest.domain.loc"
-    authentication = "anonymous"
+    authentication = "jitsi-anonymous"
     c2s_require_encryption = false
 ```
 
