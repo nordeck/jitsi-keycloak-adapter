@@ -2,7 +2,7 @@ FROM denoland/deno
 
 WORKDIR /app
 
-COPY config.ts adapter.ts /app/
+COPY config.ts context.ts adapter.ts /app/
 RUN deno cache /app/adapter.ts
 RUN chown deno:deno /app/config.ts
 
