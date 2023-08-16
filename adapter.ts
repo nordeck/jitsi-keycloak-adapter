@@ -152,7 +152,7 @@ async function getUserInfo(token: string): Promise<Record<string, unknown>> {
         "Accept": "application/json",
         "Authorization": `Bearer ${token}`,
       },
-      method: "POST",
+      method: "GET",
     });
     const userInfo = await res.json();
 
