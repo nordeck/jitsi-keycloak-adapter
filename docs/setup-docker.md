@@ -94,6 +94,10 @@ the meeting after it's created by a moderator:
 
   `AUTH_TYPE=internal`
 
+- Set the authentication lifetime for `jicofo`
+
+  `JICOFO_AUTH_LIFETIME=100 milliseconds`
+
 - Select the authentication type for `prosody`
 
   `AUTH_TYPE=jwt`
