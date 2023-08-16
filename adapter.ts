@@ -15,6 +15,7 @@ import {
   KEYCLOAK_REALM,
   PORT,
 } from "./config.ts";
+import { createContext } from "./context.ts";
 
 // ----------------------------------------------------------------------------
 // HTTP response for NotFound
@@ -72,14 +73,7 @@ async function generateJWT(
       iat: getNumericDate(0),
       nbf: getNumericDate(0),
       exp: getNumericDate(JWT_EXP_SECOND),
-      context: {
-        user: {
-          id: userInfo.sub,
-          name: userInfo.preferred_username || "",
-          email: userInfo.email || "",
-          lobby_bypass: true,
-        },
-      },
+      context: createContext(userInfo),
     };
 
     return await create(header, payload, cryptoKey);
