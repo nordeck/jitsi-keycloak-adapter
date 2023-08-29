@@ -92,7 +92,7 @@ the meeting after it's created by a moderator:
 
 - Select the authentication type for `jicofo`
 
-  `AUTH_TYPE=internal`
+  `JICOFO_AUTH_TYPE=internal`
 
 - Set the authentication lifetime for `jicofo`
 
@@ -100,7 +100,7 @@ the meeting after it's created by a moderator:
 
 - Select the authentication type for `prosody`
 
-  `AUTH_TYPE=jwt`
+  `PROSODY_AUTH_TYPE=jwt`
 
 ### 2.4 Static files
 
