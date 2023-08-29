@@ -22,7 +22,7 @@
 The setup guide to install `Jitsi Keycloak Adapter` on a standalone Jitsi
 server.
 
-Tested on `Debian 11 Bullseye` with `Jitsi v2.0.8719`. Use `root` account while
+Tested on `Debian 11 Bullseye` with `Jitsi v2.0.8922`. Use `root` account while
 running the commands.
 
 ## 1. Token authentication
@@ -110,6 +110,7 @@ mkdir -p /home/adapter/app
 cp config.ts /home/adapter/app/
 cp adapter.sh /home/adapter/app/
 cp adapter.ts /home/adapter/app/
+cp context.ts /home/adapter/app/
 chown adapter: /home/adapter/app -R
 ```
 
