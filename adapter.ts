@@ -273,6 +273,18 @@ async function handler(req: Request): Promise<Response> {
 // main
 // ----------------------------------------------------------------------------
 function main() {
+  console.log(`KEYCLOAK_ORIGIN: ${KEYCLOAK_ORIGIN}`);
+  console.log(`KEYCLOAK_REALM: ${KEYCLOAK_REALM}`);
+  console.log(`KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}`);
+  console.log(`KEYCLOAK_MODE: ${KEYCLOAK_MODE}`);
+  console.log(`JWT_ALG: ${JWT_ALG}`);
+  console.log(`JWT_HASH: ${JWT_HASH}`);
+  console.log(`JWT_APP_ID: ${JWT_APP_ID}`);
+  console.log(`JWT_EXP_SECOND: ${JWT_EXP_SECOND}`);
+  console.log(`HOSTNAME: ${HOSTNAME}`);
+  console.log(`PORT: ${PORT}`);
+  console.log(`DEBUG: ${DEBUG}`);
+
   serve(handler, {
     hostname: HOSTNAME,
     port: PORT,
