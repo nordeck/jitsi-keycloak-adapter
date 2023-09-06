@@ -22,7 +22,7 @@ import { createContext } from "./context.ts";
 // ----------------------------------------------------------------------------
 function ok(body: string): Response {
   return new Response(body, {
-    status: Status.Ok
+    status: Status.Ok,
   });
 }
 
