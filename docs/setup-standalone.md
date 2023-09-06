@@ -156,10 +156,10 @@ certificate. It should be for the production environment.
 
 ```bash
 # testing: allow self-signed certificate for Keycloak
-#deno run --allow-net --unsafely-ignore-certificate-errors $BASEDIR/adapter.ts
+#deno run --allow-net --allow-env --unsafely-ignore-certificate-errors $BASEDIR/adapter.ts
 
 # prod
-deno run --allow-net $BASEDIR/adapter.ts
+deno run --allow-net --allow-env $BASEDIR/adapter.ts
 ```
 
 #### 3.3.5 Systemd unit
