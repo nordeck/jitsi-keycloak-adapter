@@ -3,8 +3,9 @@ set -e
 
 BASEDIR=$(dirname $0)
 
-# testing: allow self-signed certificate for Keycloak
-deno run --allow-net --unsafely-ignore-certificate-errors $BASEDIR/adapter.ts
+# testing
+# allow self-signed certificate if Keycloak has not a trusted certificate
+deno run --allow-net --allow-env --unsafely-ignore-certificate-errors $BASEDIR/adapter.ts
 
-# prod
-# deno run --allow-net $BASEDIR/adapter.ts
+# production
+# deno run --allow-net --allow-env $BASEDIR/adapter.ts
