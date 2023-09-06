@@ -15,25 +15,14 @@ ENV JWT_APP_ID "myappid"
 ENV JWT_APP_SECRET "myappsecret"
 ENV JWT_EXP_SECOND 3600
 ENV ALLOW_UNSECURE_CERT false
+ENV HOSTNAME "0.0.0.0"
+ENV PORT 9000
 
 USER deno
 EXPOSE 9000
 
 CMD \
-    TMP_CONFIG="/tmp/config.ts"; \
-    cp /app/config.ts $TMP_CONFIG; \
-    sed -i "/KEYCLOAK_ORIGIN/ s~=.*~= \"$KEYCLOAK_ORIGIN\"~" $TMP_CONFIG; \
-    sed -i "/KEYCLOAK_REALM/ s~=.*~= \"$KEYCLOAK_REALM\"~" $TMP_CONFIG; \
-    sed -i "/KEYCLOAK_CLIENT_ID/ s~=.*~= \"$KEYCLOAK_CLIENT_ID\"~" $TMP_CONFIG; \
-    sed -i "/JWT_ALG/ s~=.*~= \"$JWT_ALG\"~" $TMP_CONFIG; \
-    sed -i "/JWT_HASH/ s~=.*~= \"$JWT_HASH\"~" $TMP_CONFIG; \
-    sed -i "/JWT_APP_ID/ s~=.*~= \"$JWT_APP_ID\"~" $TMP_CONFIG; \
-    sed -i "/JWT_APP_SECRET/ s~=.*~= \"$JWT_APP_SECRET\"~" $TMP_CONFIG; \
-    sed -i "/JWT_EXP_SECOND/ s~=.*~= $JWT_EXP_SECOND~" $TMP_CONFIG; \
-    sed -i "/HOSTNAME/ s~=.*~= \"0.0.0.0\"~" $TMP_CONFIG; \
-    cp $TMP_CONFIG /app/; \
-\
     [ "$(echo $ALLOW_UNSECURE_CERT | tr '[:upper:]' '[:lower:]')" = true ] && \
         IGNORE_CERT_ERRORS="--unsafely-ignore-certificate-errors"; \
 \
-    deno run --allow-net $IGNORE_CERT_ERRORS /app/adapter.ts
+    deno run --allow-net --allow-env $IGNORE_CERT_ERRORS /app/adapter.ts
