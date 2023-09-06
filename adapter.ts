@@ -280,6 +280,7 @@ function main() {
   console.log(`JWT_ALG: ${JWT_ALG}`);
   console.log(`JWT_HASH: ${JWT_HASH}`);
   console.log(`JWT_APP_ID: ${JWT_APP_ID}`);
+  console.log(`JWT_APP_SECRET: *** masked ***`);
   console.log(`JWT_EXP_SECOND: ${JWT_EXP_SECOND}`);
   console.log(`HOSTNAME: ${HOSTNAME}`);
   console.log(`PORT: ${PORT}`);

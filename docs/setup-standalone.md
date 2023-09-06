@@ -117,7 +117,9 @@ chown adapter: /home/adapter/app -R
 #### 3.3.3 Adapter settings
 
 Update the adapter settings according to your environment. Edit
-[/home/adapter/app/config.ts](../config.ts)
+[/home/adapter/app/config.ts](../config.ts).
+
+You may also use environment variables instead of updating this config file.
 
 - `KEYCLOAK_ORIGIN`
 
