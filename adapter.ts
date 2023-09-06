@@ -18,6 +18,15 @@ import {
 import { createContext } from "./context.ts";
 
 // ----------------------------------------------------------------------------
+// HTTP response for OK
+// ----------------------------------------------------------------------------
+function ok(body: string): Response {
+  return new Response(body, {
+    status: Status.Ok
+  });
+}
+
+// ----------------------------------------------------------------------------
 // HTTP response for NotFound
 // ----------------------------------------------------------------------------
 function notFound(): Response {
@@ -258,7 +267,9 @@ async function handler(req: Request): Promise<Response> {
 
   if (req.method !== "GET") return methodNotAllowed();
 
-  if (path === "/oidc/redirect") {
+  if (path === "/health") {
+    return ok("healthy");
+  } else if (path === "/oidc/redirect") {
     return redirect(req);
   } else if (path === "/oidc/tokenize") {
     return await tokenize(req);
