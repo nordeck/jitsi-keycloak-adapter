@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std/http/server.ts";
 import { Status } from "https://deno.land/std/http/http_status.ts";
 import { create, getNumericDate } from "https://deno.land/x/djwt/mod.ts";
+import { Algorithm } from "https://deno.land/x/djwt/algorithm.ts";
 import {
   DEBUG,
   HOSTNAME,
@@ -22,7 +23,7 @@ import { createContext } from "./context.ts";
 // ----------------------------------------------------------------------------
 function ok(body: string): Response {
   return new Response(body, {
-    status: Status.Ok,
+    status: Status.OK,
   });
 }
 
@@ -58,7 +59,7 @@ function unauthorized(): Response {
 // ----------------------------------------------------------------------------
 async function generateJWT(
   userInfo: Record<string, unknown>,
-): Promise<string> {
+): Promise<string | undefined> {
   try {
     const encoder = new TextEncoder();
     const keyData = encoder.encode(JWT_APP_SECRET);
@@ -73,7 +74,8 @@ async function generateJWT(
       ["sign", "verify"],
     );
 
-    const header = { alg: JWT_ALG, typ: "JWT" };
+    const alg = JWT_ALG as Algorithm;
+    const header = { alg: alg, typ: "JWT" };
     const payload = {
       aud: JWT_APP_ID,
       iss: JWT_APP_ID,
@@ -104,7 +106,7 @@ async function getToken(
   path: string,
   search: string,
   hash: string,
-): Promise<string> {
+): Promise<string | undefined> {
   const url = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
     `/protocol/openid-connect/token`;
   const bundle = `path=${encodeURIComponent(path)}` +
@@ -146,7 +148,9 @@ async function getToken(
 // ----------------------------------------------------------------------------
 // Get the user info from Keycloak by using the access token
 // ----------------------------------------------------------------------------
-async function getUserInfo(token: string): Promise<Record<string, unknown>> {
+async function getUserInfo(
+  token: string,
+): Promise<Record<string, unknown> | undefined> {
   try {
     const url = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
       `/protocol/openid-connect/userinfo`;
@@ -179,11 +183,14 @@ async function tokenize(req: Request): Promise<Response> {
   const url = new URL(req.url);
   const qs = new URLSearchParams(url.search);
   const code = qs.get("code");
-  const path = qs.get("path");
-  const search = qs.get("search");
-  const hash = qs.get("hash");
+  const path = qs.get("path") || "";
+  const search = qs.get("search") || "";
+  const hash = qs.get("hash") || "";
 
   if (DEBUG) console.log(`tokenize code: ${code}`);
+
+  // host is needed for redirection. If no host, this is not a valid request.
+  if (!host) return unauthorized();
 
   // only the currently logged in user has a short-term auth code
   if (!code) return unauthorized();
@@ -220,6 +227,7 @@ function oidcRedirectForCode(req: Request, prompt: string): Response {
   const search = qs.get("search") || "";
   const hash = qs.get("hash") || "";
 
+  if (!host) throw ("missing host");
   if (!path) throw ("missing path");
 
   const bundle = `path=${encodeURIComponent(path)}` +
