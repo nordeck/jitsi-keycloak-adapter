@@ -82,6 +82,9 @@ apt-get install git
 git clone https://github.com/nordeck/jitsi-keycloak-adapter.git
 ```
 
+_As an alternative way, you may download the released package from
+[Releases](https://github.com/nordeck/jitsi-keycloak-adapter/releases)._
+
 ### 3.2 Static files
 
 Copy the static files.
