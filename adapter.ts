@@ -277,6 +277,8 @@ async function handler(req: Request): Promise<Response> {
 
   if (path === "/health") {
     return ok("healthy");
+  } else if (path === "/oidc/health") {
+    return ok("healthy");
   } else if (path === "/oidc/redirect") {
     return redirect(req);
   } else if (path === "/oidc/tokenize") {
