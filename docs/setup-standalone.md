@@ -22,7 +22,7 @@
 The setup guide to install `Jitsi Keycloak Adapter` on a standalone Jitsi
 server.
 
-Tested on `Debian 11 Bullseye` with `Jitsi v2.0.8922`. Use `root` account while
+Tested on `Debian 11 Bullseye` with `Jitsi v2.0.8960`. Use `root` account while
 running the commands.
 
 ## 1. Token authentication
