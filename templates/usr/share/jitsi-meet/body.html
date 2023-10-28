@@ -1,6 +1,4 @@
 <script>
-let failedAttempt = 0;
-
 function oidcRedirect() {
   const qs = new URLSearchParams(window.location.search.substring(1));
   qs.delete('oidc');
@@ -21,9 +19,6 @@ function oidcRedirect() {
 
 function interceptLoginRequest() {
   try {
-    // if conference is already started, dont wait for an auth request
-    if (APP.conference.isJoined()) return;
-
     // check if login or IamHost button is created in DOM
     const _button = document.getElementById("modal-dialog-ok-button");
     if (!_button) throw("button is not created yet");
@@ -42,12 +37,8 @@ function interceptLoginRequest() {
       // if this is an IamHost screen, redirect to OIDC login page when clicked
       _button.onclick = oidcRedirect
     }
-  } catch(e) {
-    failedAttempt += 1;
-
-    if (failedAttempt < 180) {
-      setTimeout(function() {interceptLoginRequest();}, 1000);
-    }
+  } finally {
+    setTimeout(function() {interceptLoginRequest();}, 1000);
   }
 }
 
