@@ -1,4 +1,5 @@
 FROM denoland/deno
+LABEL version="v20231029"
 
 WORKDIR /app
 
