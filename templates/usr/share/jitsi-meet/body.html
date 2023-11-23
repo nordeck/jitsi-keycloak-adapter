@@ -21,7 +21,7 @@ function interceptLoginRequest() {
   try {
     // check if login or IamHost button is created in DOM
     const _button = document.getElementById("modal-dialog-ok-button");
-    if (!_button) throw("button is not created yet");
+    if (!_button) return;
 
     let labelKey;
     try {
