@@ -50,7 +50,7 @@
     `guest`\
     _>> (1) >> (2)_\
     _>> (1) >> (6)_
-11. If there is token at this time, the client goes to the meeting as
+11. If there is a token at this time, the client goes to the meeting as
     `moderator`\
     _parallel pipelines:_\
     _>> (1) >> (2)_\
@@ -77,8 +77,8 @@ Even they are trusted users, they become `member` for Matrix meetings.
 ### Guest case
 
 Guest users are user who do not have a Keycloak account, Matrix account and a
-valid token. Guest users go to the waiting room if the meeting is no created yet
-and join the room after it is created by a trusted user.
+valid token. Guest users go to the waiting room if the meeting is not created
+yet and join the room after it is created by a trusted user.
 
 It is possible to completely disable guest login by setting some configuration
 parameters of the deployment or to enable the lobby to allow moderator to manage
