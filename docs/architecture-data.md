@@ -62,11 +62,11 @@ Ephemeral client data:
 - The user info comes from Keycloak as a response
   ```json
   {
-    sub: "f:d704f61d-fade-4641-b03a-1f211206c5b6:emrah",
-    email_verified: true,
-    name: "emrah",
-    preferred_username: "emrah",
-    email: "emrah@mydomain.corp"
+    "sub": "f:d704f61d-fade-4641-b03a-1f211206c5b6:emrah",
+    "email_verified": true,
+    "name": "emrah",
+    "preferred_username": "emrah",
+    "email": "emrah@mydomain.corp"
   }
   ```
 
