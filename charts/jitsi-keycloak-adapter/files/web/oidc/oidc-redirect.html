@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      function redirect() {
+        const path = encodeURIComponent(window.location.pathname);
+        const search = encodeURIComponent(window.location.search.substring(1));
+        const hash = encodeURIComponent(window.location.hash.substring(1));
+
+        window.location = `/oidc/redirect` +
+          `?path=${path}&search=${search}&hash=${hash}`;
+      }
+    </script>
+  </head>
+  <body onload="redirect()">
+    redirecting...
+  </body>
+</html>

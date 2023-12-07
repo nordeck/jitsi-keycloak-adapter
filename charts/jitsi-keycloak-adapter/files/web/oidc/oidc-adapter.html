@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      async function getToken(code, path, search, hash) {
+        try {
+          const _path = encodeURIComponent(path);
+          const _search = encodeURIComponent(search);
+          const _hash = encodeURIComponent(hash);
+
+          const req = `/oidc/tokenize` +
+            `?code=${code}` +
+            `&path=${_path}` +
+            `&search=${_search}` +
+            `&hash=${_hash}`;
+          const res = await fetch(req, {
+            headers: {
+              "Accept": "application/json",
+            },
+          });
+
+          return await res.json();
+        } catch {
+          return undefined;
+        }
+      }
+
+      async function adapter() {
+        const qs = new URLSearchParams(window.location.search);
+        const err = qs.get("error");
+        const sessionState = qs.get("session_state");
+        const code = qs.get("code");
+        const path = qs.get("path");
+        const search = qs.get("search") || "";
+        const hash = qs.get("hash") || "";
+
+        let target = `${path}?` +
+          `${search}${search?"&":""}` +
+          `oidc=unauthorized` +
+          `${hash?"#":""}${hash}`;
+
+        if (!err) {
+          const token = await getToken(code, path, search, hash);
+
+          if (token) {
+            target = `${path}?` +
+              `${search}${search?"&":""}` +
+              `oidc=authorized` +
+              `&jwt=${token}` +
+              `${hash?"#":""}${hash}`;
+          } else {
+            target = `${path}?` +
+              `${search}${search?"&":""}` +
+              `oidc=failed` +
+              `${hash?"#":""}${hash}`;
+          }
+        }
+
+        window.location = target;
+      }
+    </script>
+  </head>
+  <body onload="adapter()">
+  adapting...
+  </body>
+</html>
