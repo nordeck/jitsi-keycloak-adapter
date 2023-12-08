@@ -1,0 +1,52 @@
+---
+apiVersion: "batch/v1"
+kind: "Job"
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    {{- if .Values.cleanup.deletePodsOnSuccess }}
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+    {{- end }}
+spec:
+  template:
+    spec:
+      restartPolicy: "OnFailure"
+      {{- if or .Values.patchJVB.imagePullSecrets .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.global.imagePullSecrets }}
+        - name: {{ . | quote }}
+        {{- end }}
+        {{- range .Values.patchJVB.imagePullSecrets }}
+        - name: {{ . | quote }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.patchJVB.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.patchJVB.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "common.names.fullname" . | quote }}
+      {{- end }}
+      containers:
+        - name: "advertise-ip"
+          image: "{{ coalesce .Values.patchJVB.image.registry .Values.global.registry }}/{{ .Values.patchJVB.image.repository }}:{{ .Values.patchJVB.image.tag }}"
+          {{- if .Values.patchJVB.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.patchJVB.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          command:
+            - "/bin/bash"
+            - "/init/init.sh"
+          volumeMounts:
+            - name: "init"
+              mountPath: "/init"
+          {{- with .Values.patchJVB.resources }}
+          resources:
+            {{ toYaml . | nindent 12 | trim }}
+          {{- end }}
+      volumes:
+        - name: "init"
+          configMap:
+            name: {{ include "common.names.fullname" . | quote }}
+...

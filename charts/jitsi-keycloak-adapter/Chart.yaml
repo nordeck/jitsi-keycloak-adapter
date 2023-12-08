@@ -1,0 +1,22 @@
+---
+annotations:
+  category: "Networking"
+  licenses: "Apache-2.0"
+apiVersion: "v2"
+dependencies:
+  - name: "common"
+    repository: "https://charts.bitnami.com/bitnami"
+    version: "^2.x.x"
+  - name: "jitsi-meet"
+    repository: "https://jitsi-contrib.github.io/jitsi-helm/"
+    version: "1.3.7"
+    alias: "jitsi"
+description: "Deploy Jitsi with additional configuration."
+home: "https://nordeck.net"
+keywords:
+  - "jitsi"
+  - "networking"
+name: "jitsi-keycloak-adapter"
+type: "application"
+version: "1.7.1"
+...

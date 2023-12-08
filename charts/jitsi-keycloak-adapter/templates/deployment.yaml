@@ -1,0 +1,129 @@
+---
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . | quote }}
+kind: "Deployment"
+metadata:
+  name: {{ include "sovereign-workplace-jitsi.keycloakAdapter.fullname" . | quote }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
+  strategy: {{ include "common.tplvalues.render" (dict "value" .Values.updateStrategy "context" $) | nindent 4 }}
+  template:
+    metadata:
+      annotations:
+        {{- if .Values.podAnnotations }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podAnnotations "context" $) | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "common.labels.standard" . | nindent 8 }}
+    spec:
+      {{- if or .Values.imagePullSecrets .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.global.imagePullSecrets }}
+        - name: {{ . | quote }}
+        {{- end }}
+        {{- range .Values.imagePullSecrets }}
+        - name: {{ . | quote }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity: {{- include "common.tplvalues.render" (dict "value" .Values.affinity "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.tolerations "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.topologySpreadConstraints }}
+        topologySpreadConstraints: {{- include "common.tplvalues.render" (dict "value" .Values.topologySpreadConstraints "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "common.names.fullname" . }}
+      {{- end }}
+      {{- if .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- end }}
+      containers:
+        - name: "keycloak"
+          image: "{{ coalesce .Values.image.registry .Values.global.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+          env:
+            - name: KEYCLOAK_ORIGIN
+              value: "https://{{- .Values.global.hosts.keycloak}}.{{ .Values.global.domain }}"
+            - name: KEYCLOAK_REALM
+              value: {{ .Values.settings.keycloakRealm | quote }}
+            - name: KEYCLOAK_CLIENT_ID
+              value: {{ .Values.settings.keycloakClientId | quote }}
+            - name: JWT_APP_ID
+              value: {{ .Values.settings.jwtAppId | quote }}
+            - name: JWT_APP_SECRET
+              value: {{ .Values.settings.jwtAppSecret | quote }}
+            - name: JWT_ALG
+              value: {{ .Values.settings.jwtAlg | quote }}
+            - name: JWT_HASH
+              value: {{ .Values.settings.jwtHash | quote }}
+            - name: JWT_EXP_SECOND
+              value: {{ .Values.settings.jwtExpSecond | quote }}
+            - name: HOSTNAME
+              value: {{ .Values.settings.internalHostname | quote }}
+            - name: ALLOW_UNSECURE_CERT
+              value: {{ .Values.settings.allowUnsecureCert | quote }}
+          {{- with .Values.extraEnvVars }}
+            {{- . | toYaml | nindent 12 }}
+          {{- end }}
+          ports:
+            {{- range $key, $value := .Values.service.ports }}
+            - name: {{ $key }}
+              containerPort: {{ $value.containerPort }}
+              protocol: {{ $value.protocol }}
+            {{- end }}
+          {{- if .Values.resources }}
+          resources: {{- include "common.tplvalues.render" (dict "value" .Values.resources "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.lifecycleHooks }}
+          lifecycle: {{- include "common.tplvalues.render" (dict "value" .Values.lifecycleHooks "context" $) | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: "/health"
+              port: {{ .Values.service.ports.adapter.containerPort }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          readinessProbe:
+            httpGet:
+              path: "/health"
+              port: {{ .Values.service.ports.adapter.containerPort }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          volumeMounts:
+            - name: jitsi-keycloak-adapter-swp
+              mountPath: /app/context.ts
+              subPath: context.ts
+            - name: "tmp"
+              mountPath: "/tmp"
+      volumes:
+        - name: jitsi-keycloak-adapter-swp
+          configMap:
+            name: jitsi-keycloak-adapter-swp
+            items:
+              - key: context.ts
+                path: context.ts
+        - name: "tmp"
+          emptyDir: {}
+...

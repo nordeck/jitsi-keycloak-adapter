@@ -1,0 +1,42 @@
+{{- if .Values.rbac.create -}}
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "Role"
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+rules:
+  # Get IP/Port from service.
+  # Update target port for nodePort
+  - apiGroups: [""]
+    resources:
+      - "services"
+    resourceNames:
+      - "jitsi-jvb"
+    verbs:
+      - "get"
+      - "update"
+      - "patch"
+  # Update configmap for env vars.
+  - apiGroups: [""]
+    resources:
+      - "configmaps"
+    resourceNames:
+      - "jitsi-jvb"
+    verbs:
+      - "get"
+      - "update"
+      - "patch"
+  # Restart JVB after patch.
+  - apiGroups: ["apps"]
+    resources:
+      - "deployments"
+    resourceNames:
+      - "jitsi-jvb"
+    verbs:
+      - "get"
+      - "update"
+      - "patch"
+...
+{{- end }}

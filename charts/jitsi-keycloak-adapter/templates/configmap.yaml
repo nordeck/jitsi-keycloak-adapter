@@ -1,0 +1,71 @@
+---
+kind: "ConfigMap"
+apiVersion: "v1"
+metadata:
+  name: "jitsi-meet-swp"
+data:
+  watermark.svg: |
+    {{ .Values.theme.imagery.logoHeaderSvgWhite }}
+{{ (.Files.Glob "files/web/oidc/body.oidc.html").AsConfig | nindent 2 }}
+{{ (.Files.Glob "files/web/oidc/meet.oidc.conf").AsConfig | nindent 2 }}
+{{ (.Files.Glob "files/web/oidc/oidc-adapter.html").AsConfig | nindent 2 }}
+{{ (.Files.Glob "files/web/oidc/oidc-redirect.html").AsConfig | nindent 2 }}
+{{ (.Files.Glob "files/web/swp/custom-config.js").AsConfig | nindent 2 }}
+{{ tpl ((.Files.Glob "files/web/swp/custom-interface_config.js").AsConfig) . | nindent 2 }}
+{{- if and .Values.jitsi.jvb.service.enabled .Values.patchJVB.enabled }}
+---
+kind: "ConfigMap"
+apiVersion: "v1"
+metadata:
+  name: {{ include "common.names.fullname" . }}
+data:
+  init.sh: |
+    #!/bin/sh
+    set -e
+    {{- if (eq .Values.jitsi.jvb.service.type "LoadBalancer") }}
+    counter=0
+    maxRetries=30
+    until [ $counter -gt ${maxRetries} ]; do
+    echo "Wait for LoadBalancer IP (${counter}/${maxRetries})"
+    ip=$(kubectl get svc jitsi-jvb -o jsonpath='{.status.loadBalancer.ingress[0].{{ .Values.patchJVB.configuration.loadbalancerStatusField }}}' || true);
+    if [ ${ip} ]; then
+      break;
+    else
+      ((counter++));
+      sleep 5;
+    fi
+    done
+    if [ $counter -gt 30 ]; then
+      echo "Reached retries limit, exiting..."
+      exit 1
+    fi;
+
+    echo "Patching JVB to advertise IP: ${ip}"
+    kubectl patch cm jitsi-jvb --type json --patch \
+      "[{ \"op\": \"add\", \"path\": \"/data/JVB_ADVERTISE_IPS\", \"value\": \"${ip}\" },
+       { \"op\": \"add\", \"path\": \"/data/DOCKER_HOST_ADDRESS\", \"value\": \"${ip}\" }]"
+    {{- else if (eq .Values.jitsi.jvb.service.type "NodePort") }}
+    {{- if .Values.patchJVB.configuration.staticLoadbalancerIP }}
+    echo "Patching JVB to advertise IP: {{ .Values.patchJVB.configuration.staticLoadbalancerIP }}"
+    kubectl patch cm jitsi-jvb --type json --patch \
+      "[{ \"op\": \"add\", \"path\": \"/data/JVB_ADVERTISE_IPS\", \"value\": \"{{ .Values.patchJVB.configuration.staticLoadbalancerIP }}\" },
+       { \"op\": \"add\", \"path\": \"/data/DOCKER_HOST_ADDRESS\", \"value\": \"{{ .Values.patchJVB.configuration.staticLoadbalancerIP }}\" }]"
+    {{- end }}
+    port=$(kubectl get svc jitsi-jvb -o jsonpath='{.spec.ports[0].nodePort}');
+    echo "Patching JVB ConfigMap to use port: ${port}"
+    kubectl patch cm jitsi-jvb --type json --patch \
+      "[{ \"op\": \"add\", \"path\": \"/data/JVB_PORT\", \"value\": \"${port}\" }]"
+    echo "Patching JVB Service to use targetPort: ${port}"
+    kubectl patch svc jitsi-jvb --type json --patch \
+      "[{ \"op\": \"replace\", \"path\": \"/spec/ports/0/targetPort\", \"value\": ${port} }]"
+    {{- end }}
+    kubectl rollout restart deployment jitsi-jvb
+    {{- end }}
+---
+kind: "ConfigMap"
+apiVersion: "v1"
+metadata:
+  name: "jitsi-keycloak-adapter-swp"
+data:
+{{ (.Files.Glob "files/jitsi-keycloak-adapter/context.ts").AsConfig | nindent 2 }}
+...
