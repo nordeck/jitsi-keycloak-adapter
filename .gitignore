@@ -1,4 +1,6 @@
 *~
 *.sw?
 *.log
+
 Chart.lock
+charts/jitsi-keycloak-adapter/charts/
