@@ -59,7 +59,11 @@ spec:
           imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           env:
             - name: KEYCLOAK_ORIGIN
+              {{- if .Values.settings.keycloakOrigin }}
+              value: {{ .Values.settings.keycloakOrigin | quote }}
+              {{- else }}
               value: "https://{{- .Values.global.hosts.keycloak}}.{{ .Values.global.domain }}"
+              {{- end }}
             - name: KEYCLOAK_REALM
               value: {{ .Values.settings.keycloakRealm | quote }}
             - name: KEYCLOAK_CLIENT_ID
