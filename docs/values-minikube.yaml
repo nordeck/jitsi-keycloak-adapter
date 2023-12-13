@@ -1,0 +1,546 @@
+---
+# The global properties are used to configure multiple charts at once.
+global:
+  # -- The Top-Level-Domain (TLD) name which is used in f.e. in Ingress component.
+  domain: "yourdomain.de"
+
+  # Define the Subdomain for components used in f.e. in Ingress component.
+  hosts:
+    # -- Subdomain for Keycloak, results in "https://{{ keycloak }}.{{ domain }}".
+    keycloak: "id"
+    # -- Subdomain for Univention Corporate Server providing the portal.
+    # Results in "https://{{ univentionCorporateServer }}.{{ domain }}".
+    # The value is used to set the hyperlink on the watermark.
+    univentionCorporateServer: "portal"
+
+  # -- Container registry address.
+  registry: "docker.io"
+
+  # -- Credentials to fetch images from private registry
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  #
+  # imagePullSecrets:
+  #   - "docker-registry"
+  #
+  imagePullSecrets: []
+
+# -- Affinity for pod assignment
+# Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+# Note: podAffinityPreset, podAntiAffinityPreset, and  nodeAffinityPreset will be ignored when it's set
+affinity: {}
+
+# Helm release cleanup setting.
+cleanup:
+  # -- Keep Pods/Job logs after successful run.
+  deletePodsOnSuccess: true
+  # -- Keep persistence on delete of this release.
+  keepPVCOnDelete: false
+
+# Security Context.
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+containerSecurityContext:
+  # -- Enable container privileged escalation.
+  allowPrivilegeEscalation: false
+
+  # -- Enable security context.
+  enabled: true
+
+  # -- Mounts the container's root filesystem as read-only.
+  readOnlyRootFilesystem: true
+
+  # -- Security capabilities for container.
+  capabilities:
+    drop:
+      - "ALL"
+
+  # Set Seccomp profile.
+  seccompProfile:
+    type: "RuntimeDefault"
+
+  # -- Process user id.
+  runAsUser: 1993
+
+  # -- Process group id.
+  runAsGroup: 1993
+
+  # -- Run container as user.
+  runAsNonRoot: true
+
+# -- Array with extra environment variables to add to containers.
+#
+# extraEnvVars:
+#   - name: FOO
+#     value: "bar"
+#
+extraEnvVars: []
+
+# -- Provide a name to substitute for the full names of resources.
+fullnameOverride: ""
+
+# Container image section.
+image:
+  # -- Container registry address. This setting has higher precedence than global.registry.
+  registry: "ghcr.io"
+
+  # -- Container repository string.
+  repository: "nordeck/jitsi-keycloak-adapter"
+
+  # -- Define an ImagePullPolicy.
+  #
+  # Ref.: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+  #
+  # "IfNotPresent" => The image is pulled only if it is not already present locally.
+  # "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to
+  #             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached
+  #             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved
+  #             digest, and uses that image to launch the container.
+  # "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the
+  #            kubelet attempts to start the container; otherwise, startup fails
+  #
+  imagePullPolicy: "IfNotPresent"
+
+  # -- Define image tag.
+  tag: "v20230906@sha256:54d45ee1a1205f98641810ffb171bd92e6478e2957a349ee4ff599359239fbf2"
+
+
+# After deployment of JVB service, the job fetches the provisioned LoadBalancer IP or NodePort port to advertise.
+patchJVB:
+  # Job configuration
+  configuration:
+    # -- Relevant for NodePort deployments only.
+    # In case you have a different egress gateway and thus the incoming ip can not be autodiscovered, provide the ip of
+    # your ingress gateway.
+    staticLoadbalancerIP: ""
+
+    # -- Relevant for LoadBalancer deployment only.
+    # The IP/DNS of your load-balancer will be fetched from the status entry of service - here you can define which
+    # field should be taken.
+    loadbalancerStatusField: "ip"
+
+  # Security Context.
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  containerSecurityContext:
+    # -- Enable container privileged escalation.
+    allowPrivilegeEscalation: false
+
+    # -- Enable security context.
+    enabled: true
+
+    # -- Mounts the container's root filesystem as read-only.
+    readOnlyRootFilesystem: true
+
+  # -- Enable post deployment advertisement for LoadBalancer IP or NodePort port to JVB.
+  enabled: true
+
+  image:
+    # -- Container registry address. This setting has higher precedence than global.registry.
+    registry: ""
+
+    # -- Container repository string.
+    repository: "bitnami/kubectl"
+
+    # -- Define an ImagePullPolicy.
+    #
+    # Ref.: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+    #
+    # "IfNotPresent" => The image is pulled only if it is not already present locally.
+    # "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to
+    #             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached
+    #             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved
+    #             digest, and uses that image to launch the container.
+    # "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the
+    #            kubelet attempts to start the container; otherwise, startup fails
+    #
+    imagePullPolicy: "IfNotPresent"
+
+    # -- Define image tag.
+    tag: "1.26.8@sha256:c6902a1fdce0a24c9f93ac8d1f317039b206a4b307d8fc76cab4a92911345757"
+
+  # -- Credentials to fetch images from private registry
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  #
+  # imagePullSecrets:
+  #   - "docker-registry"
+  #
+  imagePullSecrets: []
+
+  # Configure resource requests and limits.
+  #
+  # http://kubernetes.io/docs/user-guide/compute-resources/
+  #
+  resources:
+    limits:
+      # -- The max amount of CPUs to consume.
+      cpu: "100m"
+      # -- The max amount of RAM to consume.
+      memory: "128Mi"
+    requests:
+      # -- The amount of CPUs which has to be available on the scheduled node.
+      cpu: "10m"
+      # -- The amount of RAM which has to be available on the scheduled node.
+      memory: "16Mi"
+
+  # Pod Security Context.
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  podSecurityContext:
+    # -- Enable security context.
+    enabled: false
+
+# -- Credentials to fetch images from private registry
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+#
+# imagePullSecrets:
+#   - "docker-registry"
+#
+imagePullSecrets: []
+
+jitsi:
+  publicURL: "https://jitsi.ucs.nordeck.io"
+  enableAuth: true
+  enableGuests: true
+
+  websockets:
+    colibri:
+      enabled: true
+    xmpp:
+      enabled: false
+
+  web:
+    replicaCount: 1
+    image:
+      tag: "stable-8922@sha256:24bd4179998fe01ace1be74e53fea5308f4d91722953bb4334611e6886753f46"
+      pullPolicy: "IfNotPresent"
+    extraVolumes:
+      - name: "jitsi-meet-swp"
+        configMap:
+          name: "jitsi-meet-swp"
+          items:
+            - key: "body.oidc.html"
+              path: "body.oidc.html"
+            - key: "custom-config.js"
+              path: "custom-config.js"
+            - key: "custom-interface_config.js"
+              path: "custom-interface_config.js"
+            - key: "meet.oidc.conf"
+              path: "meet.oidc.conf"
+            - key: "oidc-adapter.html"
+              path: "oidc-adapter.html"
+            - key: "oidc-redirect.html"
+              path: "oidc-redirect.html"
+            - key: "watermark.svg"
+              path: "watermark.svg"
+    extraVolumeMounts:
+      - name: "jitsi-meet-swp"
+        mountPath: "/config/custom-config.js"
+        subPath: "custom-config.js"
+      - name: "jitsi-meet-swp"
+        mountPath: "/config/custom-interface_config.js"
+        subPath: "custom-interface_config.js"
+      - name: "jitsi-meet-swp"
+        mountPath: "/usr/share/jitsi-meet/images/watermark.svg"
+        subPath: "watermark.svg"
+      - name: "jitsi-meet-swp"
+        mountPath: "/usr/share/jitsi-meet/body.html"
+        subPath: "body.oidc.html"
+      - name: "jitsi-meet-swp"
+        mountPath: "/defaults/meet.conf"
+        subPath: "meet.oidc.conf"
+      - name: "jitsi-meet-swp"
+        mountPath: "/usr/share/jitsi-meet/static/oidc-adapter.html"
+        subPath: "oidc-adapter.html"
+      - name: "jitsi-meet-swp"
+        mountPath: "/usr/share/jitsi-meet/static/oidc-redirect.html"
+        subPath: "oidc-redirect.html"
+    ingress:
+      enabled: true
+      annotations:
+        ingress.cilium.io/tcp-keep-alive: "enabled"
+        ingress.cilium.io/websocket: "enabled"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+        nginx.ingress.kubernetes.io/proxy-sent-timeout: "3600"
+        nginx.org/websocket-services: "jitsi-web"
+      hosts:
+        - host: jitsi.ucs.nordeck.io
+          paths: ['/']
+    securityContext:
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+      seccompProfile:
+        type: "RuntimeDefault"
+  prosody:
+    image:
+      tag: "stable-8922@sha256:243547f24ae7d686d1f0c18ee230cf93119a66f095dda282bacbf45d4bb69f77"
+      pullPolicy: "IfNotPresent"
+    extraEnvs:
+      - name: "AUTH_TYPE"
+        value: "jwt"
+    securityContext:
+      allowPrivilegeEscalation: false
+      seccompProfile:
+        type: "RuntimeDefault"
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+
+  jicofo:
+    image:
+      tag: "stable-8922@sha256:820fcd4b072b29f42c1c37389fbefda1065f1e9654694941485dc08123c8a93b"
+      pullPolicy: "IfNotPresent"
+    extraEnvs:
+      AUTH_TYPE: "xmpp"
+      ENABLE_AUTO_LOGIN: "false"
+      JICOFO_AUTH_LIFETIME: "100 milliseconds"
+    extraEnvFrom:
+      - secretRef:
+          name: "{{ include 'prosody.fullname' . }}-jicofo"
+      - secretRef:
+          name: "{{ include 'prosody.fullname' . }}-jvb"
+      - configMapRef:
+          name: "{{ include 'prosody.fullname' . }}-common"
+      - secretRef:
+          name: "{{ include 'prosody.fullname' . }}-jibri"
+    securityContext:
+      allowPrivilegeEscalation: false
+      seccompProfile:
+        type: "RuntimeDefault"
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+
+  jvb:
+    image:
+      tag: "stable-8922@sha256:75dd613807e19cbbd440d071b60609fa9e4ee50a1396b14deb0ed779d882a554"
+      pullPolicy: "IfNotPresent"
+    publicIPs:
+      - 192.168.49.2
+    UDPPort: 30011
+    nodePort: 30011
+    replicaCount: 1
+    service:
+      externalTrafficPolicy: ""
+      enabled: true
+      #type: "LoadBalancer"
+      type: "NodePort"
+    securityContext:
+      allowPrivilegeEscalation: false
+      seccompProfile:
+        type: "RuntimeDefault"
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+
+  jibri:
+    enabled: true
+    recording: true
+    livestreaming: true
+    image:
+      tag: "stable-8922@sha256:87aa176b44b745b13769f13b8e2d22ddd6f6ba624244d5354c8dd3664787e936"
+      pullPolicy: "IfNotPresent"
+    readinessProbe:
+      initialDelaySeconds: 15
+      failureThreshold: 10
+      timeoutSeconds: 3
+    livenessProbe:
+      initialDelaySeconds: 15
+      failureThreshold: 10
+      timeoutSeconds: 3
+    securityContext:
+      allowPrivilegeEscalation: false
+      seccompProfile:
+        type: "RuntimeDefault"
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+
+  extraCommonEnvs:
+    ADAPTER_INTERNAL_URL: "http://jitsi-keycloak-adapter:9000"
+    TOOLBAR_BUTTONS: "camera,chat,closedcaptions,desktop,download,feedback,filmstrip,fullscreen,hangup,help,livestreaming,microphone,mute-everyone,mute-video-everyone,participants-pane,profile,raisehand,security,select-background,settings,shareaudio,shortcuts,stats,tileview,toggle-camera,videoquality"
+
+  tz: "Europe/Berlin"
+
+# -- Lifecycle to automate configuration before or after startup
+lifecycleHooks: {}
+
+#  Configure extra options for containers probes.
+livenessProbe:
+  # -- Enables kubernetes LivenessProbe.
+  enabled: true
+  # -- Delay after container start until LivenessProbe is executed.
+  initialDelaySeconds: 5
+  # -- Time between probe executions.
+  periodSeconds: 3
+  # -- Timeout for command return.
+  timeoutSeconds: 1
+  # -- Number of failed executions until container is terminated.
+  failureThreshold: 5
+  # -- Number of successful executions after failed ones until container is marked healthy.
+  successThreshold: 1
+
+# -- String to partially override release name.
+nameOverride: ""
+
+# -- Node labels for pod assignment
+# Ref: https://kubernetes.io/docs/user-guide/node-selection/
+nodeSelector: {}
+
+# -- Pod Annotations.
+# Ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+
+# -- Pod Labels.
+# Ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+# Pod Security Context.
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+podSecurityContext:
+  # -- Enable security context.
+  enabled: false
+
+# Role and RoleBinding used in patchJVB job.
+rbac:
+  # -- Enable RBAC Role and RoleBinding creation.
+  create: true
+
+#  Configure extra options for containers probes.
+readinessProbe:
+  # -- Enables kubernetes ReadinessProbe.
+  enabled: true
+  # -- Delay after container start until ReadinessProbe is executed.
+  initialDelaySeconds: 5
+  # -- Number of failed executions until container is terminated.
+  failureThreshold: 15
+  # -- Time between probe executions.
+  periodSeconds: 2
+  # -- Number of successful executions after failed ones until container is marked healthy.
+  successThreshold: 1
+  # -- Timeout for command return.
+  timeoutSeconds: 1
+
+# -- Set the amount of replicas of deployment.
+replicaCount: 1
+
+# Configure resource requests and limits.
+#
+# http://kubernetes.io/docs/user-guide/compute-resources/
+#
+resources:
+  limits:
+    # -- The max amount of CPUs to consume.
+    cpu: "100m"
+    # -- The max amount of RAM to consume.
+    memory: "128Mi"
+  requests:
+    # -- The amount of CPUs which has to be available on the scheduled node.
+    cpu: "10m"
+    # -- The amount of RAM which has to be available on the scheduled node.
+    memory: "16Mi"
+
+# Define and create Kubernetes Service.
+#
+# Ref.: https://kubernetes.io/docs/concepts/services-networking/service
+service:
+  # -- Additional custom annotations
+  annotations: {}
+
+  # -- Enable kubernetes service creation.
+  enabled: true
+
+  # "ClusterIP" => Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable
+  #                from within the cluster. This is the default that is used if you don't explicitly specify a type for
+  #                a Service.
+  # "NodePort" => Exposes the Service on each Node's IP at a static port (the NodePort). To make the node port
+  #               available, Kubernetes sets up a cluster IP address, the same as if you had requested a Service of
+  #               type: ClusterIP.
+  # "LoadBalancer" => Exposes the Service externally using a cloud provider's load balancer.
+  #
+  # Ref.: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+
+  # -- Choose the kind of Service, one of "ClusterIP", "NodePort" or "LoadBalancer".
+  type: "ClusterIP"
+
+  # Define the ports of Service.
+  # You can set the port value to an arbitrary value, it will map the container port by name.
+  #
+  ports:
+    adapter:
+      # -- Accessible port for keycloak adapter.
+      port: 9000
+      # -- Internal port for keycloak adapter.
+      containerPort: 9000
+      # -- Keycloak adapter service protocol.
+      protocol: "TCP"
+
+# Service account to use.
+# Ref.: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+serviceAccount:
+  # -- Additional custom annotations for the ServiceAccount.
+  annotations: {}
+
+  # -- Allows auto mount of ServiceAccountToken on the serviceAccount created. Can be set to false if pods using this
+  # serviceAccount do not need to use K8s API.
+  automountServiceAccountToken: true
+
+  # -- Enable creation of ServiceAccount for pod.
+  create: true
+
+  # -- Additional custom labels for the ServiceAccount.
+  labels: {}
+
+# Settings for jitsi keycloak adapter.
+settings:
+  # -- Keycloak realm name.
+  keycloakRealm: "realmme"
+  # -- Configured client id in keycloak.
+  keycloakClientId: "jitsi"
+  jwtAlg: "HS256"
+  jwtAppId: "myappid"
+  jwtAppSecret: ""
+  jwtExpSecond: "3600"
+  jwtHash: "SHA-256"
+  internalHostname: "0.0.0.0"
+  # -- Set true if Keycloak has not a trusted certificate. For the production environment, Keycloak should have a
+  # trusted certificate and this value should be false.
+  allowUnsecureCert: "false"
+
+# -- In seconds, time the given to the pod needs to terminate gracefully.
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods
+terminationGracePeriodSeconds: ""
+
+# -- Tolerations for pod assignment
+# Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: []
+
+# -- Topology spread constraints rely on node labels to identify the topology domain(s) that each Node is in
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+#
+# topologySpreadConstraints:
+#   - maxSkew: 1
+#     topologyKey: failure-domain.beta.kubernetes.io/zone
+#     whenUnsatisfiable: DoNotSchedule
+topologySpreadConstraints: []
+
+# Set up update strategy.
+#
+# Ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+#
+# Example:
+# updateStrategy:
+#  type: RollingUpdate
+#  rollingUpdate:
+#    maxSurge: 25%
+#    maxUnavailable: 25%
+updateStrategy:
+  # -- Set to Recreate if you use persistent volume that cannot be mounted by more than one pods to make sure the pods
+  # is destroyed first.
+  type: "RollingUpdate"
+
+# Theming related settings.
+theme:
+  # Text settings.
+  texts:
+    # -- The name of the application that is shown to the user in the UI.
+    productName: "name"
+
+  # Imagery and related settings.
+  imagery:
+    # -- An SVG image used as watermark in the UI. Jitsi has a dark/black background, the SVG should have white content.
+    logoHeaderSvgWhite: "<svg width=\"1\" height=\"1\" xmlns=\"http://www.w3.org/2000/svg\"></svg>"
+
+...
