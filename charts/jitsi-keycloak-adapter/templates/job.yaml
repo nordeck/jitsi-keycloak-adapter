@@ -1,3 +1,4 @@
+{{- if .Values.patchJVB.enabled -}}
 ---
 apiVersion: "batch/v1"
 kind: "Job"
@@ -50,3 +51,4 @@ spec:
           configMap:
             name: {{ include "common.names.fullname" . | quote }}
 ...
+{{- end }}
