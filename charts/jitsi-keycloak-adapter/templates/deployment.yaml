@@ -2,7 +2,7 @@
 apiVersion: {{ include "common.capabilities.deployment.apiVersion" . | quote }}
 kind: "Deployment"
 metadata:
-  name: {{ include "sovereign-workplace-jitsi.keycloakAdapter.fullname" . | quote }}
+  name: {{ include "jitsi.keycloakAdapter.fullname" . | quote }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" . | nindent 4 }}
 spec:
