@@ -61,5 +61,5 @@ Execute the following command to verify the signature of a container image:
 cosign verify \
 --certificate-identity-regexp https://github.com/nordeck/jitsi-keycloak-adapter/.github/workflows/docker-images.yml@refs/heads/main \
 --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-ghcr.io/nordeck/jitsi-keycloak-adapter:latest | jq
+ghcr.io/nordeck/jitsi-keycloak-adapter: <version> | jq
 ```
