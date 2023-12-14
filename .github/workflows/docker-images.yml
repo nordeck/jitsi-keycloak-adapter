@@ -58,7 +58,7 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Sign the images with GitHub OIDC Token
+    - name: Sign the images with GitHub OIDC Token
       env:
         DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         DIGEST: ${{ steps.build_and_push.outputs.digest }}
