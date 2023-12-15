@@ -52,14 +52,3 @@ Create `client` inside `realm`.
 ## 5. Sponsors
 
 [![Nordeck](docs/images/nordeck.png)](https://nordeck.net/)
-
-## Verify the Container Images
-The container images releases are signed by [cosign](https://github.com/sigstore/cosign) using identity-based ("keyless") signing and transparency.
-Execute the following command to verify the signature of a container image:
-
-```sh
-cosign verify \
---certificate-identity-regexp https://github.com/nordeck/jitsi-keycloak-adapter/.github/workflows/docker-images.yml@refs/heads/main \
---certificate-oidc-issuer https://token.actions.githubusercontent.com \
-ghcr.io/nordeck/jitsi-keycloak-adapter:<version> | jq
-```
