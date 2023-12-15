@@ -7,7 +7,7 @@
   - [2.3 Guest users](#23-guest-users)
   - [2.4 Static files](#24-static-files)
   - [2.5 Custom meet.conf](#25-custom-meetconf)
-- [3. Jitsi](#2-jitsi)
+- [3. Verifying the container image](#3-verifying-the-container-image)
 
 The setup guide to integrate `Jitsi Keycloak Adapter` with a Dockerized Jitsi
 setup.
