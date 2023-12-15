@@ -7,6 +7,7 @@
   - [2.3 Guest users](#23-guest-users)
   - [2.4 Static files](#24-static-files)
   - [2.5 Custom meet.conf](#25-custom-meetconf)
+- [3. Jitsi](#2-jitsi)
 
 The setup guide to integrate `Jitsi Keycloak Adapter` with a Dockerized Jitsi
 setup.
@@ -117,3 +118,17 @@ container. Therefore mount the following custom `meet.conf` file to `jitsi-web`
 container to overwrite the default one:
 
 - [/defaults/meet.conf](../templates/jitsi-web-container/defaults/meet.conf)
+
+## 3. Verifying the container image
+
+The container image releases are signed by
+[cosign](https://github.com/sigstore/cosign) using identity-based ("keyless")
+signing and transparency. Execute the following command to verify the signature
+of a container image:
+
+```bash
+cosign verify \
+  --certificate-identity-regexp https://github.com/nordeck/jitsi-keycloak-adapter/.github/workflows/docker-images.yml@refs/heads/main \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  ghcr.io/nordeck/jitsi-keycloak-adapter:<version> | jq
+```
