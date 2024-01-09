@@ -18,45 +18,45 @@ import {
 } from "./config.ts";
 import { createContext } from "./context.ts";
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // HTTP response for OK
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 function ok(body: string): Response {
   return new Response(body, {
     status: STATUS_CODE.OK,
   });
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // HTTP response for NotFound
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 function notFound(): Response {
   return new Response(null, {
     status: STATUS_CODE.NotFound,
   });
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // HTTP response for MethodNotAllowed
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 function methodNotAllowed(): Response {
   return new Response(null, {
     status: STATUS_CODE.MethodNotAllowed,
   });
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // HTTP response for Unauthorized
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 function unauthorized(): Response {
   return new Response(null, {
     status: STATUS_CODE.Unauthorized,
   });
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Generate JWT (Jitsi token)
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 async function generateJWT(
   userInfo: Record<string, unknown>,
 ): Promise<string | undefined> {
@@ -93,13 +93,13 @@ async function generateJWT(
   }
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Get the access token from Keycloak by using the short-term auth code
 //
 // redirect_uri should be the same with URI which is set while getting the
 // short-term authorization code but actually there is no redirection at this
 // stage. This is for security check only.
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 async function getToken(
   host: string,
   code: string,
@@ -145,9 +145,9 @@ async function getToken(
   }
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Get the user info from Keycloak by using the access token
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 async function getUserInfo(
   token: string,
 ): Promise<Record<string, unknown> | undefined> {
@@ -175,9 +175,9 @@ async function getUserInfo(
   }
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Send the Jitsi token if auth is OK
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 async function tokenize(req: Request): Promise<Response> {
   const host = req.headers.get("host");
   const url = new URL(req.url);
@@ -213,12 +213,12 @@ async function tokenize(req: Request): Promise<Response> {
   });
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Redirect to Keycloak auth service to get a short-term authorization code.
 //
 // If successful, Keycloak will redirect the request to oidc-adapter.html
 // (redirect_uri) with a short-term authorization code.
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 function oidcRedirectForCode(req: Request, prompt: string): Response {
   const host = req.headers.get("host");
   const url = new URL(req.url);
@@ -250,25 +250,25 @@ function oidcRedirectForCode(req: Request, prompt: string): Response {
   return Response.redirect(target, STATUS_CODE.Found);
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Redirect to Keycloak auth service to get a short-term authorization code.
 // Don't ask for a credential if auth fails
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 function redirect(req: Request): Response {
   return oidcRedirectForCode(req, "none");
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Redirect to Keycloak auth service to get a short-term authorization code.
 // Ask for a credential if auth fails
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 function auth(req: Request): Response {
   return oidcRedirectForCode(req, "login");
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // handler
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url);
   const path = url.pathname;
@@ -290,9 +290,9 @@ async function handler(req: Request): Promise<Response> {
   }
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // main
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 function main() {
   console.log(`KEYCLOAK_ORIGIN: ${KEYCLOAK_ORIGIN}`);
   console.log(`KEYCLOAK_REALM: ${KEYCLOAK_REALM}`);
@@ -313,5 +313,5 @@ function main() {
   });
 }
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 main();
