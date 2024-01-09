@@ -1,5 +1,5 @@
-import { serve } from "https://deno.land/std@0.210.0/http/server.ts";
-import { Status } from "https://deno.land/std@0.210.0/http/http_status.ts";
+import { serve } from "https://deno.land/std@0.211.0/http/server.ts";
+import { STATUS_CODE } from "https://deno.land/std@0.211.0/http/status.ts";
 import { create, getNumericDate } from "https://deno.land/x/djwt@v3.0.1/mod.ts";
 import { Algorithm } from "https://deno.land/x/djwt@v3.0.1/algorithm.ts";
 import {
@@ -23,7 +23,7 @@ import { createContext } from "./context.ts";
 // ----------------------------------------------------------------------------
 function ok(body: string): Response {
   return new Response(body, {
-    status: Status.OK,
+    status: STATUS_CODE.OK,
   });
 }
 
@@ -32,7 +32,7 @@ function ok(body: string): Response {
 // ----------------------------------------------------------------------------
 function notFound(): Response {
   return new Response(null, {
-    status: Status.NotFound,
+    status: STATUS_CODE.NotFound,
   });
 }
 
@@ -41,7 +41,7 @@ function notFound(): Response {
 // ----------------------------------------------------------------------------
 function methodNotAllowed(): Response {
   return new Response(null, {
-    status: Status.MethodNotAllowed,
+    status: STATUS_CODE.MethodNotAllowed,
   });
 }
 
@@ -50,7 +50,7 @@ function methodNotAllowed(): Response {
 // ----------------------------------------------------------------------------
 function unauthorized(): Response {
   return new Response(null, {
-    status: Status.Unauthorized,
+    status: STATUS_CODE.Unauthorized,
   });
 }
 
@@ -209,7 +209,7 @@ async function tokenize(req: Request): Promise<Response> {
   if (DEBUG) console.log(`tokenize token: ${jwt}`);
 
   return new Response(JSON.stringify(jwt), {
-    status: Status.OK,
+    status: STATUS_CODE.OK,
   });
 }
 
@@ -247,7 +247,7 @@ function oidcRedirectForCode(req: Request, prompt: string): Response {
   if (DEBUG) console.log(`oidcRedirectForCode bundle: ${bundle}`);
   if (DEBUG) console.log(`oidcRedirectForCode target: ${target}`);
 
-  return Response.redirect(target, Status.Found);
+  return Response.redirect(target, STATUS_CODE.Found);
 }
 
 // ----------------------------------------------------------------------------
