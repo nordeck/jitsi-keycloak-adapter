@@ -12,6 +12,7 @@ export function createContext(userInfo: Record<string, unknown>) {
       name: userInfo.preferred_username || "",
       email: userInfo.email || "",
       lobby_bypass: true,
+      security_bypass: true,
     },
   };
 
