@@ -143,9 +143,9 @@ async function getToken(
     return token;
   } catch (error) {
     console.log('Error during fetch operation:', error);
-    if (DEBUG) console.log(`fetching: {url}`);
-    if (DEBUG) console.log(`headers: \n{headers}`);
-    if (DEBUG) console.log(`body: \n{data}`);
+    if (DEBUG) console.log(`fetching: ${url}`);
+    if (DEBUG) console.log(`headers: \n${headers}`);
+    if (DEBUG) console.log(`body: \n${data}`);
     return undefined;
   }
 }
