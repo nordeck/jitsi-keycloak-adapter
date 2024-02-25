@@ -30,10 +30,13 @@ docker run -d \
   -e JWT_APP_ID=myappid \
   -e JWT_APP_SECRET=myappsecret \
   -e ALLOW_UNSECURE_CERT=true \
+  [-e KEYCLOAK_AUTHORIZATION_ENDPOINT=https://ucs-sso-ng.mykeycloak.tld \]
   ghcr.io/nordeck/jitsi-keycloak-adapter
 ```
 
 `KEYCLOAK_ORIGIN` must be resolvable and accessible for the container.
+
+`KEYCLOAK_AUTHORIZATION_ENDPOINT` must be resolvable and accessible for the user's browser. Defaults to `KEYCLOAK_ORIGIN`.
 
 `JWT_APP_ID` and `JWT_APP_SECRET` must be the same for both `keycloak-adapter`
 and `jitsi`.
