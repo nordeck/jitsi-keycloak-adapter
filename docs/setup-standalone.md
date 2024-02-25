@@ -128,6 +128,11 @@ You may also use environment variables instead of updating this config file.
 
   Keycloak address
 
+- `KEYCLOAK_ORIGIN_INTERNAL`
+
+  Internal Keycloak address if `KEYCLOAK_ORIGIN` is not accessible for the
+  adapter service.
+
 - `KEYCLOAK_REALM`
 
   Keycloak realm
