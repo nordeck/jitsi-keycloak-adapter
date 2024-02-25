@@ -13,6 +13,7 @@ import {
   KEYCLOAK_CLIENT_ID,
   KEYCLOAK_MODE,
   KEYCLOAK_ORIGIN,
+  KEYCLOAK_AUTHORIZATION_ENDPOINT,
   KEYCLOAK_REALM,
   PORT,
 } from "./config.ts";
@@ -240,7 +241,7 @@ function oidcRedirectForCode(req: Request, prompt: string): Response {
   const bundle = `path=${encodeURIComponent(path)}` +
     `&search=${encodeURIComponent(search)}` +
     `&hash=${encodeURIComponent(hash)}`;
-  const target = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
+  const target = `${KEYCLOAK_AUTHORIZATION_ENDPOINT}/realms/${KEYCLOAK_REALM}` +
     `/protocol/openid-connect/auth?client_id=${KEYCLOAK_CLIENT_ID}` +
     `&response_mode=${KEYCLOAK_MODE}&response_type=code&scope=openid` +
     `&prompt=${prompt}&redirect_uri=https://${host}/static/oidc-adapter.html` +

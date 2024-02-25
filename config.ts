@@ -1,6 +1,8 @@
 // keycloak
 export const KEYCLOAK_ORIGIN = Deno.env.get("KEYCLOAK_ORIGIN") ||
   "https://ucs-sso-ng.mydomain.corp";
+export const KEYCLOAK_AUTHORIZATION_ENDPOINT = Deno.env.get("KEYCLOAK_AUTHORIZATION_ENDPOINT") ||
+  KEYCLOAK_ORIGIN;
 export const KEYCLOAK_REALM = Deno.env.get("KEYCLOAK_REALM") || "ucs";
 export const KEYCLOAK_CLIENT_ID = Deno.env.get("KEYCLOAK_CLIENT_ID") || "jitsi";
 export const KEYCLOAK_MODE = Deno.env.get("KEYCLOAK_MODE") || "query";
