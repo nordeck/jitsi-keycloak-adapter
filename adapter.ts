@@ -121,6 +121,8 @@ async function getToken(
   data.append("redirect_uri", redirectURI);
   data.append("code", code);
 
+  if (DEBUG) console.log(`getToken url: ${url}`);
+  if (DEBUG) console.log(`getToken redirectURI: ${redirectURI}`);
   if (DEBUG) console.log(`getToken data:`);
   if (DEBUG) console.log(data);
 
@@ -198,7 +200,10 @@ async function tokenize(req: Request): Promise<Response> {
 
   // get the access token from Keycloak if the short-term auth code is valid
   const token = await getToken(host, code, path, search, hash);
-  if (!token) return unauthorized();
+  if (!token) {
+    if (DEBUG) console.log(`Could not get Keycloak's access token`);
+    return unauthorized();
+  }
 
   // get the user info from Keycloak by using the access token
   const userInfo = await getUserInfo(token);
