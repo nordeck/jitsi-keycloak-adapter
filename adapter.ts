@@ -140,7 +140,11 @@ async function getToken(
     if (!token) throw ("cannot get Keycloak token");
 
     return token;
-  } catch {
+  } catch (error) {
+    console.log('Error during fetch operation:', error);
+    if (DEBUG) console.log(`fetching: {url}`);
+    if (DEBUG) console.log(`headers: \n{headers}`);
+    if (DEBUG) console.log(`body: \n{data}`);
     return undefined;
   }
 }
@@ -197,7 +201,10 @@ async function tokenize(req: Request): Promise<Response> {
 
   // get the access token from Keycloak if the short-term auth code is valid
   const token = await getToken(host, code, path, search, hash);
-  if (!token) return unauthorized();
+  if (!token) {
+      if (DEBUG) console.log(`Could not get Keycloak's access token`);
+      return unauthorized();
+  }
 
   // get the user info from Keycloak by using the access token
   const userInfo = await getUserInfo(token);
