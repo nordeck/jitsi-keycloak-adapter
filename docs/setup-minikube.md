@@ -30,6 +30,7 @@ helm upgrade --install \
   --set jitsi.jvb.nodePort=30011 \
   --set jitsi.jvb.service.type="NodePort" \
   --set settings.keycloakOrigin="https://ucs-sso-ng.mydomain.corp" \
+  --set settings.keycloakOriginInternal="" \
   --set settings.keycloakRealm="ucs" \
   --set settings.keycloakClientId="jitsi" \
   --set settings.jwtAppId="myappid" \

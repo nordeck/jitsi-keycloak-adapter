@@ -13,6 +13,7 @@ import {
   KEYCLOAK_CLIENT_ID,
   KEYCLOAK_MODE,
   KEYCLOAK_ORIGIN,
+  KEYCLOAK_ORIGIN_INTERNAL,
   KEYCLOAK_REALM,
   PORT,
 } from "./config.ts";
@@ -107,7 +108,7 @@ async function getToken(
   search: string,
   hash: string,
 ): Promise<string | undefined> {
-  const url = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
+  const url = `${KEYCLOAK_ORIGIN_INTERNAL}/realms/${KEYCLOAK_REALM}` +
     `/protocol/openid-connect/token`;
   const bundle = `path=${encodeURIComponent(path)}` +
     `&search=${encodeURIComponent(search)}` +
@@ -120,6 +121,8 @@ async function getToken(
   data.append("redirect_uri", redirectURI);
   data.append("code", code);
 
+  if (DEBUG) console.log(`getToken url: ${url}`);
+  if (DEBUG) console.log(`getToken redirectURI: ${redirectURI}`);
   if (DEBUG) console.log(`getToken data:`);
   if (DEBUG) console.log(data);
 
@@ -152,7 +155,7 @@ async function getUserInfo(
   token: string,
 ): Promise<Record<string, unknown> | undefined> {
   try {
-    const url = `${KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM}` +
+    const url = `${KEYCLOAK_ORIGIN_INTERNAL}/realms/${KEYCLOAK_REALM}` +
       `/protocol/openid-connect/userinfo`;
     const res = await fetch(url, {
       headers: {
@@ -197,7 +200,10 @@ async function tokenize(req: Request): Promise<Response> {
 
   // get the access token from Keycloak if the short-term auth code is valid
   const token = await getToken(host, code, path, search, hash);
-  if (!token) return unauthorized();
+  if (!token) {
+    if (DEBUG) console.log(`Could not get Keycloak's access token`);
+    return unauthorized();
+  }
 
   // get the user info from Keycloak by using the access token
   const userInfo = await getUserInfo(token);
@@ -295,6 +301,7 @@ async function handler(req: Request): Promise<Response> {
 // -----------------------------------------------------------------------------
 function main() {
   console.log(`KEYCLOAK_ORIGIN: ${KEYCLOAK_ORIGIN}`);
+  console.log(`KEYCLOAK_ORIGIN_INTERNAL: ${KEYCLOAK_ORIGIN_INTERNAL}`);
   console.log(`KEYCLOAK_REALM: ${KEYCLOAK_REALM}`);
   console.log(`KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}`);
   console.log(`KEYCLOAK_MODE: ${KEYCLOAK_MODE}`);

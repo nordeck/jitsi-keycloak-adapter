@@ -1,5 +1,5 @@
 FROM denoland/deno
-LABEL version="v20231029"
+LABEL version="v20240226"
 
 WORKDIR /app
 
@@ -8,6 +8,7 @@ RUN deno cache /app/adapter.ts
 RUN chown deno:deno /app/config.ts
 
 ENV KEYCLOAK_ORIGIN "https://ucs-sso-ng.mydomain.corp"
+ENV KEYCLOAK_ORIGIN_INTERNAL ""
 ENV KEYCLOAK_REALM "ucs"
 ENV KEYCLOAK_CLIENT_ID "jitsi"
 ENV JWT_ALG "HS256"

@@ -25,6 +25,7 @@ Tested with Jitsi `stable-8960` images.
 docker run -d \
   -p "9000:9000/TCP" \
   -e KEYCLOAK_ORIGIN=https://ucs-sso-ng.mykeycloak.tld \
+  -e KEYCLOAK_ORIGIN_INTERNAL= \
   -e KEYCLOAK_REALM=myrealm \
   -e KEYCLOAK_CLIENT_ID=myclientid \
   -e JWT_APP_ID=myappid \
@@ -33,7 +34,11 @@ docker run -d \
   ghcr.io/nordeck/jitsi-keycloak-adapter
 ```
 
-`KEYCLOAK_ORIGIN` must be resolvable and accessible for the container.
+`KEYCLOAK_ORIGIN` must be resolvable and accessible for users and the container.
+
+Set `KEYCLOAK_ORIGIN_INTERNAL` if `KEYCLOAK_ORIGIN` is not accessible for the
+container and the container should access `Keycloak` by using an internal
+address.
 
 `JWT_APP_ID` and `JWT_APP_SECRET` must be the same for both `keycloak-adapter`
 and `jitsi`.
