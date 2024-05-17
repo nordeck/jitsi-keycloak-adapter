@@ -226,7 +226,7 @@ async function tokenize(req: Request): Promise<Response> {
       ]
     }
   ]
-  let room = conf.find(r => r.room === roomName);
+  let room = permissions.find(r => r.room === roomName);
 
   if(room) {
       // check if the user is in the moderator list
