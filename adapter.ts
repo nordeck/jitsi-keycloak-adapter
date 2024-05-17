@@ -16,6 +16,7 @@ import {
   KEYCLOAK_ORIGIN_INTERNAL,
   KEYCLOAK_REALM,
   PORT,
+  PERMISSIONS_FILE 
 } from "./config.ts";
 import { createContext } from "./context.ts";
 
@@ -60,8 +61,10 @@ function unauthorized(): Response {
 // -----------------------------------------------------------------------------
 async function generateJWT(
   userInfo: Record<string, unknown>,
+  room: string
 ): Promise<string | undefined> {
   try {
+
     const encoder = new TextEncoder();
     const keyData = encoder.encode(JWT_APP_SECRET);
     const cryptoKey = await crypto.subtle.importKey(
@@ -81,7 +84,7 @@ async function generateJWT(
       aud: JWT_APP_ID,
       iss: JWT_APP_ID,
       sub: "*",
-      room: "*",
+      room: room,
       iat: getNumericDate(0),
       nbf: getNumericDate(0),
       exp: getNumericDate(JWT_EXP_SECOND),
@@ -209,8 +212,41 @@ async function tokenize(req: Request): Promise<Response> {
   const userInfo = await getUserInfo(token);
   if (!userInfo) return unauthorized();
 
+  // Enhance userinfo
+  userInfo["lobby_bypass"] = true;
+  userInfo["security_bypass"] = true;
+  userInfo["affiliation"] = "owner";
+  const room = "*"
+
+  const conf = [
+    {
+      "room": "totallysecuredevopscall",
+      "moderators": [
+        "markus.keil@ethereum.org"
+      ]
+    }
+  ]
+  let room = conf.find(r => r.room === roomName);
+
+  if(room) {
+      // check if the user is in the moderator list
+      if(room.moderators.includes(userName)) {
+        console.log(`${userName} is a moderator of ${roomName}`);
+        // we keep the defaults
+      }
+      else {
+        console.log(`${userName} is not a moderator of ${roomName}`);
+        // reduce permissions
+        userInfo["affiliation"] = "member";
+
+      }
+  } else {
+      console.log(`room ${roomName} not found in permissions.`);
+  }
+
+
   // generate JWT
-  const jwt = await generateJWT(userInfo);
+  const jwt = await generateJWT(userInfo, room);
 
   if (DEBUG) console.log(`tokenize token: ${jwt}`);
 
@@ -299,6 +335,7 @@ async function handler(req: Request): Promise<Response> {
 // -----------------------------------------------------------------------------
 // main
 // -----------------------------------------------------------------------------
+const permissions: any = {};
 function main() {
   console.log(`KEYCLOAK_ORIGIN: ${KEYCLOAK_ORIGIN}`);
   console.log(`KEYCLOAK_ORIGIN_INTERNAL: ${KEYCLOAK_ORIGIN_INTERNAL}`);
@@ -313,10 +350,24 @@ function main() {
   console.log(`HOSTNAME: ${HOSTNAME}`);
   console.log(`PORT: ${PORT}`);
   console.log(`DEBUG: ${DEBUG}`);
+  if(PERMISSIONS_FILE) {
+    console.log(`PERMISSIONS_FILE: ${PERMISSIONS_FILE}`);
+  }
+
+  // Loading permissions
+  if(PERMISSIONS_FILE) {
+    if (fs.existsSync(PERMISSIONS_FILE)) {
+        const rawData = fs.readFileSync(PERMISSIONS_FILE, 'utf-8');
+        permissions = JSON.parse(rawData);
+        // now you can use the 'permissions' object
+    } else {
+        console.error(`File not found: ${PERMISSIONS_FILE} - No permissions loaded.`);
+    }
+  }
 
   serve(handler, {
     hostname: HOSTNAME,
-    port: PORT,
+    port: PORT
   });
 }
 

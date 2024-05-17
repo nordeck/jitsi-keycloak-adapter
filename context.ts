@@ -11,8 +11,9 @@ export function createContext(userInfo: Record<string, unknown>) {
       id: userInfo.sub,
       name: userInfo.preferred_username || "",
       email: userInfo.email || "",
-      lobby_bypass: true,
-      security_bypass: true,
+      lobby_bypass: userInfo.lobby_bypass || false,
+      security_bypass: userInfo.security_bypass || false,
+      affiliation: userInfo.affiliation || "member",
     },
   };
 
