@@ -35,11 +35,7 @@ jobs:
       uses: docker/metadata-action@v5
       id: meta
       with:
-        images: |
-          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-          type=raw,value=latest
-          type=raw,value=v${{ env.BUILD_DATE }}
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
     - name: Login
       uses: docker/login-action@v3
