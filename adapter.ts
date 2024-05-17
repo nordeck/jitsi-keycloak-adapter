@@ -218,14 +218,6 @@ async function tokenize(req: Request): Promise<Response> {
   userInfo["affiliation"] = "owner";
   const room = "*"
 
-  const conf = [
-    {
-      "room": "totallysecuredevopscall",
-      "moderators": [
-        "markus.keil@ethereum.org"
-      ]
-    }
-  ]
   let room = permissions.find(r => r.room === roomName);
 
   if(room) {
