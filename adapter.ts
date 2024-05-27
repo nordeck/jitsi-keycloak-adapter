@@ -216,11 +216,15 @@ async function tokenize(req: Request): Promise<Response> {
   userInfo["lobby_bypass"] = true;
   userInfo["security_bypass"] = true;
   userInfo["affiliation"] = "owner";
-  const room = "*"
+  let tokenRoom = "*"
+
+  let roomName = "test"
 
   let room = permissions.find(r => r.room === roomName);
 
   if(room) {
+      console.log(`Found config for room ${roomName}`)
+      tokenRoom = roomName;
       // check if the user is in the moderator list
       if(room.moderators.includes(userName)) {
         console.log(`${userName} is a moderator of ${roomName}`);
@@ -238,7 +242,7 @@ async function tokenize(req: Request): Promise<Response> {
 
 
   // generate JWT
-  const jwt = await generateJWT(userInfo, room);
+  const jwt = await generateJWT(userInfo, tokenRoom);
 
   if (DEBUG) console.log(`tokenize token: ${jwt}`);
 
