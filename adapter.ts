@@ -224,7 +224,8 @@ async function tokenize(req: Request): Promise<Response> {
   let room = permissions.find(r => r.room === roomName);
 
   if(room) {
-      console.log(`Found config for room ${roomName}`)
+      const userName = userInfo["email"]
+      console.log(`Found config for room ${roomName}. Checking for user ${userName}`)
       tokenRoom = roomName;
       // check if the user is in the moderator list
       if(room.moderators.includes(userName)) {
