@@ -357,7 +357,7 @@ function main() {
         const rawData = fs.readFileSync(PERMISSIONS_FILE, 'utf-8');
         permissions = JSON.parse(rawData);
         // now you can use the 'permissions' object
-        conosle.log(`Loaded ${permissions.length} permissions from ${PERMISSIONS_FILE}`)
+        console.log(`Loaded ${permissions.length} permissions from ${PERMISSIONS_FILE}`)
     } else {
         console.error(`File not found: ${PERMISSIONS_FILE} - No permissions loaded.`);
     }
