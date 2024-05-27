@@ -331,7 +331,7 @@ async function handler(req: Request): Promise<Response> {
 // -----------------------------------------------------------------------------
 // main
 // -----------------------------------------------------------------------------
-const permissions: any = {};
+const permissions: any = [];
 function main() {
   console.log(`KEYCLOAK_ORIGIN: ${KEYCLOAK_ORIGIN}`);
   console.log(`KEYCLOAK_ORIGIN_INTERNAL: ${KEYCLOAK_ORIGIN_INTERNAL}`);
@@ -356,6 +356,7 @@ function main() {
         const rawData = fs.readFileSync(PERMISSIONS_FILE, 'utf-8');
         permissions = JSON.parse(rawData);
         // now you can use the 'permissions' object
+        conosle.log(`Loaded ${permissions.length} permissions from ${PERMISSIONS_FILE}`)
     } else {
         console.error(`File not found: ${PERMISSIONS_FILE} - No permissions loaded.`);
     }
