@@ -219,7 +219,7 @@ async function tokenize(req: Request): Promise<Response> {
   userInfo["affiliation"] = "owner";
   let tokenRoom = "*"
 
-  let roomName = "test"
+  let roomName = path.slice(1);
 
   let room = permissions.find(r => r.room === roomName);
 
