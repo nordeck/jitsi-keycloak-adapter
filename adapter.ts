@@ -219,27 +219,41 @@ async function tokenize(req: Request): Promise<Response> {
   userInfo["affiliation"] = "owner";
   let tokenRoom = "*"
 
-  let roomName = path.slice(1);
+  // Loading permissions
+  if(PERMISSIONS_FILE) {
+    if (fs.existsSync(PERMISSIONS_FILE)) {
+        let permissions: any = [];
+        const rawData = fs.readFileSync(PERMISSIONS_FILE, 'utf-8');
+        permissions = JSON.parse(rawData);
+        // now you can use the 'permissions' object
+        console.log(`Loaded ${permissions.length} permissions from ${PERMISSIONS_FILE}`)
+  
+        let roomName = path.slice(1);
 
-  let room = permissions.find(r => r.room === roomName);
+        let room = permissions.find(r => r.room === roomName);
 
-  if(room) {
-      const userName = userInfo["email"]
-      console.log(`Found config for room ${roomName}. Checking for user ${userName}`)
-      tokenRoom = roomName;
-      // check if the user is in the moderator list
-      if(room.moderators.includes(userName)) {
-        console.log(`${userName} is a moderator of ${roomName}`);
-        // we keep the defaults
-      }
-      else {
-        console.log(`${userName} is not a moderator of ${roomName}`);
-        // reduce permissions
-        userInfo["affiliation"] = "member";
+        if(room) {
+            const userName = userInfo["email"]
+            console.log(`Found config for room ${roomName}. Checking for user ${userName}`)
+            tokenRoom = roomName;
+            // check if the user is in the moderator list
+            if(room.moderators.includes(userName)) {
+              console.log(`${userName} is a moderator of ${roomName}`);
+              // we keep the defaults
+            }
+            else {
+              console.log(`${userName} is not a moderator of ${roomName}`);
+              // reduce permissions
+              userInfo["affiliation"] = "member";
 
-      }
-  } else {
-      console.log(`room ${roomName} not found in permissions.`);
+            }
+        } else {
+            console.log(`room ${roomName} not found in permissions.`);
+        }
+
+    } else {
+        console.error(`File not found: ${PERMISSIONS_FILE} - No permissions loaded.`);
+    }
   }
 
 
@@ -333,7 +347,6 @@ async function handler(req: Request): Promise<Response> {
 // -----------------------------------------------------------------------------
 // main
 // -----------------------------------------------------------------------------
-let permissions: any = [];
 function main() {
   console.log(`KEYCLOAK_ORIGIN: ${KEYCLOAK_ORIGIN}`);
   console.log(`KEYCLOAK_ORIGIN_INTERNAL: ${KEYCLOAK_ORIGIN_INTERNAL}`);
@@ -350,18 +363,6 @@ function main() {
   console.log(`DEBUG: ${DEBUG}`);
   if(PERMISSIONS_FILE) {
     console.log(`PERMISSIONS_FILE: ${PERMISSIONS_FILE}`);
-  }
-
-  // Loading permissions
-  if(PERMISSIONS_FILE) {
-    if (fs.existsSync(PERMISSIONS_FILE)) {
-        const rawData = fs.readFileSync(PERMISSIONS_FILE, 'utf-8');
-        permissions = JSON.parse(rawData);
-        // now you can use the 'permissions' object
-        console.log(`Loaded ${permissions.length} permissions from ${PERMISSIONS_FILE}`)
-    } else {
-        console.error(`File not found: ${PERMISSIONS_FILE} - No permissions loaded.`);
-    }
   }
 
   serve(handler, {
