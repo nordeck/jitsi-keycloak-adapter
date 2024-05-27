@@ -27,4 +27,4 @@ CMD \
     [ "$(echo $ALLOW_UNSECURE_CERT | tr '[:upper:]' '[:lower:]')" = true ] && \
         IGNORE_CERT_ERRORS="--unsafely-ignore-certificate-errors"; \
 \
-    deno run --allow-net --allow-env $IGNORE_CERT_ERRORS /app/adapter.ts
+    deno run --allow-read --allow-net --allow-env $IGNORE_CERT_ERRORS /app/adapter.ts
