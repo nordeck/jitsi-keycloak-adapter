@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import { serve } from "https://deno.land/std@0.211.0/http/server.ts";
 import { STATUS_CODE } from "https://deno.land/std@0.211.0/http/status.ts";
 import { create, getNumericDate } from "https://deno.land/x/djwt@v3.0.1/mod.ts";
