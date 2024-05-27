@@ -18,4 +18,4 @@ export const JWT_EXP_SECOND = Number(Deno.env.get("JWT_EXP_SECOND") || 3600);
 export const HOSTNAME = Deno.env.get("HOSTNAME") || "127.0.0.1";
 export const PORT = Number(Deno.env.get("PORT") || 9000);
 export const DEBUG = Deno.env.get("DEBUG") === "true";
-export const PERMISSIONS_FILE = Deno.env.get("PERMISSIONS_FILE ") || false;
+export const PERMISSIONS_FILE = Deno.env.get("PERMISSIONS_FILE") || false;
