@@ -332,7 +332,7 @@ async function handler(req: Request): Promise<Response> {
 // -----------------------------------------------------------------------------
 // main
 // -----------------------------------------------------------------------------
-const permissions: any = [];
+let permissions: any = [];
 function main() {
   console.log(`KEYCLOAK_ORIGIN: ${KEYCLOAK_ORIGIN}`);
   console.log(`KEYCLOAK_ORIGIN_INTERNAL: ${KEYCLOAK_ORIGIN_INTERNAL}`);
