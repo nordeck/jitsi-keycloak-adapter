@@ -233,18 +233,27 @@ async function tokenize(req: Request): Promise<Response> {
         let room = permissions.find(r => r.room === roomName);
 
         if(room) {
+            // Check for lobby settings
+            const lobby = room.useLobby
+            
+  
+
             const userName = userInfo["email"]
             console.log(`Found config for room ${roomName}. Checking for user ${userName}`)
             tokenRoom = roomName;
             // check if the user is in the moderator list
             if(room.moderators.includes(userName)) {
               console.log(`${userName} is a moderator of ${roomName}`);
-              // we keep the defaults
+              // make use owner
+              userInfo["affiliation"] = "owner";
             }
             else {
               console.log(`${userName} is not a moderator of ${roomName}`);
               // reduce permissions
               userInfo["affiliation"] = "member";
+              if(lobby) {
+                userInfo["lobby_bypass"] = false;
+              }
 
             }
         } else {
@@ -373,3 +382,4 @@ function main() {
 
 // -----------------------------------------------------------------------------
 main();
+
