@@ -48,6 +48,8 @@ Create `client` inside `realm`.
 
 - [jitsi-keycloak](https://github.com/D3473R/jitsi-keycloak)
 - [Jitsi-SAML2JWT](https://github.com/Renater/Jitsi-SAML2JWT)
+- [jitsi-OIDC-adapter](https://github.com/aadpM2hhdixoJm3u/jitsi-OIDC-adapter)
+- [Jitsi Go OpenID](https://github.com/mod242/jitsi-go-openid)
 
 ## 5. Sponsors
 
