@@ -364,12 +364,12 @@ async function yolo_auth(req: Request): Response {
     "security_bypass": true,
     "affiliation": "owner"
   }
-  let roomName = path.slice(1);
+  let roomName = path;
   const jwt = await generateJWT(userInfo, roomName);
 
   if (DEBUG) console.log(`tokenize token: ${jwt}`);
 
-  const redirectUrl = path + '?oidc=authenticated&jwt=' + JSON.stringify(jwt);
+  const redirectUrl = '/' + path + '?oidc=authenticated&jwt=' + jwt;
 
   // Create a Response object with a 302 redirect status
   return new Response(null, {
