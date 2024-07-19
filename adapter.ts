@@ -336,7 +336,7 @@ function generateGUID() {
     return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 }
 
-function yolo_auth(req: Request): Response {
+async function yolo_auth(req: Request): Response {
   // Don't go to keycloak if the room name is prefixed yolo_ and just create a usable JWT
   const host = req.headers.get("host");
   const url = new URL(req.url);
@@ -393,7 +393,7 @@ async function handler(req: Request): Promise<Response> {
   } else if (path === "/oidc/health") {
     return ok("healthy");
   } else if (path === "/oidc/yolo") {
-    return yolo_auth(req);
+    return await yolo_auth(req);
   } else if (path === "/oidc/redirect") {
     return redirect(req);
   } else if (path === "/oidc/tokenize") {
