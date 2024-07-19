@@ -329,6 +329,56 @@ function auth(req: Request): Response {
   return oidcRedirectForCode(req, "login");
 }
 
+function generateGUID() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+    return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
+}
+
+function yolo_auth(req: Request): Response {
+  // Don't go to keycloak if the room name is prefixed yolo_ and just create a usable JWT
+  const host = req.headers.get("host");
+  const url = new URL(req.url);
+  const qs = new URLSearchParams(url.search);
+  const path = qs.get("path");
+  const search = qs.get("search") || "";
+  const hash = qs.get("hash") || "";
+  
+  console.log("Got a yolo requerst for " + path)
+ 
+  // check if it's really a yolo
+  if (!path.startsWith("yolo_")) {
+    console.log("Not yolo. aborting.")
+    return new Response("no-yolo", {
+      status: STATUS_CODE.FORBIDDEN,
+    });
+  }
+
+  // Generate JWT
+  const userInfo = {
+    "id": generateGUID(),
+    //"name": "Fellow Jitster",
+    //"email": "jitsi@example.com",
+    "lobby_bypass": true,
+    "security_bypass": true,
+    "affiliation": "owner"
+  }
+  let roomName = path.slice(1);
+  const jwt = await generateJWT(userInfo, roomName);
+
+  if (DEBUG) console.log(`tokenize token: ${jwt}`);
+
+  const redirectUrl = path + '?oidc=authenticated&jwt=' + JSON.stringify(jwt);
+
+  // Create a Response object with a 302 redirect status
+  return new Response(null, {
+      status: 302,
+      headers: {
+          'Location': redirectUrl
+      }
+  });
+}
 // -----------------------------------------------------------------------------
 // handler
 // -----------------------------------------------------------------------------
@@ -342,6 +392,8 @@ async function handler(req: Request): Promise<Response> {
     return ok("healthy");
   } else if (path === "/oidc/health") {
     return ok("healthy");
+  } else if (path === "/oidc/yolo") {
+    return yolo_auth(req);
   } else if (path === "/oidc/redirect") {
     return redirect(req);
   } else if (path === "/oidc/tokenize") {
