@@ -357,8 +357,8 @@ async function yolo_auth(req: Request): Response {
 
   // Generate JWT
   const userInfo = {
-    "id": generateGUID(),
-    "name": "Fellow Jitster",
+    "sub": generateGUID(),
+    "preferred_username": "Fellow Jitster",
     "email": "jitsi@example.com",
     "lobby_bypass": true,
     "security_bypass": true,
