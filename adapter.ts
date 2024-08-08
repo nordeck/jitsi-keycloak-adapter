@@ -1,7 +1,6 @@
-import { serve } from "https://deno.land/std@0.211.0/http/server.ts";
-import { STATUS_CODE } from "https://deno.land/std@0.211.0/http/status.ts";
-import { create, getNumericDate } from "https://deno.land/x/djwt@v3.0.1/mod.ts";
-import { Algorithm } from "https://deno.land/x/djwt@v3.0.1/algorithm.ts";
+import { STATUS_CODE } from "https://deno.land/std@0.224.0/http/status.ts";
+import { create, getNumericDate } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
+import { Algorithm } from "https://deno.land/x/djwt@v3.0.2/algorithm.ts";
 import {
   DEBUG,
   HOSTNAME,
@@ -314,10 +313,10 @@ function main() {
   console.log(`PORT: ${PORT}`);
   console.log(`DEBUG: ${DEBUG}`);
 
-  serve(handler, {
+  Deno.serve({
     hostname: HOSTNAME,
     port: PORT,
-  });
+  }, handler);
 }
 
 // -----------------------------------------------------------------------------
