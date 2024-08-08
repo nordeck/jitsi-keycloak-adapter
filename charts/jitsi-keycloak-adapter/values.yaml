@@ -74,6 +74,12 @@ containerSecurityContext:
 #
 extraEnvVars: []
 
+# -- Optionally specify extra list of additional volumes
+extraVolumes: []
+
+# -- Optionally specify extra list of additional volumeMounts.
+extraVolumeMounts: []
+
 # -- Provide a name to substitute for the full names of resources.
 fullnameOverride: ""
 
@@ -100,7 +106,7 @@ image:
   imagePullPolicy: "IfNotPresent"
 
   # -- Define image tag.
-  tag: "v20230906@sha256:54d45ee1a1205f98641810ffb171bd92e6478e2957a349ee4ff599359239fbf2"
+  tag: "v20240808@sha256:7448b2b5e1391b9668738a379c5fedbbece59c55fb09a18e8edbce19499896f3"
 
 
 # After deployment of JVB service, the job fetches the provisioned LoadBalancer IP or NodePort port to advertise.
@@ -145,9 +151,9 @@ patchJVB:
     #
     # "IfNotPresent" => The image is pulled only if it is not already present locally.
     # "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to
-    #             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached
-    #             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved
-    #             digest, and uses that image to launch the container.
+    #             resolve the name to an image digest. If the kubelet has a container image with that exact digest
+    #             cached locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with
+    #             the resolved digest, and uses that image to launch the container.
     # "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the
     #            kubelet attempts to start the container; otherwise, startup fails
     #
@@ -208,8 +214,10 @@ jitsi:
   web:
     replicaCount: 1
     image:
-      tag: "stable-8922@sha256:24bd4179998fe01ace1be74e53fea5308f4d91722953bb4334611e6886753f46"
+      tag: "stable-9646@sha256:c35b17a3485d7f6952135521af30ae9f5d46b2dda57820c96a95a3c8a2aacfec"
       pullPolicy: "IfNotPresent"
+    extraEnvs:
+      COLIBRI_WEBSOCKET_REGEX: "[a-z0-9._-]+"
     extraVolumes:
       - name: "jitsi-meet-swp"
         configMap:
@@ -265,7 +273,7 @@ jitsi:
         type: "RuntimeDefault"
   prosody:
     image:
-      tag: "stable-8922@sha256:243547f24ae7d686d1f0c18ee230cf93119a66f095dda282bacbf45d4bb69f77"
+      tag: "stable-9646@sha256:17751c0d816722b17261a51280e751b18a5a0a077a0612e54567b37b3970bc0b"
       pullPolicy: "IfNotPresent"
     extraEnvs:
       - name: "AUTH_TYPE"
@@ -279,7 +287,7 @@ jitsi:
 
   jicofo:
     image:
-      tag: "stable-8922@sha256:820fcd4b072b29f42c1c37389fbefda1065f1e9654694941485dc08123c8a93b"
+      tag: "stable-9646@sha256:cb0d0358a50d7a6b37c9dbcf59ed7e50880649d76e7a1a8472a9d5380bc39fce"
       pullPolicy: "IfNotPresent"
     extraEnvs:
       AUTH_TYPE: "xmpp"
@@ -303,7 +311,7 @@ jitsi:
 
   jvb:
     image:
-      tag: "stable-8922@sha256:75dd613807e19cbbd440d071b60609fa9e4ee50a1396b14deb0ed779d882a554"
+      tag: "stable-9646@sha256:202b762273125260c790cd438aa2a0e2df1e60955b14d6f9c06b2d98c0e46527"
       pullPolicy: "IfNotPresent"
     replicaCount: 1
     service:
@@ -322,7 +330,7 @@ jitsi:
     recording: true
     livestreaming: true
     image:
-      tag: "stable-8922@sha256:87aa176b44b745b13769f13b8e2d22ddd6f6ba624244d5354c8dd3664787e936"
+      tag: "stable-9646@sha256:653914f1e1b08bc650b313bd36caec55250715e7e78ccd18e5e0656a213256f3"
       pullPolicy: "IfNotPresent"
     readinessProbe:
       initialDelaySeconds: 15
@@ -338,6 +346,10 @@ jitsi:
         type: "RuntimeDefault"
       readOnlyRootFilesystem: false
       runAsNonRoot: false
+    shm:
+      enabled: true
+      useHost: false
+      size: "2Gi"
 
   extraCommonEnvs:
     ADAPTER_INTERNAL_URL: "http://jitsi-keycloak-adapter:9000"
