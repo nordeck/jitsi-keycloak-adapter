@@ -106,7 +106,7 @@ image:
   imagePullPolicy: "IfNotPresent"
 
   # -- Define image tag.
-  tag: "v20240808@sha256:7448b2b5e1391b9668738a379c5fedbbece59c55fb09a18e8edbce19499896f3"
+  tag: "v20240908@sha256:9170cc8fd67ad5c09ddf3297f1b48eb23492f42901ee10a6239cb816884d3fe9"
 
 
 # After deployment of JVB service, the job fetches the provisioned LoadBalancer IP or NodePort port to advertise.
