@@ -3,7 +3,9 @@
     const qs = new URLSearchParams(window.location.search.substring(1));
     qs.delete("oidc");
 
-    const path = encodeURIComponent(window.location.pathname);
+    const path = encodeURIComponent(
+      window.location.pathname.replace(/\/+/g, "/"),
+    );
     const search = encodeURIComponent(qs.toString());
     const hash = encodeURIComponent(window.location.hash.substring(1));
 
