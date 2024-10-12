@@ -1,146 +1,147 @@
 <script>
-let failedAttempt = 0;
+  let failedAttempt = 0;
 
-function base32decode(s) {
-  const a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-  const pad = "=";
-  const len = s.length;
-  const apad = a + pad;
-  let v, x, r=0, bits=0, c, o="";
+  function base32decode(s) {
+    const a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    const pad = "=";
+    const len = s.length;
+    const apad = a + pad;
+    let v, x, r = 0, bits = 0, c, o = "";
 
-  s = s.toUpperCase();
+    s = s.toUpperCase();
 
-  for(i=0; i<len; i+=1) {
-    v = apad.indexOf(s.charAt(i));
-    if (v>=0 && v<32) {
-      x = (x << 5) | v;
-      bits += 5;
-      if (bits >= 8) {
-        c = (x >> (bits - 8)) & 0xff;
+    for (i = 0; i < len; i += 1) {
+      v = apad.indexOf(s.charAt(i));
+      if (v >= 0 && v < 32) {
+        x = (x << 5) | v;
+        bits += 5;
+        if (bits >= 8) {
+          c = (x >> (bits - 8)) & 0xff;
+          o = o + String.fromCharCode(c);
+          bits -= 8;
+        }
+      }
+    }
+
+    // remaining bits are < 8
+    if (bits > 0) {
+      c = ((x << (8 - bits)) & 0xff) >> (8 - bits);
+      // Dont append a null terminator.
+      if (c !== 0) {
         o = o + String.fromCharCode(c);
-        bits -= 8;
+      }
+    }
+
+    return o;
+  }
+
+  function oidcRedirect() {
+    const qs = new URLSearchParams(window.location.search.substring(1));
+    qs.delete("oidc");
+
+    const path = encodeURIComponent(window.location.pathname);
+    const search = encodeURIComponent(qs.toString());
+    const hash = encodeURIComponent(window.location.hash.substring(1));
+
+    window.location = `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
+
+    try {
+      // remove react from DOM to prevent UI distortion
+      document.all.react.remove();
+    } catch {
+      // do nothing
+    }
+  }
+
+  function interceptLoginRequest() {
+    try {
+      // if conference is already started, dont wait for an auth request
+      if (APP.conference.isJoined()) return;
+
+      // check if login or IamHost button is created in DOM
+      const _button = document.getElementById("modal-dialog-ok-button");
+      if (!_button) throw ("button is not created yet");
+
+      let labelKey;
+      try {
+        labelKey = Object.values(_button)[0].return.memoizedProps.labelKey;
+      } catch {
+        // do nothing
+      }
+
+      if (labelKey === "dialog.login") {
+        // if this is a login screen, redirect to OIDC login page
+        oidcRedirect();
+      } else if (labelKey === "dialog.IamHost") {
+        // if this is an IamHost screen, redirect to OIDC login page when clicked
+        _button.onclick = oidcRedirect;
+      }
+    } catch (e) {
+      failedAttempt += 1;
+
+      if (failedAttempt < 180) {
+        setTimeout(function () {
+          interceptLoginRequest();
+        }, 1000);
       }
     }
   }
 
-  // remaining bits are < 8
-  if (bits>0) {
-    c = ((x << (8 - bits)) & 0xff) >> (8 - bits);
-    // Dont append a null terminator.
-    if (c!==0) {
-      o = o + String.fromCharCode(c);
-    }
-  }
-
-  return o;
-}
-
-function oidcRedirect() {
-  const qs = new URLSearchParams(window.location.search.substring(1));
-  qs.delete('oidc');
-
-  const path = encodeURIComponent(window.location.pathname);
-  const search = encodeURIComponent(qs.toString());
-  const hash = encodeURIComponent(window.location.hash.substring(1));
-
-  window.location = `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
-
-  try {
-    // remove react from DOM to prevent UI distortion
-    document.all.react.remove();
-  } catch {
-    // do nothing
-  }
-}
-
-function interceptLoginRequest() {
-  try {
-    // if conference is already started, dont wait for an auth request
-    if (APP.conference.isJoined()) return;
-
-    // check if login or IamHost button is created in DOM
-    const _button = document.getElementById("modal-dialog-ok-button");
-    if (!_button) throw("button is not created yet");
-
-    let labelKey;
+  // This function customizes Jitsi UI if the room is created by Element Jitsi
+  // Widget. It senses the room created by Element by checking its name. The room
+  // created by Element has a special name format:
+  //
+  //   base32decode(room_name) should match RegExp("^(!.*:.*[.][a-z]*)$")
+  //   or
+  //   room_name should match RegExp("^(Jitsi[A-Z][a-z]{23})$")
+  function updateUIforElement() {
     try {
-      labelKey = Object.values(_button)[0].return.memoizedProps.labelKey;
-    } catch {
-      // do nothing
-    }
+      if (!APP.conference.isJoined()) throw new Error("not joined yet");
 
-    if (labelKey === "dialog.login") {
-      // if this is a login screen, redirect to OIDC login page
-      oidcRedirect();
-    } else if (labelKey === "dialog.IamHost") {
-      // if this is an IamHost screen, redirect to OIDC login page when clicked
-      _button.onclick = oidcRedirect
-    }
-  } catch(e) {
-    failedAttempt += 1;
+      try {
+        const roomName = APP.store.getState()["features/base/conference"].room;
+        const decoded = base32decode(roomName);
+        const reg1 = new RegExp("^(!.*:.*[.][a-z]*)$");
+        const reg2 = new RegExp("^(Jitsi[A-Z][a-z]{23})$");
+        if (!reg1.test(decoded) && !reg2.test(roomName)) {
+          throw new Error("not a Matrix room");
+        }
 
-    if (failedAttempt < 180) {
-      setTimeout(function() {interceptLoginRequest();}, 1000);
-    }
-  }
-}
-
-// This function customizes Jitsi UI if the room is created by Element Jitsi
-// Widget. It senses the room created by Element by checking its name. The room
-// created by Element has a special name format:
-//
-//   base32decode(room_name) should match RegExp("^(!.*:.*[.][a-z]*)$")
-//   or
-//   room_name should match RegExp("^(Jitsi[A-Z][a-z]{23})$")
-function updateUIforElement() {
-  try {
-    if (!APP.conference.isJoined()) throw new Error("not joined yet");
-
-    try {
-      const roomName = APP.store.getState()["features/base/conference"].room;
-      const decoded = base32decode(roomName);
-      const reg1 = new RegExp("^(!.*:.*[.][a-z]*)$");
-      const reg2 = new RegExp("^(Jitsi[A-Z][a-z]{23})$");
-      if (!reg1.test(decoded) && !reg2.test(roomName)) {
-        throw new Error("not a Matrix room");
+        APP.store.getState()["features/base/config"].toolbarButtons = [
+          "camera",
+          "closedcaptions",
+          "desktop",
+          "download",
+          "feedback",
+          "filmstrip",
+          "fullscreen",
+          "hangup",
+          "help",
+          "livestreaming",
+          "microphone",
+          "mute-everyone",
+          "mute-video-everyone",
+          "participants-pane",
+          "profile",
+          "raisehand",
+          "security",
+          "select-background",
+          "settings",
+          "shareaudio",
+          "shortcuts",
+          "stats",
+          "tileview",
+          "toggle-camera",
+          "videoquality",
+        ];
+      } catch {
+        // do nothing
       }
-
-      APP.store.getState()["features/base/config"].toolbarButtons = [
-        "camera",
-        "closedcaptions",
-        "desktop",
-        "download",
-        "feedback",
-        "filmstrip",
-        "fullscreen",
-        "hangup",
-        "help",
-        "livestreaming",
-        "microphone",
-        "mute-everyone",
-        "mute-video-everyone",
-        "participants-pane",
-        "profile",
-        "raisehand",
-        "security",
-        "select-background",
-        "settings",
-        "shareaudio",
-        "shortcuts",
-        "stats",
-        "tileview",
-        "toggle-camera",
-        "videoquality",
-      ];
     } catch {
-      // do nothing
+      setTimeout(updateUIforElement, 1000);
     }
-
-  } catch {
-    setTimeout(updateUIforElement, 1000);
   }
-}
 
-interceptLoginRequest();
-updateUIforElement();
+  interceptLoginRequest();
+  updateUIforElement();
 </script>

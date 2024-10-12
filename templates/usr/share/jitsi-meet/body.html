@@ -1,46 +1,48 @@
 <script>
-function oidcRedirect() {
-  const qs = new URLSearchParams(window.location.search.substring(1));
-  qs.delete('oidc');
+  function oidcRedirect() {
+    const qs = new URLSearchParams(window.location.search.substring(1));
+    qs.delete("oidc");
 
-  const path = encodeURIComponent(window.location.pathname);
-  const search = encodeURIComponent(qs.toString());
-  const hash = encodeURIComponent(window.location.hash.substring(1));
+    const path = encodeURIComponent(window.location.pathname);
+    const search = encodeURIComponent(qs.toString());
+    const hash = encodeURIComponent(window.location.hash.substring(1));
 
-  window.location = `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
+    window.location = `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
 
-  try {
-    // remove react from DOM to prevent UI distortion
-    document.all.react.remove();
-  } catch {
-    // do nothing
-  }
-}
-
-function interceptLoginRequest() {
-  try {
-    // check if login or IamHost button is created in DOM
-    const _button = document.getElementById("modal-dialog-ok-button");
-    if (!_button) return;
-
-    let labelKey;
     try {
-      labelKey = Object.values(_button)[0].return.memoizedProps.labelKey;
+      // remove react from DOM to prevent UI distortion
+      document.all.react.remove();
     } catch {
       // do nothing
     }
-
-    if (labelKey === "dialog.login") {
-      // if this is a login screen, redirect to OIDC login page
-      oidcRedirect();
-    } else if (labelKey === "dialog.IamHost") {
-      // if this is an IamHost screen, redirect to OIDC login page when clicked
-      _button.onclick = oidcRedirect
-    }
-  } finally {
-    setTimeout(function() {interceptLoginRequest();}, 1000);
   }
-}
 
-interceptLoginRequest();
+  function interceptLoginRequest() {
+    try {
+      // check if login or IamHost button is created in DOM
+      const _button = document.getElementById("modal-dialog-ok-button");
+      if (!_button) return;
+
+      let labelKey;
+      try {
+        labelKey = Object.values(_button)[0].return.memoizedProps.labelKey;
+      } catch {
+        // do nothing
+      }
+
+      if (labelKey === "dialog.login") {
+        // if this is a login screen, redirect to OIDC login page
+        oidcRedirect();
+      } else if (labelKey === "dialog.IamHost") {
+        // if this is an IamHost screen, redirect to OIDC login page when clicked
+        _button.onclick = oidcRedirect;
+      }
+    } finally {
+      setTimeout(function () {
+        interceptLoginRequest();
+      }, 1000);
+    }
+  }
+
+  interceptLoginRequest();
 </script>
