@@ -59,6 +59,8 @@ function unauthorized(): Response {
 // -----------------------------------------------------------------------------
 async function generateJWT(
   userInfo: Record<string, unknown>,
+  sub: string,
+  room: string,
 ): Promise<string | undefined> {
   try {
     const encoder = new TextEncoder();
@@ -79,8 +81,8 @@ async function generateJWT(
     const payload = {
       aud: JWT_APP_ID,
       iss: JWT_APP_ID,
-      sub: "*",
-      room: "*",
+      sub: sub,
+      room: room,
       iat: getNumericDate(0),
       nbf: getNumericDate(0),
       exp: getNumericDate(JWT_EXP_SECOND),
@@ -188,6 +190,8 @@ async function tokenize(req: Request): Promise<Response> {
   const path = qs.get("path") || "";
   const search = qs.get("search") || "";
   const hash = qs.get("hash") || "";
+  const room = path.split("/").reverse()[0];
+  const tenant = path.split("/").reverse()[1]?.toLowerCase();
 
   if (DEBUG) console.log(`tokenize code: ${code}`);
 
@@ -209,7 +213,7 @@ async function tokenize(req: Request): Promise<Response> {
   if (!userInfo) return unauthorized();
 
   // generate JWT
-  const jwt = await generateJWT(userInfo);
+  const jwt = await generateJWT(userInfo, tenant || host, room);
 
   if (DEBUG) console.log(`tokenize token: ${jwt}`);
 
