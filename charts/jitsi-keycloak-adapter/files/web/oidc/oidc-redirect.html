@@ -4,7 +4,9 @@
     <meta charset="utf-8" />
     <script>
       function redirect() {
-        const path = encodeURIComponent(window.location.pathname);
+        const path = encodeURIComponent(
+          window.location.pathname.replace(/\/+/g, "/"),
+        );
         const search = encodeURIComponent(window.location.search.substring(1));
         const hash = encodeURIComponent(window.location.hash.substring(1));
 
