@@ -35,6 +35,8 @@
         const search = qs.get("search") || "";
         const hash = qs.get("hash") || "";
 
+        if (!path.match("^/")) throw new Error("invalid path");
+
         let target = `${path}?` +
           `${search}${search ? "&" : ""}` +
           `oidc=unauthorized` +
