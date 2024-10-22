@@ -1,6 +1,6 @@
 *~
 *.sw?
 *.log
-
+.DS_Store
 Chart.lock
 charts/jitsi-keycloak-adapter/charts/
