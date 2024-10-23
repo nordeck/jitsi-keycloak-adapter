@@ -7,7 +7,12 @@
       window.location.pathname.replace(/\/+/g, "/"),
     );
     const search = encodeURIComponent(qs.toString());
-    const hash = encodeURIComponent(window.location.hash.substring(1));
+
+    let hash = "config.prejoinConfig.enabled=false";
+    if (window.location.hash) {
+      hash = `${hash}&${window.location.hash.substring(1)}`;
+    }
+    hash = encodeURIComponent(hash);
 
     window.location = `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
 
