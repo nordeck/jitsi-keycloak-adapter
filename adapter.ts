@@ -17,7 +17,7 @@ import {
   KEYCLOAK_ORIGIN_INTERNAL,
   KEYCLOAK_REALM,
   PORT,
-  PERMISSIONS_FILE 
+  PERMISSIONS_FILE
 } from "./config.ts";
 import { createContext } from "./context.ts";
 
@@ -220,48 +220,48 @@ async function tokenize(req: Request): Promise<Response> {
   let tokenRoom = "*"
 
   // Loading permissions
-  if(PERMISSIONS_FILE) {
+  if (PERMISSIONS_FILE) {
     if (fs.existsSync(PERMISSIONS_FILE)) {
-        let permissions: any = [];
-        const rawData = fs.readFileSync(PERMISSIONS_FILE, 'utf-8');
-        permissions = JSON.parse(rawData);
-        // now you can use the 'permissions' object
-        console.log(`Loaded ${permissions.length} permissions from ${PERMISSIONS_FILE}`)
-  
-        let roomName = path.slice(1);
+      let permissions: any = [];
+      const rawData = fs.readFileSync(PERMISSIONS_FILE, 'utf-8');
+      permissions = JSON.parse(rawData);
+      // now you can use the 'permissions' object
+      console.log(`Loaded ${permissions.length} permissions from ${PERMISSIONS_FILE}`)
 
-        let room = permissions.find(r => r.room === roomName);
+      let roomName = path.slice(1);
 
-        if(room) {
-            // Check for lobby settings
-            const lobby = room.useLobby
-            
-  
+      let room = permissions.find(r => r.room === roomName);
 
-            const userName = userInfo["email"]
-            console.log(`Found config for room ${roomName}. Checking for user ${userName}`)
-            tokenRoom = roomName;
-            // check if the user is in the moderator list
-            if(room.moderators.includes(userName)) {
-              console.log(`${userName} is a moderator of ${roomName}`);
-              // make use owner
-              userInfo["affiliation"] = "owner";
-            }
-            else {
-              console.log(`${userName} is not a moderator of ${roomName}`);
-              // reduce permissions
-              userInfo["affiliation"] = "member";
-              if(lobby) {
-                userInfo["lobby_bypass"] = false;
-              }
+      if (room) {
+        // Check for lobby settings
+        const lobby = room.useLobby
 
-            }
-        } else {
-            console.log(`room ${roomName} not found in permissions.`);
+
+
+        const userName = userInfo["email"]
+        console.log(`Found config for room ${roomName}. Checking for user ${userName}`)
+        tokenRoom = roomName;
+        // check if the user is in the moderator list
+        if (room.moderators.includes(userName)) {
+          console.log(`${userName} is a moderator of ${roomName}`);
+          // make use owner
+          userInfo["affiliation"] = "owner";
         }
+        else {
+          console.log(`${userName} is not a moderator of ${roomName}`);
+          // reduce permissions
+          userInfo["affiliation"] = "member";
+          if (lobby) {
+            userInfo["lobby_bypass"] = false;
+          }
+
+        }
+      } else {
+        console.log(`room ${roomName} not found in permissions.`);
+      }
 
     } else {
-        console.error(`File not found: ${PERMISSIONS_FILE} - No permissions loaded.`);
+      console.error(`File not found: ${PERMISSIONS_FILE} - No permissions loaded.`);
     }
   }
 
@@ -330,10 +330,10 @@ function auth(req: Request): Response {
 }
 
 function generateGUID() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  }
+  return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 }
 
 async function yolo_auth(req: Request): Response {
@@ -344,9 +344,9 @@ async function yolo_auth(req: Request): Response {
   const path = qs.get("path");
   const search = qs.get("search") || "";
   const hash = qs.get("hash") || "";
-  
+
   console.log("Got a yolo requerst for " + path)
- 
+
   // check if it's really a yolo
   if (!path.startsWith("yolo_")) {
     console.log("Not yolo. aborting.")
@@ -373,12 +373,53 @@ async function yolo_auth(req: Request): Response {
 
   // Create a Response object with a 302 redirect status
   return new Response(null, {
-      status: 302,
-      headers: {
-          'Location': redirectUrl
-      }
+    status: 302,
+    headers: {
+      'Location': redirectUrl
+    }
   });
 }
+
+// bypass auth function for monitoring
+async function monitoring_auth(req: Request): Promise<Response> {
+  const url = new URL(req.url);
+  const qs = new URLSearchParams(url.search);
+  const path = qs.get("path");
+
+  console.log("Got a monitoring request for " + path);
+
+  // check it's amonitoring request
+  if (!path?.startsWith("jitsimonitoring_aml0c2lt")) {
+    console.log("Not a monitoring request. Aborting.")
+    return new Response("not-monitoring", {
+      status: STATUS_CODE.FORBIDDEN,
+    });
+  }
+
+  // Generate JWT with monitoring userInfo
+  const userInfo = {
+    "sub": "monitoring-" + generateGUID(),
+    "preferred_username": "Jitsi Monitor",
+    "email": "monitor@jitsi.local",
+    "lobby_bypass": true,
+    "security_bypass": true,
+    "affiliation": "owner"
+  }
+
+  const jwt = await generateJWT(userInfo, path);
+
+  if (DEBUG) console.log(`monitoring token: ${jwt}`);
+
+  const redirectUrl = '/' + path + '?oidc=authenticated&jwt=' + jwt;
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      'Location': redirectUrl
+    }
+  });
+}
+
 // -----------------------------------------------------------------------------
 // handler
 // -----------------------------------------------------------------------------
@@ -394,6 +435,8 @@ async function handler(req: Request): Promise<Response> {
     return ok("healthy");
   } else if (path === "/oidc/yolo") {
     return await yolo_auth(req);
+  } else if (path === "/oidc/monitoring") {
+    return await monitoring_auth(req);
   } else if (path === "/oidc/redirect") {
     return redirect(req);
   } else if (path === "/oidc/tokenize") {
@@ -422,7 +465,7 @@ function main() {
   console.log(`HOSTNAME: ${HOSTNAME}`);
   console.log(`PORT: ${PORT}`);
   console.log(`DEBUG: ${DEBUG}`);
-  if(PERMISSIONS_FILE) {
+  if (PERMISSIONS_FILE) {
     console.log(`PERMISSIONS_FILE: ${PERMISSIONS_FILE}`);
   }
 
