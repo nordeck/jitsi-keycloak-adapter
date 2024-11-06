@@ -52,7 +52,7 @@ https://jitsi.yourdomain.com/static/token.html
 when she visits
 
 ```
-https://jitsi.yourdomain.com/mytenant/myRoom
+https://jitsi.yourdomain.com/myTenant/myRoom
 ```
 
 But this is not a useful example because the authentication service cannot learn
@@ -72,5 +72,5 @@ In this case, the participant will be redirected the authentication service
 using the following link:
 
 ```
-https://jitsi.yourdomain.com/static/token.html?state=%7B%22room%22%3A%22myRoom%22%2C%22roomSafe%22%3A%22myroom%22%2C%22tenant%22%3A%22mytenant%22%2C%22config.prejoinConfig.enabled%22%3Afalse%7D
+https://jitsi.yourdomain.com/static/token.html?state=%7B%22room%22%3A%22myRoom%22%2C%22roomSafe%22%3A%22myroom%22%2C%22tenant%22%3A%22myTenant%22%2C%22config.prejoinConfig.enabled%22%3Afalse%7D
 ```
