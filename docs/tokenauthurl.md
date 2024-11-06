@@ -40,13 +40,13 @@ The related comments in the current Jitsi release (`2.0.9779`):
 If this value is set like the following in `config.js`:
 
 ```javascript
-config.tokenAuthUrl = "https://auth.yourdomain.com/static/token.html";
+config.tokenAuthUrl = "https://auth.yourdomain.com/token.html";
 ```
 
 The participant will be redirected to
 
 ```
-https://auth.yourdomain.com/static/token.html
+https://auth.yourdomain.com/token.html
 ```
 
 when she visits
@@ -65,14 +65,14 @@ service to get the state.
 A useful value may be like the following:
 
 ```
-config.tokenAuthUrl = "https://auth.yourdomain.com/static/token.html?state={state}";
+config.tokenAuthUrl = "https://auth.yourdomain.com/token.html?state={state}";
 ```
 
 In this case, the participant will be redirected the authentication service
 using the following link:
 
 ```
-https://auth.yourdomain.com/static/token.html?state=%7B%22room%22%3A%22myRoom%22%2C%22roomSafe%22%3A%22myroom%22%2C%22tenant%22%3A%22myTenant%22%2C%22config.prejoinConfig.enabled%22%3Afalse%7D
+https://auth.yourdomain.com/token.html?state=%7B%22room%22%3A%22myRoom%22%2C%22roomSafe%22%3A%22myroom%22%2C%22tenant%22%3A%22myTenant%22%2C%22config.prejoinConfig.enabled%22%3Afalse%7D
 ```
 
 If we make this value more readable with a simple Javascript code, the result
