@@ -1,8 +1,8 @@
 # tokenAuthUrl
 
-This is a parameter in `config.js` which allows to redirect the unauthenticated
-participant to the authentication service. The authentication service should
-redirect the participant back to the meeting with a token.
+This is a parameter in `config.js` which allows Jitsi to redirect the
+unauthenticated participant to the authentication service. The authentication
+service should redirect the participant back to the meeting with a token.
 
 The related comments in the current Jitsi release (`2.0.9779`):
 
@@ -49,7 +49,7 @@ The participant will be redirected to
 https://auth.yourdomain.com/token.html
 ```
 
-when she visits
+when she visits and clicks the join button:
 
 ```
 https://jitsi.yourdomain.com/myTenant/myRoom
@@ -64,7 +64,7 @@ service to get the state.
 
 A useful value may be like the following:
 
-```
+```javascript
 config.tokenAuthUrl = "https://auth.yourdomain.com/token.html?state={state}";
 ```
 
@@ -75,8 +75,7 @@ using the following link:
 https://auth.yourdomain.com/token.html?state=%7B%22room%22%3A%22myRoom%22%2C%22roomSafe%22%3A%22myroom%22%2C%22tenant%22%3A%22myTenant%22%2C%22config.prejoinConfig.enabled%22%3Afalse%7D
 ```
 
-If we make this value more readable with a simple Javascript code, the result
-will be:
+If we make this value more readable with a Javascript code, the result will be:
 
 ```javascript
 const search = globalThis.location.search.substr(1);
