@@ -86,9 +86,36 @@ const state = JSON.parse(jsonState);
 console.log(state);
 
 >>> {
+>>>   config.prejoinConfig.enabled: false,
 >>>   room: 'myRoom',
 >>>   roomSafe: 'myroom',
->>>   tenant: 'myTenant',
->>>   config.prejoinConfig.enabled: false
+>>>   tenant: 'myTenant'
+>>> }
+```
+
+### Updated config parameters
+
+If a config parameter is updated before redirection then `state` will keep this
+overwritten value. So, the authentication service can generate a link by keeping
+these updated values.
+
+Let's say the participant goes to the meeting page with an additional value
+(_`config.doNotStoreRoom=true` in our example_):
+
+```
+https://jitsi.yourdomain.com/myTenant/myRoom#config.doNotStoreRoom=true
+```
+
+And let's say she disables the camera in the prejoin page by clicking the camera
+button. In this case, the result (`state`) will be:
+
+```javascript
+>>> {
+>>>   config.doNotStoreRoom : true,
+>>>   config.prejoinConfig.enabled: false,
+>>>   config.startWithVideoMuted : true,
+>>>   room: 'myRoom',
+>>>   roomSafe: 'myroom',
+>>>   tenant: 'myTenant'
 >>> }
 ```
