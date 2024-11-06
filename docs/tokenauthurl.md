@@ -35,6 +35,8 @@ The related comments in the current Jitsi release (`2.0.9779`):
 
 ## Usage
 
+### Basic example
+
 If this value is set like the following in `config.js`:
 
 ```javascript
@@ -57,6 +59,8 @@ But this is not a useful example because the authentication service cannot learn
 the state and the related meeting room name in this case. Therefore
 `tokenAuthUrl` should be set with some parameters to help the authentication
 service to get the state.
+
+### Redirect while preserving the state
 
 A useful value may be like the following:
 
