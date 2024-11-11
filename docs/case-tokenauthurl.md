@@ -72,6 +72,9 @@ systemctl restart jicofo.service
 
 ### token_affiliation
 
+This module will control the participant's level in a meeting depending on
+`affiliation` fieldd in the token payload.
+
 Install and configure `token_affiliation` module:
 
 ```bash
@@ -102,6 +105,10 @@ Therefore this setup implements the waiting room by using the following modules.
 
 ### lobby_autostart
 
+This module will start the lobby automatically for each meeting. Only the
+participant having a special value in her token payload will bypass this
+lobby.
+
 Install and configure `lobby_autostart` module:
 
 ```bash
@@ -130,6 +137,9 @@ for details.
 
 ### token_lobby_bypass
 
+This module allows the participant to bypass the lobby if she has a special
+value (`"lobby_bypass" = true`) in her token payload.
+
 Install and configure `token_lobby_bypass` module:
 
 ```bash
@@ -151,6 +161,13 @@ See
 for details.
 
 ### lobby_deactivate
+
+This module will deactivate the lobby after the first moderator joins the
+meeting. So, the participants in the waiting room will join the meeting after
+this stage without doing anything.
+
+If the moderator has `context.room.lobby = true` in her token payload, the lobby
+will be keeped even this module is enabled.
 
 Install and configure `lobby_deactivate` module:
 
