@@ -41,10 +41,21 @@ config.tokenAuthUrl = "https://auth.mydomain.com/auth.html?state={state}";
 The following features are also set in `config.js` for our case:
 
 ```javascript
-// disable the prejoin page to redirect the participant to the authentication
-// system immediately if she has no token
+// Disable the prejoin page to redirect the participant to the authentication
+// system immediately if she has no token.
+// The authentication system will add a hash (config.prejoinConfig.enabled=true)
+// to the link to enable the prejoin page after the authentication.
 config.prejoinConfig = {
   enabled: false,
+};
+
+// Deeplinking is disabled by default because we dont want to ask the
+// participant twice to select the application.
+// The authentication system will add a hash (config.deeplinking.disabled=false)
+// to the link to enable the deeplinking again after the authentication. So the
+// participant will be asked once after the authentication.
+config.deeplinking = {
+  disabled: true,
 };
 
 // Enable autoKnock, so the participant will trigger the join attempt
