@@ -94,9 +94,9 @@ for details.
 
 ### muc_wait_for_host
 
-This module is not used in the setup because it breaks the flow for our case. It
-allows everyone to be a moderator if she has a token. So, even guest participant
-can join the meeting directly if she has a token.
+This module is **NOT** used in the setup because it breaks the flow for our
+case. It allows everyone to be a moderator if she has a token. So, even guest
+participant can join the meeting directly if she has a token.
 
 Therefore this setup implements the waiting room by using the following modules.
 
