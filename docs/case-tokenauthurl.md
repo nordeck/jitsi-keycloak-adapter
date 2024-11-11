@@ -94,7 +94,7 @@ for details.
 
 ### muc_wait_for_host
 
-This module is **NOT** used in the setup because it breaks the flow for our
+This module is **NOT** used in this setup because it breaks the flow for our
 case. It allows everyone to be a moderator if she has a token. So, even guest
 participant can join the meeting directly if she has a token.
 
@@ -171,3 +171,10 @@ Component "conference.meet.mydomain.com" "muc"
 See
 [lobby_deactivate](https://github.com/jitsi-contrib/prosody-plugins/tree/main/lobby_deactivate)
 for details.
+
+### Restart services
+
+```bash
+systemctl restart prosody.service
+systemctl restart jicofo.service
+```
