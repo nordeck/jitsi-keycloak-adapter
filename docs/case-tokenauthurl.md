@@ -98,6 +98,76 @@ This module is not used in the setup because it breaks the flow for our case. It
 allows everyone to be a moderator if she has a token. So, even guest participant
 can join the meeting directly if she has a token.
 
-Therefore this setup implement the waiting room by using the following modules.
+Therefore this setup implements the waiting room by using the following modules.
 
 ### lobby_autostart
+
+Install and configure `lobby_autostart` module:
+
+```bash
+cd /usr/share/jitsi-meet/prosody-plugins/
+wget -O mod_lobby_autostart.lua https://raw.githubusercontent.com/jitsi-contrib/prosody-plugins/main/lobby_autostart/mod_lobby_autostart.lua
+```
+
+Enable the module in Prosody config:
+
+```lua
+Virtualhost "meet.mydomain.com"
+  modules_enabled = {
+    "muc_lobby_rooms";
+    "persistent_lobby";
+  }
+
+Component "conference.meet.mydomain.com" "muc"
+  modules_enabled = {
+    "lobby_autostart";
+  }
+```
+
+See
+[lobby_autostart](https://github.com/jitsi-contrib/prosody-plugins/tree/main/lobby_autostart)
+for details.
+
+### token_lobby_bypass
+
+Install and configure `token_lobby_bypass` module:
+
+```bash
+cd /usr/share/jitsi-meet/prosody-plugins/
+wget -O mod_token_lobby_bypass.lua https://raw.githubusercontent.com/jitsi-contrib/prosody-plugins/main/token_lobby_bypass/mod_token_lobby_bypass.lua
+```
+
+Enable the module in Prosody config:
+
+```lua
+Component "conference.meet.mydomain.com" "muc"
+  modules_enabled = {
+    "token_lobby_bypass";
+  }
+```
+
+See
+[token_lobby_bypass](https://github.com/jitsi-contrib/prosody-plugins/tree/main/token_lobby_bypass)
+for details.
+
+### lobby_deactivate
+
+Install and configure `lobby_deactivate` module:
+
+```bash
+cd /usr/share/jitsi-meet/prosody-plugins/
+wget -O mod_lobby_deactivate.lua https://raw.githubusercontent.com/jitsi-contrib/prosody-plugins/main/lobby_deactivate/mod_lobby_deactivate.lua
+```
+
+Enable the module in Prosody config:
+
+```lua
+Component "conference.meet.mydomain.com" "muc"
+  modules_enabled = {
+    "lobby_deactivate";
+  }
+```
+
+See
+[lobby_deactivate](https://github.com/jitsi-contrib/prosody-plugins/tree/main/lobby_deactivate)
+for details.
