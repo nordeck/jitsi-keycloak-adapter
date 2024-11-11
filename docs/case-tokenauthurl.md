@@ -249,8 +249,8 @@ privileges.
 ### Moderator (decativate the lobby)
 
 This participant has an account on the identity system and moderator privileges.
-She deactivates the lobby automatically (_because there is no
-`context.room.lobby` in her token_) after joining.
+She deactivates the lobby automatically after joining (_because there is no
+`context.room.lobby` in her token_).
 
 ```json
 {
@@ -274,8 +274,8 @@ She deactivates the lobby automatically (_because there is no
 ### Moderator (keep the lobby)
 
 This participant has an account on the identity system and moderator privileges.
-She keeps the lobby (_because there is `context.room.lobby` in her token_) after
-joining.
+She keeps the lobby after joining (_because there is `context.room.lobby` in her
+token_).
 
 ```json
 {
