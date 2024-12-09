@@ -117,8 +117,7 @@ Therefore this setup implements the waiting room by using the following modules.
 ### lobby_autostart
 
 This module will start the lobby automatically for each meeting. Only the
-participant having a special value in her token payload will bypass this
-lobby.
+participant having a special value in her token payload will bypass this lobby.
 
 Install and configure `lobby_autostart` module:
 
