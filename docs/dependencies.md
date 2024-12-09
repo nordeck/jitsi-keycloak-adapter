@@ -2,8 +2,8 @@
 
 ## Deno
 
-Deno is a modern JavaScript and TypeScript runtime. It is a free and open source
-software with MIT license.
+[Deno](https://github.com/denoland/deno) is a modern JavaScript and TypeScript
+runtime. It is a free and open source software with MIT license.
 
 Docker image is generated based on
 [the official Deno image](https://hub.docker.com/r/denoland/deno) by adding our
@@ -23,7 +23,7 @@ available free and open source software:
 
 ## Links
 
-- [Deno GitHub repository](https://github.com/denoland/deno/)
+- [Deno GitHub repository](https://github.com/denoland/deno)
 - [Deno DockerHub registry](https://hub.docker.com/r/denoland/deno)
 - [jsr:@emrahcom/jwt](https://jsr.io/@emrahcom/jwt)
 - [jsr:@std/encoding](https://jsr.io/@std/encoding)
