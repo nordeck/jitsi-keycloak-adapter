@@ -12,7 +12,7 @@ own TypeScript application.
 ## Libraries
 
 The TypeScript application uses the following libraries which are all publicly
-available free and open source software:
+available as free and open source software:
 
 - [jsr:@emrahcom/jwt](https://jsr.io/@emrahcom/jwt)
   - [jsr:@std/encoding](https://jsr.io/@std/encoding)\
