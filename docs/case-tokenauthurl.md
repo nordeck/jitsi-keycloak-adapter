@@ -41,21 +41,23 @@ config.tokenAuthUrl = "https://auth.mydomain.com/auth.html?state={state}";
 The following features are also set in `config.js` for our case:
 
 ```javascript
-// Disable the prejoin page to redirect the participant to the authentication
-// system immediately if she has no token.
-// The authentication system will add a hash (config.prejoinConfig.enabled=true)
-// to the link to enable the prejoin page after the authentication.
+// Enable the prejoin page.
+// The participant will be redirected to the authentication system after
+// clicking "join meeting" button. The authentication system will add a hash
+// (config.prejoinConfig.enabled=false) to the link to bypass the prejoin page
+// after the authentication.
 config.prejoinConfig = {
-  enabled: false,
+  enabled: true,
+  hideDisplayName: true,
 };
 
-// Deeplinking is disabled by default because we dont want to ask the
-// participant twice to select the application.
-// The authentication system will add a hash (config.deeplinking.disabled=false)
-// to the link to enable the deeplinking again after the authentication. So the
-// participant will be asked once after the authentication.
+// Deeplinking is enabled by default. So, the participant should select her
+// client-side environment (mobile app or browser) before the prejoin page.
+// The authentication system will add a hash (config.deeplinking.disabled=true)
+// to the link to disable the deeplinking after the authentication. So the
+// participant will be asked once during the join process.
 config.deeplinking = {
-  disabled: true,
+  disabled: false,
 };
 
 // Enable autoKnock, so the participant will trigger the join attempt
@@ -65,7 +67,7 @@ config.lobby = {
   enableChat: true,
 };
 
-// disable the lobby password
+// Disable the lobby password
 config.securityUi = {
   disableLobbyPassword: true,
 };
