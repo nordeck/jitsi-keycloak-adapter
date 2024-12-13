@@ -319,15 +319,15 @@ on Jitsi after the authentication.
 The format of the generated link will be like the following in this case:
 
 ```
-https://jitsi.domain.com/roomname?jwt=eyJh...#config.prejoinConfig.enabled=true
+https://jitsi.domain.com/roomname?jwt=eyJh...#config.prejoinConfig.enabled=false
 ```
 
-### Enabling prejoin
+### Disabling prejoin
 
-Add `config.prejoinConfig.enabled=true` to the link to enable the prejoin page
+Add `config.prejoinConfig.enabled=false` to the link to disable the prejoin page
 after authentication.
 
-### Enabling deeplinking
+### Disabling deeplinking
 
-Add `config.deeplinking.disabled=false` to the link to enable the deeplinking
+Add `config.deeplinking.disabled=true` to the link to disable the deeplinking
 (_asking for selecting the app or the browser_) after authentication.
