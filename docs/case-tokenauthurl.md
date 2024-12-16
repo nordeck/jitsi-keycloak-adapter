@@ -6,11 +6,11 @@
   - [1.3 tokenAuthUrl](#13-tokenauthurl)
   - [1.4 Jitsi-meet config](#14-jitsi-meet-config)
   - [1.5 Disable auto ownersip](#15-disable-auto-ownership)
-  - [1.6 token_affiliation](#16-token-affiliation)
-  - [1.7 muc_wait_for_host](#17-muc-wait-for-host)
-  - [1.8 lobby_autostart](#18-lobby-autostart)
-  - [1.9 token_lobby_bypass](#19-token-lobby-bypass)
-  - [1.10 lobby_deactivate](#110-lobby-deactivate)
+  - [1.6 token_affiliation](#16-token_affiliation)
+  - [1.7 muc_wait_for_host](#17-muc_wait_for_host)
+  - [1.8 lobby_autostart](#18-lobby_autostart)
+  - [1.9 token_lobby_bypass](#19-token_lobby_bypass)
+  - [1.10 lobby_deactivate](#110-lobby_deactivate)
   - [1.11 Restart services](#111-restart-services)
 - [2. Token examples](#2-token-examples)
   - [2.1 Guest](#21-guest)
@@ -285,7 +285,7 @@ privileges.
 }
 ```
 
-### 2.3 Moderator (decativate the lobby)
+### 2.3 Moderator (deactivate the lobby)
 
 This participant has an account on the identity system and moderator privileges.
 She deactivates the lobby automatically after joining (_because there is no
