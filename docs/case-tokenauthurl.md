@@ -42,22 +42,28 @@ The following features are also set in `config.js` for our case:
 
 ```javascript
 // Enable the prejoin page.
+//
 // The participant will be redirected to the authentication system after
-// clicking "join meeting" button. The authentication system will add a hash
-// (config.prejoinConfig.enabled=false) to the link to bypass the prejoin page
-// after the authentication.
+// clicking "join meeting" button.
+//
+// The authentication system adds a hash (config.prejoinConfig.enabled=false)
+// to the link to bypass the prejoin page after the authentication.
+
 config.prejoinConfig = {
   enabled: true,
   hideDisplayName: true,
 };
 
-// Deeplinking is enabled by default. So, the participant should select her
-// client-side environment (mobile app or browser) before the prejoin page.
-// The authentication system will add a hash (config.deeplinking.disabled=true)
-// to the link to disable the deeplinking after the authentication. So the
-// participant will be asked once during the join process.
+// Disable the deeplinking.
+//
+// The mobile participant will select her client-side environment (the mobile
+// app or the mobile browser) after the authentication.
+//
+// The authentication system adds a hash (config.deeplinking.disabled=false) to
+// the link to enable the deeplinking after the authentication.
+
 config.deeplinking = {
-  disabled: false,
+  disabled: true,
 };
 
 // Enable autoKnock, so the participant will trigger the join attempt
@@ -327,7 +333,7 @@ https://jitsi.domain.com/roomname?jwt=eyJh...#config.prejoinConfig.enabled=false
 Add `config.prejoinConfig.enabled=false` to the link to disable the prejoin page
 after authentication.
 
-### Disabling deeplinking
+### Enable deeplinking
 
-Add `config.deeplinking.disabled=true` to the link to disable the deeplinking
+Add `config.deeplinking.disabled=false` to the link to enable the deeplinking
 (_asking for selecting the app or the browser_) after authentication.
