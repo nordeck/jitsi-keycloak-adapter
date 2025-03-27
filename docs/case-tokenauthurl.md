@@ -10,8 +10,9 @@
   - [1.7 muc_wait_for_host](#17-muc_wait_for_host)
   - [1.8 lobby_autostart](#18-lobby_autostart)
   - [1.9 token_lobby_bypass](#19-token_lobby_bypass)
-  - [1.10 lobby_deactivate](#110-lobby_deactivate)
-  - [1.11 Restart services](#111-restart-services)
+  - [1.10 token_lobby_bypass_for_initiator](#110-token_lobby_bypass_for_initiator)
+  - [1.11 lobby_deactivate](#111-lobby_deactivate)
+  - [1.12 Restart services](#112-restart-services)
 - [2. Token examples](#2-token-examples)
   - [2.1 Guest](#21-guest)
   - [2.2 Member](#22-member)
@@ -199,7 +200,31 @@ See
 [token_lobby_bypass](https://github.com/jitsi-contrib/prosody-plugins/tree/main/token_lobby_bypass)
 for details.
 
-### 1.10 lobby_deactivate
+### 1.10 token_lobby_bypass_for_initiator
+
+This module allows the first moderator to bypass the autostarted lobby.
+
+Install and configure `token_lobby_bypass_for_initiator` module:
+
+```bash
+cd /usr/share/jitsi-meet/prosody-plugins/
+wget -O mod_token_lobby_bypass_for_initiator.lua https://raw.githubusercontent.com/jitsi-contrib/prosody-plugins/main/token_lobby_bypass_for_initiator/mod_token_lobby_bypass_for_initiator.lua
+```
+
+Enable the module in Prosody config:
+
+```lua
+Component "conference.meet.mydomain.com" "muc"
+  modules_enabled = {
+    "token_lobby_bypass_for_initiator";
+  }
+```
+
+See
+[token_lobby_bypass](https://github.com/jitsi-contrib/prosody-plugins/tree/main/token_lobby_bypass)
+for details.
+
+### 1.11 lobby_deactivate
 
 This module will deactivate the lobby after the first moderator joins the
 meeting. So, the participants in the waiting room will join the meeting after
@@ -228,7 +253,7 @@ See
 [lobby_deactivate](https://github.com/jitsi-contrib/prosody-plugins/tree/main/lobby_deactivate)
 for details.
 
-### 1.11 Restart services
+### 1.12 Restart services
 
 ```bash
 systemctl restart prosody.service
