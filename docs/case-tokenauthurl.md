@@ -221,7 +221,7 @@ Component "conference.meet.mydomain.com" "muc"
 ```
 
 See
-[token_lobby_bypass](https://github.com/jitsi-contrib/prosody-plugins/tree/main/token_lobby_bypass)
+[token_lobby_bypass_for_initiator](https://github.com/jitsi-contrib/prosody-plugins/tree/main/token_lobby_bypass_for_initiator)
 for details.
 
 ### 1.11 lobby_deactivate
