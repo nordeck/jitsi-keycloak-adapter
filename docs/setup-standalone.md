@@ -35,11 +35,11 @@ Enable the token authentication for `prosody`.
 apt-get install jitsi-meet-tokens
 ```
 
-Check related parameters in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`. They
-should be already set by `apt-get` command.
+Check related parameters in your `/etc/prosody/conf.d/YOUR-HOSTNAME.cfg.lua`.
+They should be already set by `apt-get` command.
 
 ```lua
-VirtualHost "<YOUR-DOMAIN>"
+VirtualHost "<YOUR-HOSTNAME>"
     authentication = "token";
     app_id="<YOUR_APP_ID>"
     app_secret="<YOUR_APP_SECRET>"
@@ -185,9 +185,9 @@ systemctl status oidc-adapter.service
 
 ## 4. Nginx
 
-Customize the `nginx` configuration for `Jitsi` domain. This file is
-`/etc/nginx/sites-available/YOUR_DOMAIN.conf` for a typical Jitsi setup. You may
-check
+Customize the `nginx` configuration for `Jitsi`. This file is
+`/etc/nginx/sites-available/YOUR_HOSTNAME.conf` for a typical Jitsi setup. You
+may check
 [/etc/nginx/sites-available/example.conf](../templates/etc/nginx/sites-available/example.conf)
 as an example.
 
@@ -248,11 +248,12 @@ moderator then apply the followings.
 
 ### 5.1 prosody
 
-Add the guest domain for `prosody`. Create
-_/etc/prosody/conf.avail/guest.cfg.lua_ file with the following contents.
+Add the guest config for `prosody`. Create
+_/etc/prosody/conf.avail/guest.cfg.lua_ file with the following contents. Update
+`<YOUR-HOSTNAME>` according to your hostname.
 
 ```lua
-VirtualHost "guest.domain.loc"
+VirtualHost "guest.<YOUR-HOSTNAME>"
     authentication = "jitsi-anonymous"
     c2s_require_encryption = false
 ```
@@ -263,10 +264,10 @@ Create a symbolic link for this config file.
 ln -s ../conf.avail/guest.cfg.lua /etc/prosody/conf.d/
 ```
 
-Set `allow_empty_token` in your `/etc/prosody/conf.d/YOUR-DOMAIN.cfg.lua`.
+Set `allow_empty_token` in your `/etc/prosody/conf.d/YOUR-HOSTNAME.cfg.lua`.
 
 ```lua
-VirtualHost "<YOUR-DOMAIN>"
+VirtualHost "<YOUR-HOSTNAME>"
     authentication = "token";
     app_id="<YOUR_APP_ID>"
     app_secret="<YOUR_APP_SECRET>"
@@ -284,11 +285,11 @@ systemctl restart prosody.service
 Enable `XMPP` authentication for `jicofo`
 
 ```bash
-DOMAIN=$(hocon -f /etc/jitsi/jicofo/jicofo.conf get jicofo.xmpp.client.xmpp-domain)
+DOMAIN=$(hocon -f /etc/jitsi/jicofo/jicofo.conf get jicofo.xmpp.client.xmpp-domain | xargs)
 
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.enabled true
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.type XMPP
-hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.login-url $DOMAIN
+hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.login-url "\"$DOMAIN\""
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.enable-auto-login false
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.authentication.authentication-lifetime '100 milliseconds'
 hocon -f /etc/jitsi/jicofo/jicofo.conf set jicofo.conference.enable-auto-owner false
@@ -301,5 +302,7 @@ systemctl restart jicofo.service
 Set `anonymousdomain` in `config.js`
 
 ```bash
-echo "config.hosts.anonymousdomain = 'guest.domain.loc';" >> /etc/jitsi/meet/*-config.js
+DOMAIN=$(hocon -f /etc/jitsi/jicofo/jicofo.conf get jicofo.xmpp.client.xmpp-domain | xargs)
+
+echo "config.hosts.anonymousdomain = 'guest.$DOMAIN';" >> /etc/jitsi/meet/*-config.js
 ```
