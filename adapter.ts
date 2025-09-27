@@ -1,6 +1,6 @@
-import { STATUS_CODE } from "jsr:@std/http/status";
-import { create, getNumericDate } from "jsr:@emrahcom/jwt";
-import type { Algorithm } from "jsr:@emrahcom/jwt/algorithm";
+import { STATUS_CODE } from "jsr:@std/http@^1.0.20/status";
+import { create, getNumericDate } from "jsr:@emrahcom/jwt@^0.4.7";
+import type { Algorithm } from "jsr:@emrahcom/jwt@^0.4.7/algorithm";
 import {
   DEBUG,
   HOSTNAME,
