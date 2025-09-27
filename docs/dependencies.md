@@ -18,7 +18,7 @@ available as free and open source software:
   - [jsr:@std/encoding](https://jsr.io/@std/encoding)\
     No sub-dependencies
 
-- [jsr:@std/http/status](https://jsr.io/@std/http/1.0.12/status.ts)\
+- [jsr:@std/http/status](https://jsr.io/@std/http/1.0.20/status.ts)\
   No sub-dependencies
 
 ## Links
@@ -27,4 +27,4 @@ available as free and open source software:
 - [Deno DockerHub registry](https://hub.docker.com/r/denoland/deno)
 - [jsr:@emrahcom/jwt](https://jsr.io/@emrahcom/jwt)
 - [jsr:@std/encoding](https://jsr.io/@std/encoding)
-- [jsr:@std/http/status](https://jsr.io/@std/http/1.0.12/status.ts)
+- [jsr:@std/http/status](https://jsr.io/@std/http/1.0.20/status.ts)
