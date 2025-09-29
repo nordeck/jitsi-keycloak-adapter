@@ -28,6 +28,7 @@ docker run -d \
   -e KEYCLOAK_ORIGIN_INTERNAL= \
   -e KEYCLOAK_REALM=myrealm \
   -e KEYCLOAK_CLIENT_ID=myclientid \
+  -e KEYCLOAK_CLIENT_SECRET=myclientsecret \
   -e JWT_APP_ID=myappid \
   -e JWT_APP_SECRET=myappsecret \
   -e ALLOW_UNSECURE_CERT=true \
