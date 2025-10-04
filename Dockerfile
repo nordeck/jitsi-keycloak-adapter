@@ -9,7 +9,7 @@ RUN trivy image --format spdx-json --output /container.json denoland/deno
 # prod
 # ------------------------------------------------------------------------------
 FROM denoland/deno
-LABEL version="v20250927"
+LABEL version="v20251004"
 
 WORKDIR /app
 
@@ -23,6 +23,7 @@ ENV KEYCLOAK_ORIGIN "https://ucs-sso-ng.mydomain.corp"
 ENV KEYCLOAK_ORIGIN_INTERNAL ""
 ENV KEYCLOAK_REALM "ucs"
 ENV KEYCLOAK_CLIENT_ID "jitsi"
+ENV KEYCLOAK_CLIENT_SECRET ""
 ENV JWT_ALG "HS256"
 ENV JWT_HASH "SHA-256"
 ENV JWT_APP_ID "myappid"
