@@ -48,6 +48,9 @@ Set `ALLOW_UNSECURE_CERT` as `true` if `Keycloak` has not a trusted certificate.
 For the production environment, `Keycloak` should have a trusted certificate and
 this value should be `false` (_it is `false` by default_).
 
+Set `KEYCLOAK_CLIENT_SECRET` if the client authentication is enabled in
+Keycloak. Otherwise it must be empty or simply don't add it into the command.
+
 ## 2. Jitsi
 
 ### 2.1 Adapter internal URL
