@@ -28,7 +28,7 @@ docker run -d \
   -e KEYCLOAK_ORIGIN_INTERNAL= \
   -e KEYCLOAK_REALM=myrealm \
   -e KEYCLOAK_CLIENT_ID=myclientid \
-  -e KEYCLOAK_CLIENT_SECRET=myclientsecret \
+  -e KEYCLOAK_CLIENT_SECRET= \
   -e JWT_APP_ID=myappid \
   -e JWT_APP_SECRET=myappsecret \
   -e ALLOW_UNSECURE_CERT=true \
@@ -49,7 +49,7 @@ For the production environment, `Keycloak` should have a trusted certificate and
 this value should be `false` (_it is `false` by default_).
 
 Set `KEYCLOAK_CLIENT_SECRET` if the client authentication is enabled in
-Keycloak. Otherwise it must be empty or simply don't add it into the command.
+Keycloak. Otherwise it must be empty.
 
 ## 2. Jitsi
 
