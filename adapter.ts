@@ -118,6 +118,7 @@ async function getToken(
     `&hash=${encodeURIComponent(hash)}`;
   const redirectURI = `https://${host}/static/oidc-adapter.html` +
     `?${bundle}`;
+
   const headers = new Headers();
   headers.append("Accept", "application/json");
 
@@ -137,6 +138,8 @@ async function getToken(
 
   if (DEBUG) console.log(`getToken url: ${url}`);
   if (DEBUG) console.log(`getToken redirectURI: ${redirectURI}`);
+  if (DEBUG) console.log(`getToken headers:`);
+  if (DEBUG) console.log(headers);
   if (DEBUG) console.log(`getToken data:`);
   if (DEBUG) console.log(data);
 
