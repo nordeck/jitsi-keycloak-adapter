@@ -17,7 +17,7 @@ environment. See
 [Jitsi Meet Handbook](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker/)
 for further details.
 
-Tested with Jitsi `stable-8960` images.
+Tested with Jitsi `stable-10532-1` images.
 
 ## 1. Keycloak Adapter
 
