@@ -22,7 +22,7 @@
 The setup guide to install `Jitsi Keycloak Adapter` on a standalone Jitsi
 server.
 
-Tested on `Debian 11 Bullseye` with `Jitsi v2.0.8960`. Use `root` account while
+Tested on `Debian 12 Bookworm` with `Jitsi v2.0.10532`. Use `root` account while
 running the commands.
 
 ## 1. Token authentication
@@ -143,16 +143,18 @@ You may also use environment variables instead of updating this config file.
 
 - `KEYCLOAK_CLIENT_SECRET`
 
-  Keycloak client secret (required if client authentication is enabled in
-  Keycloak, must be empty otherwise)
+  Keycloak client secret\
+  Required if client authentication is enabled in Keycloak, must be empty otherwise.
 
 - `JWT_APP_ID`
 
-  The token `app_id`. It must be the same with Prosody `app_id`.
+  The token `app_id`\
+  It must be the same with Prosody `app_id`.
 
 - `JWT_APP_SECRET`
 
-  The token `app_secret`. It must be the same with Prosody `app_secret`.
+  The token `app_secret`\
+  It must be the same with Prosody `app_secret`.
 
 - `JWT_EXP_SECOND`
 
