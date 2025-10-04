@@ -22,44 +22,44 @@ jobs:
       id-token: write
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Custom metadata
-      run: |
-        echo "BUILD_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+      - name: Custom metadata
+        run: |
+          echo "BUILD_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
 
-    - name: Metadata
-      uses: docker/metadata-action@v5
-      id: meta
-      with:
-        images: |
-          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-          type=raw,value=latest
-          type=raw,value=v${{ env.BUILD_DATE }}
+      - name: Metadata
+        uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=raw,value=v${{ env.BUILD_DATE }}
 
-    - name: Login
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Install Cosign
-      uses: sigstore/cosign-installer@11086d25041f77fe8fe7b9ea4e48e3b9192b8f19 # @v3.1.2
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@11086d25041f77fe8fe7b9ea4e48e3b9192b8f19 # @v3.1.2
 
-    - name: Build and push
-      id: build_and_push
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
+      - name: Build and push
+        id: build_and_push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
-    - name: Sign the images with GitHub OIDC Token
-      env:
-        DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        DIGEST: ${{ steps.build_and_push.outputs.digest }}
-      run: cosign sign --yes "${DOCKER_IMAGE}@${DIGEST}"
+      - name: Sign the images with GitHub OIDC Token
+        env:
+          DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          DIGEST: ${{ steps.build_and_push.outputs.digest }}
+        run: cosign sign --yes "${DOCKER_IMAGE}@${DIGEST}"
