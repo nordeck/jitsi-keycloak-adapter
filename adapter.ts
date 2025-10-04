@@ -123,18 +123,19 @@ async function getToken(
   headers.append("Accept", "application/json");
 
   const data = new URLSearchParams();
-  if (KEYCLOAK_CLIENT_SECRET === "") {
-    data.append("client_id", KEYCLOAK_CLIENT_ID);
-  } else {
+  data.append("grant_type", "authorization_code");
+  data.append("redirect_uri", redirectURI);
+  data.append("code", code);
+
+  if (KEYCLOAK_CLIENT_SECRET) {
     headers.append(
       "Authorization",
       "Basic " +
         encodeBase64(`${KEYCLOAK_CLIENT_ID}:${KEYCLOAK_CLIENT_SECRET}`),
     );
+  } else {
+    data.append("client_id", KEYCLOAK_CLIENT_ID);
   }
-  data.append("grant_type", "authorization_code");
-  data.append("redirect_uri", redirectURI);
-  data.append("code", code);
 
   if (DEBUG) console.log(`getToken url: ${url}`);
   if (DEBUG) console.log(`getToken redirectURI: ${redirectURI}`);
