@@ -125,8 +125,11 @@ async function getToken(
   if (KEYCLOAK_CLIENT_SECRET === "") {
     data.append("client_id", KEYCLOAK_CLIENT_ID);
   } else {
-    headers.append("Authorization", "Basic " +
-      encodeBase64(`${KEYCLOAK_CLIENT_ID}:${KEYCLOAK_CLIENT_SECRET}`));
+    headers.append(
+      "Authorization",
+      "Basic " +
+        encodeBase64(`${KEYCLOAK_CLIENT_ID}:${KEYCLOAK_CLIENT_SECRET}`),
+    );
   }
   data.append("grant_type", "authorization_code");
   data.append("redirect_uri", redirectURI);
@@ -327,8 +330,10 @@ function main() {
   console.log(`KEYCLOAK_ORIGIN_INTERNAL: ${KEYCLOAK_ORIGIN_INTERNAL}`);
   console.log(`KEYCLOAK_REALM: ${KEYCLOAK_REALM}`);
   console.log(`KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}`);
-  console.log(`KEYCLOAK_CLIENT_SECRET: ` + (KEYCLOAK_CLIENT_SECRET === "" ?
-    `not used` : `*** masked ***`));
+  console.log(
+    `KEYCLOAK_CLIENT_SECRET: ` +
+      (KEYCLOAK_CLIENT_SECRET === "" ? `not used` : `*** masked ***`),
+  );
   console.log(`KEYCLOAK_MODE: ${KEYCLOAK_MODE}`);
   console.log(`JWT_ALG: ${JWT_ALG}`);
   console.log(`JWT_HASH: ${JWT_HASH}`);
