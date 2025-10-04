@@ -144,7 +144,8 @@ You may also use environment variables instead of updating this config file.
 - `KEYCLOAK_CLIENT_SECRET`
 
   Keycloak client secret\
-  Required if client authentication is enabled in Keycloak, must be empty otherwise.
+  Required if client authentication is enabled in Keycloak, must be empty
+  otherwise.
 
 - `JWT_APP_ID`
 
