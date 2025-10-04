@@ -7,8 +7,12 @@
         const path = encodeURIComponent(
           window.location.pathname.replace(/\/+/g, "/"),
         );
-        const search = encodeURIComponent(window.location.search.substring(1));
-        const hash = encodeURIComponent(window.location.hash.substring(1));
+        const search = encodeURIComponent(
+          window.location.search.substring(1),
+        );
+        const hash = encodeURIComponent(
+          window.location.hash.substring(1),
+        );
 
         window.location = `/oidc/redirect` +
           `?path=${path}&search=${search}&hash=${hash}`;
