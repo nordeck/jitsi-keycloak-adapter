@@ -14,7 +14,8 @@
     }
     hash = encodeURIComponent(hash);
 
-    window.location = `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
+    window.location =
+      `/oidc/auth?path=${path}&search=${search}&hash=${hash}`;
 
     try {
       // remove react from DOM to prevent UI distortion
