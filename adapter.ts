@@ -335,8 +335,9 @@ function main() {
   console.log(`KEYCLOAK_REALM: ${KEYCLOAK_REALM}`);
   console.log(`KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}`);
   console.log(
-    `KEYCLOAK_CLIENT_SECRET: ` +
-      (KEYCLOAK_CLIENT_SECRET === "" ? `not used` : `*** masked ***`),
+    `KEYCLOAK_CLIENT_SECRET: ${
+      KEYCLOAK_CLIENT_SECRET ? "*** masked ***" : "not used"
+    }`,
   );
   console.log(`KEYCLOAK_MODE: ${KEYCLOAK_MODE}`);
   console.log(`JWT_ALG: ${JWT_ALG}`);
