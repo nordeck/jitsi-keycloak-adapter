@@ -141,6 +141,11 @@ You may also use environment variables instead of updating this config file.
 
   Keycloak client ID
 
+- `KEYCLOAK_CLIENT_SECRET`
+
+  Keycloak client secret (required if client authentication is enabled in
+  Keycloak, must be empty otherwise)
+
 - `JWT_APP_ID`
 
   The token `app_id`. It must be the same with Prosody `app_id`.

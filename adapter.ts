@@ -1,4 +1,5 @@
 import { STATUS_CODE } from "jsr:@std/http@^1.0.20/status";
+import { encodeBase64 } from "jsr:@std/encoding@^1.0.10/base64";
 import { create, getNumericDate } from "jsr:@emrahcom/jwt@^0.4.7";
 import type { Algorithm } from "jsr:@emrahcom/jwt@^0.4.7/algorithm";
 import {
@@ -10,6 +11,7 @@ import {
   JWT_EXP_SECOND,
   JWT_HASH,
   KEYCLOAK_CLIENT_ID,
+  KEYCLOAK_CLIENT_SECRET,
   KEYCLOAK_MODE,
   KEYCLOAK_ORIGIN,
   KEYCLOAK_ORIGIN_INTERNAL,
@@ -116,8 +118,16 @@ async function getToken(
     `&hash=${encodeURIComponent(hash)}`;
   const redirectURI = `https://${host}/static/oidc-adapter.html` +
     `?${bundle}`;
+  const headers = new Headers();
+  headers.append("Accept", "application/json");
+
   const data = new URLSearchParams();
-  data.append("client_id", KEYCLOAK_CLIENT_ID);
+  if (KEYCLOAK_CLIENT_SECRET === "") {
+    data.append("client_id", KEYCLOAK_CLIENT_ID);
+  } else {
+    headers.append("Authorization", "Basic " +
+      encodeBase64(`${KEYCLOAK_CLIENT_ID}:${KEYCLOAK_CLIENT_SECRET}`));
+  }
   data.append("grant_type", "authorization_code");
   data.append("redirect_uri", redirectURI);
   data.append("code", code);
@@ -129,9 +139,7 @@ async function getToken(
 
   try {
     const res = await fetch(url, {
-      headers: {
-        "Accept": "application/json",
-      },
+      headers: headers,
       method: "POST",
       body: data,
     });
@@ -319,6 +327,8 @@ function main() {
   console.log(`KEYCLOAK_ORIGIN_INTERNAL: ${KEYCLOAK_ORIGIN_INTERNAL}`);
   console.log(`KEYCLOAK_REALM: ${KEYCLOAK_REALM}`);
   console.log(`KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}`);
+  console.log(`KEYCLOAK_CLIENT_SECRET: ` + (KEYCLOAK_CLIENT_SECRET === "" ?
+    `not used` : `*** masked ***`));
   console.log(`KEYCLOAK_MODE: ${KEYCLOAK_MODE}`);
   console.log(`JWT_ALG: ${JWT_ALG}`);
   console.log(`JWT_HASH: ${JWT_HASH}`);
