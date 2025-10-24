@@ -6,15 +6,14 @@
 - [4. Similar projects](#4-similar-projects)
 - [5. Sponsors](#5-sponsors)
 
-Allow `Jitsi` to use `Keycloak` as an identity and `OIDC` provider.
+Allow Jitsi to use Keycloak as an identity and OIDC provider.
 
 ## 1. Features
 
-- SSO for `Jitsi` through `Keycloak`. Allows `Jitsi` to run as an `OIDC`
-  consumer.
+- SSO for Jitsi through Keycloak. Allows Jitsi to run as an OIDC consumer.
 - Allows to use config params in URL (_such as_
   `#config.prejoinConfig.enabled=true`)
-- Allows `guest` users and `wait for host` screen if needed
+- Allows guest users and `wait for host` screen if needed
 - Not based on `the external JWT` which will be deprecated in the near future.
 - Not based on `tokenAuthUrl`
 
@@ -23,20 +22,20 @@ Check [flows](./docs/flows.txt) if you are interested in how it works.
 ## 2. Setup
 
 See [standalone setup](./docs/setup-standalone.md) guide to install it on a
-standalone `Jitsi` server.
+standalone Jitsi server.
 
 See [Docker setup](./docs/setup-docker.md) guide to integrate it with a
-Dockerized `Jitsi` setup.
+Dockerized Jitsi setup.
 
 ## 3. Keycloak configuration
 
 Create `client` inside `realm`.
 
 - Set `client id`
-- Add `Jitsi` URL into `Valid redirect URIs`\
-  e.g. `https://jitsi.mydomain.com/*`
-- Add `Jitsi` URL into `Web origins`\
-  e.g. `https://jitsi.mydomain.com` or just use `+`
+- Add Jitsi's URL into `Valid redirect URIs`\
+  _e.g. `https://jitsi.mydomain.com/*`_
+- Add Jitsi's URL into `Web origins`\
+  _e.g. `https://jitsi.mydomain.com` or just use `+`_
 - Set `Access type`
   - For Keycloak versions `< 20.x`, set `Access type` to `public`:
 
