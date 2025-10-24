@@ -8,6 +8,10 @@
 
 Allow Jitsi to use Keycloak as an identity and OIDC provider.
 
+See
+[jitsi-keycloak-adapter-v2](https://github.com/nordeck/jitsi-keycloak-adapter-2)
+for the second generation of the adapter.
+
 ## 1. Features
 
 - SSO for Jitsi through Keycloak. Allows Jitsi to run as an OIDC consumer.
@@ -50,6 +54,7 @@ Create `client` inside `realm`.
 
 ## 4. Similar projects
 
+- [jitsi-keycloak-adapter-v2](https://github.com/nordeck/jitsi-keycloak-adapter-v2)
 - [jitsi-keycloak](https://github.com/D3473R/jitsi-keycloak)
 - [Jitsi-SAML2JWT](https://github.com/Renater/Jitsi-SAML2JWT)
 - [jitsi-OIDC-adapter](https://github.com/aadpM2hhdixoJm3u/jitsi-OIDC-adapter)
