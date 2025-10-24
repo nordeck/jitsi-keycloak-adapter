@@ -9,7 +9,7 @@
 Allow Jitsi to use Keycloak as an identity and OIDC provider.
 
 See
-[jitsi-keycloak-adapter-v2](https://github.com/nordeck/jitsi-keycloak-adapter-2)
+[jitsi-keycloak-adapter-v2](https://github.com/nordeck/jitsi-keycloak-adapter-v2)
 for the second generation of the adapter.
 
 ## 1. Features
