@@ -9,7 +9,7 @@ RUN trivy image --format spdx-json --output /container.json denoland/deno
 # prod
 # ------------------------------------------------------------------------------
 FROM denoland/deno
-LABEL version="v20251004"
+LABEL version="v20251119"
 
 WORKDIR /app
 
