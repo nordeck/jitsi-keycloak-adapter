@@ -19,6 +19,7 @@ import {
   PORT,
 } from "./config.ts";
 import { createContext } from "./context.ts";
+import type { KeycloakUserInfo } from "./context.ts";
 
 // -----------------------------------------------------------------------------
 // HTTP response for OK
@@ -60,7 +61,7 @@ function unauthorized(): Response {
 // Generate JWT (Jitsi token)
 // -----------------------------------------------------------------------------
 async function generateJWT(
-  userInfo: Record<string, unknown>,
+  userInfo: KeycloakUserInfo,
   sub: string,
   room: string,
 ): Promise<string | undefined> {
@@ -169,7 +170,7 @@ async function getToken(
 // -----------------------------------------------------------------------------
 async function getUserInfo(
   token: string,
-): Promise<Record<string, unknown> | undefined> {
+): Promise<KeycloakUserInfo | undefined> {
   try {
     const url = `${KEYCLOAK_ORIGIN_INTERNAL}/realms/${KEYCLOAK_REALM}` +
       `/protocol/openid-connect/userinfo`;
@@ -180,7 +181,7 @@ async function getUserInfo(
       },
       method: "GET",
     });
-    const userInfo = await res.json();
+    const userInfo = await res.json() as KeycloakUserInfo;
 
     if (DEBUG) console.log(`getUserInfo userInfo:`);
     if (DEBUG) console.log(userInfo);
