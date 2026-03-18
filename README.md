@@ -10,7 +10,8 @@ Allow Jitsi to use Keycloak as an identity and OIDC provider.
 
 See
 [jitsi-oidc-adapter](https://github.com/jitsi-contrib/jitsi-oidc-adapter)
-for the new generation of the adapter.
+for the new generation of the adapter. It also supports Keycloak.\
+**PLEASE SWITCH TO THIS VERSION TO GET NEW FEATURES.**
 
 ## 1. Features
 
