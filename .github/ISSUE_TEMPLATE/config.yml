@@ -1,2 +1,5 @@
+# Skip the global issue settings.
+# Dont force people to fill a boring form.
+# Allow them to express themself as they wwant.
 blank_issues_enabled: true
 contact_links: []
